@@ -39,14 +39,14 @@ namespace NaniWeb.Controllers
         [HttpGet]
         public IActionResult Install()
         {
-            return Utils.IsInstalled() ? (IActionResult) RedirectToAction("Home", "Home") : View();
+            return Utils.IsInstalled() ? (IActionResult) RedirectToAction("Index", "Home") : View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Install(SignUpForm signUpForm)
         {
             if (Utils.IsInstalled())
-                return RedirectToAction("Home", "Home");
+                return RedirectToAction("Index", "Home");
 
             if (ModelState.IsValid)
             {

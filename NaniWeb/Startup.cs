@@ -105,7 +105,7 @@ namespace NaniWeb
                 routes.MapRoute(
                     "Home",
                     "{action}/{urlSlug?}/{chapterNumber:decimal?}",
-                    new {controller = "Home", action = "Index"});
+                    new {controller = "Home", action= "Index"});
                 routes.MapRoute(
                     "Subscription",
                     "subscription/{action}/{topic}/{token}",
@@ -115,29 +115,25 @@ namespace NaniWeb
                     "admin/{action}",
                     new {controller = "SignIn", action = "Index"});
                 routes.MapRoute(
-                    "Manager",
-                    "/admin/manager",
-                    new {controller = "Manager", action = "Index"});
-                routes.MapRoute(
                     "AnnouncementManager",
-                    "/admin/manager/announcement/{action}/{id?}",
-                    new {controller = "AnnouncementManager", action = "Index"});
+                    "/admin/manager/announcement/{action}/{id:int?}",
+                    new {controller = "AnnouncementManager"});
                 routes.MapRoute(
                     "SeriesManager",
-                    "/admin/manager/series/{action}/{id?}",
-                    new {controller = "SeriesManager", action = "Index"});
+                    "/admin/manager/series/{action}/{id:int?}",
+                    new {controller = "SeriesManager"});
                 routes.MapRoute(
                     "ChapterManager",
-                    "/admin/manager/chapter/{action}/{id?}",
+                    "/admin/manager/chapter/{action}/{id:int?}",
                     new {controller = "ChapterManager"});
                 routes.MapRoute(
                     "UserManager",
-                    "/admin/manager/user/{action}/{id?}",
-                    new {controller = "UserManager", action = "Index"});
+                    "/admin/manager/user/{action}/{id:int?}",
+                    new {controller = "UserManager"});
                 routes.MapRoute(
                     "SettingsManager",
                     "/admin/manager/settings/{action}",
-                    new {controller = "SettingsManager", action = "Index"});
+                    new {controller = "SettingsManager"});
             });
 
             if (Utils.IsInstalled())

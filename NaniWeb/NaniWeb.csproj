@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\Settings" />
     <Folder Include="Views\AnnouncementManager" />
     <Folder Include="Views\ChapterManager" />
     <Folder Include="Views\Home" />

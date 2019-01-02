@@ -29,21 +29,21 @@ namespace NaniWeb.Controllers
         {
             ViewData["Result"] = result;
 
-            return User.Identity.IsAuthenticated ? (IActionResult) RedirectToAction("Index", "Manager") : View();
+            return User.Identity.IsAuthenticated ? (IActionResult) RedirectToAction("Add", "ChapterManager") : View();
         }
 
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInForm loginForm)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             if (!ModelState.IsValid)
                 return RedirectToAction("SignIn", new {result = "Error"});
 
             var result = await _signInManager.PasswordSignInAsync(loginForm.Username, loginForm.Password, loginForm.Remember, true);
 
-            return result.Succeeded ? RedirectToAction("Index", "Manager") : RedirectToAction("SignIn", new {result = "Error"});
+            return result.Succeeded ? RedirectToAction("Add", "ChapterManager") : RedirectToAction("SignIn", new {result = "Error"});
         }
 
         [Authorize]
@@ -51,14 +51,14 @@ namespace NaniWeb.Controllers
         {
             await _signInManager.SignOutAsync();
 
-            return RedirectToAction("Home", "Home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
         public IActionResult SignUp()
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value))
                 return RedirectToAction("SignIn");
@@ -70,7 +70,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> SignUp(SignUpForm signUpForm)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value))
                 return RedirectToAction("SignIn");
@@ -109,7 +109,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Confirm(string userId, string code)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             if (userId == null || code == null)
                 return RedirectToAction("SignIn");
@@ -124,7 +124,7 @@ namespace NaniWeb.Controllers
         public IActionResult ResetPassword()
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             var enableEmail = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value);
 
@@ -135,7 +135,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordForm resetPassword)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
                 return RedirectToAction("SignIn");
@@ -156,7 +156,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> NewPassword(string userId, string code)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             if (userId == null || code == null)
                 return RedirectToAction("SignIn");
@@ -170,7 +170,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> NewPassword(string userId, string code, NewPasswordForm newPasswordForm)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Manager");
+                return RedirectToAction("Add", "ChapterManager");
 
             var user = await _userManager.FindByIdAsync(userId);
 
