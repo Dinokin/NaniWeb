@@ -77,6 +77,7 @@ namespace NaniWeb
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient(typeof(MangadexUploader));
             services.AddTransient(typeof(FirebaseCloudMessaging));
+            services.AddTransient(typeof(FacebookPosting));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

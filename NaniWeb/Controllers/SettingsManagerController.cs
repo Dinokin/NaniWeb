@@ -40,5 +40,10 @@ namespace NaniWeb.Controllers
         {
             return null;
         }
+
+        public IActionResult Facebook()
+        {
+            return null;
+        }
     }
 }

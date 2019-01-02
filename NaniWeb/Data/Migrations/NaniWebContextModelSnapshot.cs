@@ -503,6 +503,18 @@ namespace NaniWeb.Data.Migrations
                         Id = 23,
                         Name = "DisqusShortname",
                         Value = ""
+                    },
+                    new
+                    {
+                        Id = 24,
+                        Name = "EnableFacebookPosting",
+                        Value = "False"
+                    },
+                    new
+                    {
+                        Id = 25,
+                        Name = "FacebookApiKey",
+                        Value = ""
                     });
             });
 

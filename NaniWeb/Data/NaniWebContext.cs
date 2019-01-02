@@ -236,6 +236,16 @@ namespace NaniWeb.Data
                     Id = 23,
                     Name = "DisqusShortname",
                     Value = string.Empty
+                }, new Setting
+                {
+                    Id = 24,
+                    Name = "EnableFacebookPosting",
+                    Value = false.ToString()
+                }, new Setting
+                {
+                    Id = 25,
+                    Name = "FacebookApiKey",
+                    Value = string.Empty
                 });
             });
 
