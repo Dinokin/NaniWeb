@@ -1,0 +1,111 @@
+﻿@model NaniWeb.Models.SignIn.SignUpForm
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Install - NaniWeb</title>
+    <link rel="stylesheet" href="~/libs/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/libs/css/site.css"/>
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-primary justify-content-center">
+    <a class="navbar-brand" href="#">NaniWeb</a>
+</nav>
+<div class="container">
+    <div class="card mt-5">
+        <h5 class="card-header">Installer</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            <form id="install_form" asp-controller="Others" asp-action="Install" novalidate>
+                <fieldset>
+                    <legend>Account setup</legend>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input class="form-control" id="username" asp-for="Username" aria-describedby="username_help" placeholder="Username">
+                        <small id="username_help" class="form-text text-muted">Minimum of 3 characters. Alphanumeric characters and symbols are allowed.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input class="form-control" id="email" asp-for="Email" aria-describedby="email_help" placeholder="Email address">
+                        <small id="email_help" class="form-text text-muted">Type the email address for your account.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email_confirm">Confirm your email address</label>
+                        <input type="email" class="form-control" id="email_confirm" aria-describedby="email_confirm_help" placeholder="Email address">
+                        <small id="email_confirm_help" class="form-text text-muted">Repeat your email address.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input class="form-control" id="password" asp-for="Password" aria-describedby="password_help" placeholder="Password">
+                        <small id="password_help" class="form-text text-muted">Minimum of 8 characters. Alphanumeric characters and symbols are allowed.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirm">Confirm your password</label>
+                        <input type="password" class="form-control" id="password_confirm" aria-describedby="password_confirm_help" placeholder="Password">
+                        <small id="password_confirm_help" class="form-text text-muted">Repeat your password.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Install</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+<script src="~/libs/js/site.js"></script>
+<script>
+    $("#install_form").submit(function(e) {
+        const username = $("#username");
+        const email = $("#email");
+        const emailConfirm = $("#email_confirm");
+        const password = $("#password");
+        const passwordConfirm = $("#password_confirm");
+
+        if (!validateUsername(username.val())) {
+            username.addClass("is-invalid").focus();
+            e.preventDefault(e);
+            return;
+        }
+
+        if (!validateEmail(email.val())) {
+            email.addClass("is-invalid").focus();
+            e.preventDefault(e);
+            return;
+        }
+
+        if (email.val() !== emailConfirm.val()) {
+            emailConfirm.addClass("is-invalid").focus();
+            e.preventDefault(e);
+            return;
+        }
+
+        if (!validatePassword(password.val())) {
+            password.addClass("is-invalid").focus();
+            e.preventDefault(e);
+            return;
+        }
+
+        if (password.val() !== passwordConfirm.val()) {
+            passwordConfirm.addClass("is-invalid").focus();
+            e.preventDefault(e);
+            return;
+        }
+    });
+</script>
+</body>
+</html>

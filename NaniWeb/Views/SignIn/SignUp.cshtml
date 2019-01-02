@@ -1,0 +1,77 @@
+﻿@model NaniWeb.Models.SignIn.SignUpForm
+
+@{
+    ViewData["Title"] = "Sign up";
+}
+
+@section Header
+{
+    <link rel="stylesheet" href="~/libs/css/siteop1.css"/>
+}
+
+<form id="signup_form" class="form-a bg-dark rounded mx-auto text-center text-white" asp-controller="SignIn" asp-action="SignUp" novalidate>
+    <div class="mt-3 mx-4">
+        <img class="mb-3" src="~/assets/login_logo.png" alt="" width="200" height="44">
+        <h1 class="h5 mb-4 font-weight-normal">Sign up</h1>
+        @if (TempData["Error"] != null && (bool) TempData["Error"])
+        {
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Something went wrong. Please check your data and try again.
+            </div>
+        }
+    </div>
+    <div class="form-group mx-4">
+        <input class="form-control mb-2" id="username" asp-for="Username" placeholder="Username" data-container="body" data-toggle="popover" data-placement="right" data-content="Minimum of 3 characters. Alphanumeric characters and symbols are allowed." autofocus/>
+        <input class="form-control mb-1" id="email" asp-for="Email" placeholder="Email address" data-container="body" data-toggle="popover" data-placement="right" data-content="Your email."/>
+        <input class="form-control mb-2" id="email_confirm" type="email" placeholder="Confirm email address" data-container="body" data-toggle="popover" data-placement="right" data-content="Please confirm your email."/>
+        <input class="form-control mb-1" id="password" asp-for="Password" placeholder="Password" data-container="body" data-toggle="popover" data-placement="right" data-content="Minimum of 8 characters. Alphanumeric characters and symbols are allowed."/>
+        <input class="form-control" id="password_confirm" type="password" placeholder="Confirm password" data-container="body" data-toggle="popover" data-placement="right" data-content="Please confirm your password."/>
+    </div>
+    <div class="mt-3 mb-2 mx-4">
+        <button class="btn btn-success btn-block" id="submit" type="submit">Sign Up</button>
+    </div>
+</form>
+
+@section Body
+{
+    <script>
+        $('#signup_form').submit(function(e) {
+            const username = $("#username");
+            const email = $("#email");
+            const emailConfirm = $("#email_confirm");
+            const password = $("#password");
+            const passwordConfirm = $("#password_confirm");
+
+            if (!validateUsername(username.val())) {
+                username.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+
+            if (!validateEmail(email.val())) {
+                email.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+
+            if (email.val() !== emailConfirm.val()) {
+                emailConfirm.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+
+            if (!validatePassword(password.val())) {
+                password.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+
+            if (password.val() !== passwordConfirm.val()) {
+                passwordConfirm.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+        });
+    </script>
+}

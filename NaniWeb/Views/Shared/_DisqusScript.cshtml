@@ -1,0 +1,22 @@
+﻿@inject SettingsKeeper SettingsKeeper
+
+@if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+{
+    <script>
+        var disqus_config = function() {
+            this.page.url = "@ViewData["DisqusUrl"]";
+            this.page.identifier = "@ViewData["DisqusIdentifier"]";
+            this.page.title = "@ViewData["DisqusTitle"]";
+        };
+
+        (function() {
+            const d = document;
+            const s = d.createElement("script");
+
+            s.src = "@(SettingsKeeper.GetSetting("DisqusShortname").Value).disqus.com/embed.js";
+
+            s.setAttribute("data-timestamp", +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+}

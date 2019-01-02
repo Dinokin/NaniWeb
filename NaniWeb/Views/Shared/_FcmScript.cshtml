@@ -1,0 +1,29 @@
+﻿@inject SettingsKeeper SettingsKeeper
+
+@if (bool.Parse(SettingsKeeper.GetSetting("EnableFcm").Value))
+{
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.2/firebase-messaging.js"></script>
+    <script>
+        var config = {
+            apiKey: "@SettingsKeeper.GetSetting("FcmApiKey").Value",
+            projectId: "@SettingsKeeper.GetSetting("FcmProjectId").Value",
+            messagingSenderId: "@SettingsKeeper.GetSetting("FcmSenderId").Value"
+        };
+
+        firebase.initializeApp(config);
+        const messaging = firebase.messaging();
+        var fcmTopic = @ViewData["FcmTopic"];
+        var subscribeUrl = "@Url.Action("Subscribe", "Subscription")";
+        var unsubscribeUrl = "@Url.Action("Unsubscribe", "Subscription")";
+
+        $(function() {
+            if (window.localStorage.getItem(fcmTopic) === "Subscribed") {
+                $("#fcm_toggle").prop("checked", true);
+            } else {
+                $("#fcm_toggle").prop("checked", false);
+            }
+        });
+    </script>
+    <script src="~/libs/js/fcm_functions.js"></script>
+}

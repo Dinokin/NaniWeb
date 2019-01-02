@@ -1,0 +1,51 @@
+﻿@inject SettingsKeeper SettingsKeeper
+
+<nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <a class="navbar-brand" href="@Url.Action("Index", "Manager")">@SettingsKeeper.GetSetting("SiteName").Value</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown" id="announcements">
+                <a class="nav-link dropdown-toggle" href="#" id="announcements_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Announcements</a>
+                <div class="dropdown-menu" aria-labelledby="announcements_label">
+                    <a class="dropdown-item" href="@Url.Action("Add", "AnnouncementManager")">Add Announcement</a>
+                    <hr/>
+                    <a class="dropdown-item" href="@Url.Action("List", "AnnouncementManager")">Announcement List</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown" id="series">
+                <a class="nav-link dropdown-toggle" href="#" id="series_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Series</a>
+                <div class="dropdown-menu" aria-labelledby="series_label">
+                    <a class="dropdown-item" href="@Url.Action("Add", "SeriesManager")">Add Series</a>
+                    <a class="dropdown-item" href="@Url.Action("Add", "ChapterManager")">Add Chapter</a>
+                    <hr/>
+                    <a class="dropdown-item" href="@Url.Action("List", "SeriesManager")">Series List</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown" id="users">
+                <a class="nav-link dropdown-toggle" href="#" id="users_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
+                <div class="dropdown-menu" aria-labelledby="users_label">
+                    <a class="dropdown-item" href="@Url.Action("List", "UserManager")">User List</a>
+                    <hr/>
+                    <a class="dropdown-item" href="@Url.Action("Self", "UserManager")">Edit Yourself</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown" id="settings">
+                <a class="nav-link dropdown-toggle" href="#" id="settings_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                <div class="dropdown-menu" aria-labelledby="settings_label">
+                    <a class="dropdown-item" href="@Url.Action("General", "SettingsManager")">General</a>
+                    <a class="dropdown-item" href="@Url.Action("Email", "SettingsManager")">Email</a>
+                    <a class="dropdown-item" href="@Url.Action("Discord", "SettingsManager")">Discord</a>
+                    <a class="dropdown-item" href="@Url.Action("Mangadex", "SettingsManager")">Mangadex</a>
+                    <a class="dropdown-item" href="@Url.Action("GoogleAnalytics", "SettingsManager")">Google Analytics</a>
+                    <a class="dropdown-item" href="@Url.Action("Fcm", "SettingsManager")">Firebase Cloud Messaging</a>
+                    <a class="dropdown-item" href="@Url.Action("Disqus", "SettingsManager")">Disqus</a>
+                </div>
+            </li>
+        </ul>
+        <a href="@Url.Action("SignOut", "SignIn")" class="btn btn-outline-danger">Sign out</a>
+    </div>
+</nav>
