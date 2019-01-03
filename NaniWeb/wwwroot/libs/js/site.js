@@ -1,14 +1,4 @@
-﻿$('[data-toggle="popover"]').popover();
-
-$('[data-toggle="popover"]').focusin(function() {
-    $(this).popover("show");
-});
-
-$('[data-toggle="popover"]').focusout(function() {
-    $(this).popover("hide");
-});
-
-function validateGenericInput3Chars(genericInput) {
+﻿function validateGenericInput3Chars(genericInput) {
     return genericInput.length >= 3;
 }
 
