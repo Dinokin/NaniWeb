@@ -23,6 +23,5 @@
     <Folder Include="Views\ChapterManager" />
     <Folder Include="Views\Home" />
     <Folder Include="Views\SeriesManager" />
-    <Folder Include="Views\UserManager" />
   </ItemGroup>
 </Project>

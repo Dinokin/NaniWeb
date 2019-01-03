@@ -6,7 +6,7 @@ namespace NaniWeb.Controllers
     {
         public IActionResult Index()
         {
-            return null;
+            return View("Profile");
         }
 
         public IActionResult ChangeEmail()

@@ -1,25 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace NaniWeb.Controllers
 {
     public class UserManagerController : Controller
     {
-        public IActionResult List()
-        {
-            return null;
+        private readonly UserManager<IdentityUser<int>> _userManager;
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> List()
+        {            
+            return View("UserList", await _userManager.Users.ToListAsync());
         }
 
-        public IActionResult Self()
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> EditRole(int userId, string role)
         {
-            return null;
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            await _userManager.RemoveFromRolesAsync(user, new[] {"Administrator", "Moderator", "Uploader"});
+            await _userManager.AddToRoleAsync(user, role);
+
+            return RedirectToAction("List");
         }
 
-        public IActionResult Edit()
-        {
-            return null;
-        }
-
-        public IActionResult Delete()
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Delete(int id)
         {
             return null;
         }
