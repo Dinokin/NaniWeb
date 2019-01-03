@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="~/libs/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/libs/css/site.css"/>
 </head>
-<body class="bg-primary">
-<nav class="navbar navbar-dark bg-secondary text-white justify-content-center">
+<body class="bg-primary text-white">
+<nav class="navbar navbar-light bg-light justify-content-center">
     <a class="navbar-brand" href="#">NaniWeb</a>
 </nav>
 <div class="container">
-    <div class="card mt-5">
-        <h5 class="card-header">Installer</h5>
+    <div class="card bg-primary border-secondary mt-5">
+        <h5 class="card-header bg-primary">Installer</h5>
         <div class="card-body">
             @if (TempData["Error"] != null && (bool) TempData["Error"])
             {
