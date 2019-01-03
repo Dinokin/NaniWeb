@@ -175,7 +175,7 @@ namespace NaniWeb.Data
                 {
                     Id = 11,
                     Name = "DiscordChannelId",
-                    Value = string.Empty
+                    Value = 0.ToString()
                 }, new Setting
                 {
                     Id = 12,
@@ -195,7 +195,7 @@ namespace NaniWeb.Data
                 {
                     Id = 15,
                     Name = "MangadexGroupId",
-                    Value = string.Empty
+                    Value = 0.ToString()
                 }, new Setting
                 {
                     Id = 16,
@@ -225,7 +225,7 @@ namespace NaniWeb.Data
                 {
                     Id = 21,
                     Name = "FcmSenderId",
-                    Value = string.Empty
+                    Value = 0.ToString()
                 }, new Setting
                 {
                     Id = 22,
