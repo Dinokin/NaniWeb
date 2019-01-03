@@ -28,7 +28,7 @@ namespace NaniWeb.Others.Services
             }
         }
 
-        public ConcurrentDictionary<string, string> Settings { get; private set; }
+        private ConcurrentDictionary<string, string> Settings { get; set; }
 
         public async Task AddSettings(string key, string value)
         {
