@@ -29,21 +29,21 @@ namespace NaniWeb.Controllers
         {
             ViewData["Result"] = result;
 
-            return User.Identity.IsAuthenticated ? (IActionResult) RedirectToAction("Add", "ChapterManager") : View();
+            return User.Identity.IsAuthenticated ? (IActionResult) RedirectToAction("Index", "Profile") : View();
         }
 
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInForm loginForm)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             if (!ModelState.IsValid)
                 return RedirectToAction("SignIn", new {result = "Error"});
 
             var result = await _signInManager.PasswordSignInAsync(loginForm.Username, loginForm.Password, loginForm.Remember, true);
 
-            return result.Succeeded ? RedirectToAction("Add", "ChapterManager") : RedirectToAction("SignIn", new {result = "Error"});
+            return result.Succeeded ? RedirectToAction("Index", "Profile") : RedirectToAction("SignIn", new {result = "Error"});
         }
 
         [Authorize]
@@ -58,7 +58,7 @@ namespace NaniWeb.Controllers
         public IActionResult SignUp()
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value))
                 return RedirectToAction("SignIn");
@@ -70,7 +70,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> SignUp(SignUpForm signUpForm)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value))
                 return RedirectToAction("SignIn");
@@ -109,7 +109,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Confirm(string userId, string code)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             if (userId == null || code == null)
                 return RedirectToAction("SignIn");
@@ -124,7 +124,7 @@ namespace NaniWeb.Controllers
         public IActionResult ResetPassword()
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             var enableEmail = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value);
 
@@ -135,7 +135,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> ResetPassword(ResetPasswordForm resetPassword)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
                 return RedirectToAction("SignIn");
@@ -156,7 +156,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> NewPassword(string userId, string code)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             if (userId == null || code == null)
                 return RedirectToAction("SignIn");
@@ -170,7 +170,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> NewPassword(string userId, string code, NewPasswordForm newPasswordForm)
         {
             if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Add", "ChapterManager");
+                return RedirectToAction("Index", "Profile");
 
             var user = await _userManager.FindByIdAsync(userId);
 
