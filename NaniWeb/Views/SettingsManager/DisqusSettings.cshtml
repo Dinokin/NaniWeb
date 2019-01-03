@@ -1,0 +1,56 @@
+@model DisqusForm
+
+@{
+    ViewData["Title"] = "Disqus - Settings";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card mt-5">
+        <h5 class="card-header">Settings</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            else if (TempData["Error"] != null && !(bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-success text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Settings saved successfully.
+                </div>
+            }
+            <form id="disqus_settings_form" asp-controller="SettingsManager" asp-action="Disqus" novalidate>
+                <fieldset>
+                    <legend>Disqus settings</legend>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="enable_disqus" asp-for="EnableDisqus"/>Enable disqus
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="disqus_shortname">Disqus shortname</label>
+                        <input class="form-control" id="disqus_shortname" asp-for="DisqusShortname" aria-describedby="disqus_shortname_help" placeholder="Disqus shortname">
+                        <small id="disqus_shortname_help" class="form-text text-muted">Your disqus forum's shortname.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#settings").addClass("active");
+        });
+    </script>
+}

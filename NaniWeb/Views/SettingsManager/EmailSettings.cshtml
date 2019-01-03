@@ -1,0 +1,73 @@
+@model EmailForm
+
+@{
+    ViewData["Title"] = "Email - Settings";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card mt-5">
+        <h5 class="card-header">Settings</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            else if (TempData["Error"] != null && !(bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-success text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Settings saved successfully.
+                </div>
+            }
+            <form id="email_settings_form" asp-controller="SettingsManager" asp-action="Email" novalidate>
+                <fieldset>
+                    <legend>Email settings</legend>
+                    <div class="form-group row text-center">
+                        <div class="form-check col">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="enable_registration" asp-for="EnableRegistration"/>Enable registration
+                            </label>
+                        </div>
+                        <div class="form-check col">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="enable_email_recovery" asp-for="EnableEmailRecovery"/>Enable email recovery
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="smtp_server">SMTP Server</label>
+                        <input class="form-control" id="smtp_server" asp-for="SmtpServer" aria-describedby="smtp_server_help" placeholder="SMTP Server address">
+                        <small id="smtp_server_help" class="form-text text-muted">The address of the SMTP server that will send the email.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="smtp_user">SMTP User</label>
+                        <input class="form-control" id="smtp_user" asp-for="SmtpUser" aria-describedby="smtp_user_help" placeholder="SMTP Server user">
+                        <small id="smtp_user_help" class="form-text text-muted">The user to authenticate with the specified SMTP server.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="smtp_password">SMTP Password</label>
+                        <input class="form-control" id="smtp_password" asp-for="SmtpPassword" aria-describedby="smtp_password_help" placeholder="SMTP Server password">
+                        <small id="smtp_password_help" class="form-text text-muted">The password to authenticate with the specified SMTP server.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#settings").addClass("active");
+        });
+    </script>
+}

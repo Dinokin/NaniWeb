@@ -1,0 +1,56 @@
+@model FacebookForm
+
+@{
+    ViewData["Title"] = "Facebook - Settings";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card mt-5">
+        <h5 class="card-header">Settings</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            else if (TempData["Error"] != null && !(bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-success text-center">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Settings saved successfully.
+                </div>
+            }
+            <form id="facebook_settings_form" asp-controller="SettingsManager" asp-action="Facebook" novalidate>
+                <fieldset>
+                    <legend>Facebook settings</legend>
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" id="enable_facebook" asp-for="EnableFacebookPosting"/>Enable facebook posting
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook_api_key">Facebook API Key</label>
+                        <input class="form-control" id="facebook_api_key" asp-for="FacebookApiKey" aria-describedby="facebook_api_key_help" placeholder="Facebook API Key">
+                        <small id="facebook_api_key_help" class="form-text text-muted">A facebook api key to authenticate with facebook's servers.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#settings").addClass("active");
+        });
+    </script>
+}
