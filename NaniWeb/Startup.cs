@@ -113,7 +113,7 @@ namespace NaniWeb
                 routes.MapRoute(
                     "AdminLogin",
                     "admin/{action}",
-                    new {controller = "SignIn", action = "Index"});
+                    new {controller = "SignIn", action = "SignIn"});
                 routes.MapRoute(
                     "AnnouncementManager",
                     "/admin/manager/announcement/{action}/{id:int?}",
