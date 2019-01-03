@@ -12,7 +12,7 @@
                 <a class="nav-link dropdown-toggle" href="#" id="announcements_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Announcements</a>
                 <div class="dropdown-menu" aria-labelledby="announcements_label">
                     <a class="dropdown-item" href="@Url.Action("Add", "AnnouncementManager")">Add Announcement</a>
-                    <hr/>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="@Url.Action("List", "AnnouncementManager")">Announcement List</a>
                 </div>
             </li>
@@ -21,17 +21,12 @@
                 <div class="dropdown-menu" aria-labelledby="series_label">
                     <a class="dropdown-item" href="@Url.Action("Add", "SeriesManager")">Add Series</a>
                     <a class="dropdown-item" href="@Url.Action("Add", "ChapterManager")">Add Chapter</a>
-                    <hr/>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="@Url.Action("List", "SeriesManager")">Series List</a>
                 </div>
             </li>
-            <li class="nav-item dropdown" id="users">
-                <a class="nav-link dropdown-toggle" href="#" id="users_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users</a>
-                <div class="dropdown-menu" aria-labelledby="users_label">
-                    <a class="dropdown-item" href="@Url.Action("List", "UserManager")">User List</a>
-                    <hr/>
-                    <a class="dropdown-item" href="@Url.Action("Self", "UserManager")">Edit Yourself</a>
-                </div>
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("List","UserManager")">Users</a>
             </li>
             <li class="nav-item dropdown" id="settings">
                 <a class="nav-link dropdown-toggle" href="#" id="settings_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
@@ -46,6 +41,15 @@
                 </div>
             </li>
         </ul>
-        <a href="@Url.Action("SignOut", "SignIn")" class="btn btn-outline-danger">Sign out</a>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown" id="profile">
+                <a class="nav-link dropdown-toggle" href="#" id="profile_label" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Profile</a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profile_label">
+                    <a class="dropdown-item" href="@Url.Action("Index", "Profile")">Edit</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="@Url.Action("SignOut", "SignIn")">Sign out</a>
+                </div>
+            </li>
+        </ul>
     </div>
 </nav>
