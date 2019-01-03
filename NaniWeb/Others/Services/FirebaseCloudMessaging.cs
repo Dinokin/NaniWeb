@@ -19,7 +19,7 @@ namespace NaniWeb.Others.Services
                 return;
 
             _settingsKeeper = settingsKeeper;
-            var settings = FileBasedFcmClientSettings.CreateFromFile($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}FcmKey.json");
+            var settings = FileBasedFcmClientSettings.CreateFromFile($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}fcmkey.json");
             _fcmClient = new FcmClient(settings);
         }
 

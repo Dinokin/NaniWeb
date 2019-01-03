@@ -25,7 +25,7 @@ namespace NaniWeb.Others
 
         public static bool IsInstalled()
         {
-            return File.Exists($"{CurrentDirectory.FullName}{Path.DirectorySeparatorChar}INSTALLED.TXT");
+            return File.Exists($"{CurrentDirectory.FullName}{Path.DirectorySeparatorChar}installed.txt");
         }
 
         public static X509Certificate2 GetCertificate()
