@@ -105,7 +105,7 @@ namespace NaniWeb
                 routes.MapRoute(
                     "Home",
                     "{action}/{urlSlug?}/{chapterNumber:decimal?}",
-                    new {controller = "Home", action= "Index"});
+                    new {controller = "Home", action = "Index"});
                 routes.MapRoute(
                     "Subscription",
                     "subscription/{action}/{topic}/{token}",
