@@ -28,7 +28,7 @@ namespace NaniWeb.Others.Services
             {
                 var message = new MailMessage
                 {
-                    From = new MailAddress($"noreply@{_settingsKeeper.GetSetting("SiteUrl").Value}"),
+                    From = new MailAddress($"noreply@{_settingsKeeper.GetSetting("SiteUrl").Value.Replace("https://", string.Empty)}"),
                     Body = htmlMessage,
                     Subject = subject
                 };

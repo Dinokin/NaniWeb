@@ -39,19 +39,16 @@ namespace NaniWeb.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["Result"] = "Error";
-                
+
                 return RedirectToAction("SignIn");
             }
 
             var result = await _signInManager.PasswordSignInAsync(loginForm.Username, loginForm.Password, loginForm.Remember, true);
 
-            if (result.Succeeded)
-            {
-                return RedirectToAction("Index", "Profile");
-            }
+            if (result.Succeeded) return RedirectToAction("Index", "Profile");
 
             TempData["Result"] = "Error";
-                
+
             return RedirectToAction("SignIn");
         }
 
@@ -106,12 +103,12 @@ namespace NaniWeb.Controllers
                 if (enableEmail)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = $"https://{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("Confirm", new {userId = user.Id, code})}";
+                    var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("Confirm", new {userId = user.Id, code})}";
                     await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
                 }
 
                 TempData["Result"] = enableEmail ? "EmailRegSent" : "RegComplete";
-                
+
                 return RedirectToAction("SignIn");
             }
 
@@ -122,9 +119,6 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> Confirm(string userId, string code)
         {
-            if (User.Identity.IsAuthenticated)
-                return RedirectToAction("Index", "Profile");
-
             if (userId == null || code == null)
                 return RedirectToAction("SignIn");
 
@@ -166,10 +160,10 @@ namespace NaniWeb.Controllers
             }
 
             var code = _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = $"https://{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("NewPassword", new {userId = user.Id, code})}";
+            var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("NewPassword", new {userId = user.Id, code})}";
             await _emailSender.SendEmailAsync(user.Email, "Password reset requested", $"Click <a href='{callbackUrl}'>here</a> to reset your password.");
             TempData["Result"] = "EmailResSent";
-            
+
             return RedirectToAction("SignIn");
         }
 
@@ -203,8 +197,8 @@ namespace NaniWeb.Controllers
             }
 
             var result = await _userManager.ResetPasswordAsync(user, code, newPasswordForm.Password);
-            
-            TempData[result.Succeeded ? "ResConfirm" : "Error"] = result.Succeeded ? "ResConfirm" : (object) true;
+
+            TempData[result.Succeeded ? "Result" : "Error"] = result.Succeeded ? "ResConfirm" : (object) true;
 
             return result.Succeeded ? RedirectToAction("SignIn") : RedirectToAction("NewPassword", new {userId, code});
         }
