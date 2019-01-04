@@ -16,7 +16,7 @@
     <div class="text-center mb-4">
         <h1 class="h2 font-weight-normal">Sign in</h1>
     </div>
-    @switch (ViewData["Result"]?.ToString())
+    @switch (TempData["Result"]?.ToString())
     {
         case "Error":
             <div class="alert alert-dismissible alert-danger">
@@ -46,6 +46,12 @@
             <div class="alert alert-dismissible alert-success">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 Your password has been reset. You can now sign in using your new password.
+            </div>
+            break;
+        case "RegComplete":
+            <div class="alert alert-dismissible alert-success">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Sign up complete. You can now sign in.
             </div>
             break;
     }
