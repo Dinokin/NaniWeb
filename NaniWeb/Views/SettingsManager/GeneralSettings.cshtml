@@ -12,14 +12,14 @@
         <div class="card-body">
             @if (TempData["Error"] != null && (bool) TempData["Error"])
             {
-                <div class="alert alert-dismissible alert-danger text-center">
+                <div class="alert alert-dismissible alert-danger">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     Something went wrong. Please check your data and try again.
                 </div>
             }
             else if (TempData["Error"] != null && !(bool) TempData["Error"])
             {
-                <div class="alert alert-dismissible alert-success text-center">
+                <div class="alert alert-dismissible alert-success">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                     Settings saved successfully.
                 </div>
@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label for="site_url">Site URL</label>
                         <input class="form-control" id="site_url" asp-for="SiteUrl" aria-describedby="site_url_help" placeholder="Email address">
-                        <small id="site_url_help" class="form-text text-muted">Your website's url without without http(s) nor trailing slashes. ex: google.com, mangadex.org</small>
+                        <small id="site_url_help" class="form-text text-muted">Your website's url without trailing slashes. ex: https://google.com, https://mangadex.org</small>
                     </div>
                 </fieldset>
                 <div>
