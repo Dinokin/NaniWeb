@@ -7,9 +7,7 @@ function validatePassword(password) {
 }
 
 function validateEmail(email) {
-    const regex = new RegExp("^[^\\s]+@[^\\s]+$");
-
-    console.log(email);
-
-    return regex.test(email) && email.length >= 3;
+    const regex = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9-]+(\\.[a-z0-9-]+)*");
+    
+    return regex.test(email);
 }
