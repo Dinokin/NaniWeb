@@ -1,11 +1,65 @@
+@inject SettingsKeeper SettingsKeeper
+@model Profile
+
 @{
     ViewData["Title"] = "Profile";
+    var enableEmail = bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value);
 }
 
 <partial name="_ProfileNav"/>
 
-<div class="container">
+<div class="container w-25">
     <div class="card bg-primary border-secondary mt-5">
         <h5 class="card-header bg-primary">Profile</h5>
+        <div class="card-body">
+            <div class="text-truncate mb-2">
+                <p>Username: @Model.Username</p>
+                <p>Email: @Model.Email</p>
+                <p>Role: @Model.Role</p>
+            </div>
+            <div>
+                <div class="btn-group btn-block mb-1" role="group" aria-label="Basic example">
+                    <a class="btn btn-warning w-100" href="@Url.Action("ChangePassword")">Change password</a>
+                    <a class="btn btn-warning w-100 @(enableEmail ? string.Empty : "disabled")" href="@Url.Action("ChangeEmail")">Change email</a>
+                </div>
+                <a id="delete_button" class="btn btn-danger btn-block" href="@Url.Action("DeleteAccount")">Delete account</a>
+            </div>
+        </div>
+    </div>
+    <div class="modal text-dark">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure that you want to permanently delete your account?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm_delete" type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section Body
+{
+    <script>
+        var deleteAddress = null;
+        
+        $("#delete_button").click(function(event) {
+            event.preventDefault();
+            $(".modal").modal("show");
+            deleteAddress = $("#delete_button").attr("href");
+        });
+        
+        $("#confirm_delete").click(function() {
+            window.location = deleteAddress;
+        });
+    </script>
+}
