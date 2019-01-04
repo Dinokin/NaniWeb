@@ -7,7 +7,6 @@ namespace NaniWeb.Models.SignIn
         [Required]
         [MinLength(8)]
         [DataType(DataType.Password)]
-        [RegularExpression(@"^[^\s]+$")]
         public string Password { get; set; }
     }
 }

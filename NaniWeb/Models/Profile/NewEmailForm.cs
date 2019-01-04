@@ -4,8 +4,6 @@ namespace NaniWeb.Models.Profile
 {
     public class NewEmailForm
     {
-        [Required]
-        [EmailAddress]
-        public string NewEmail { get; set; }
+        [Required] [EmailAddress] public string NewEmail { get; set; }
     }
 }
