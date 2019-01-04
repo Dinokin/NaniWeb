@@ -1,1 +1,52 @@
 @model NewEmailForm
+
+<partial name="_ProfileNav"/>
+
+<div class="container w-25">
+    <div class="card bg-primary border-secondary mt-5">
+        <h5 class="card-header bg-primary">Change email</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            else if (TempData["Error"] != null && !(bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-warning">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    A email was sent to your new email. Please follow it to confirm your new email.
+                </div>
+            }
+            <form id="new_email_form" asp-action="ChangeEmail" novalidate>
+                <fieldset>
+                    <div class="form-group">
+                        <label for="email">New email address</label>
+                        <input class="form-control" id="email" asp-for="NewEmail" aria-describedby="email_help" placeholder="Email address">
+                        <small id="email_help" class="form-text text-muted">Your new email address.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-block btn-warning" id="submit" type="submit">Send confirmation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $("#install_form").submit(function(e) {
+            const email = $("#email");
+
+            if (!validateEmail(email.val())) {
+                email.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+        });
+    </script>
+}

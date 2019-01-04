@@ -12,7 +12,7 @@
     <div class="card bg-primary border-secondary mt-5">
         <h5 class="card-header bg-primary">Profile</h5>
         <div class="card-body">
-            <div class="text-truncate mb-2">
+            <div class="text-truncate mt-1 mb-2">
                 <p>Username: @Model.Username</p>
                 <p>Email: @Model.Email</p>
                 <p>Role: @Model.Role</p>
@@ -51,13 +51,13 @@
 {
     <script>
         var deleteAddress = null;
-        
+
         $("#delete_button").click(function(event) {
             event.preventDefault();
             $(".modal").modal("show");
             deleteAddress = $("#delete_button").attr("href");
         });
-        
+
         $("#confirm_delete").click(function() {
             window.location = deleteAddress;
         });
