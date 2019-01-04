@@ -135,7 +135,7 @@ namespace NaniWeb.Data
                 {
                     Id = 3,
                     Name = "SiteUrl",
-                    Value = "localhost"
+                    Value = "http://localhost"
                 }, new Setting
                 {
                     Id = 4,

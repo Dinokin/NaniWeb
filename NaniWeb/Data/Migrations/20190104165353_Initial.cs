@@ -292,29 +292,31 @@ namespace NaniWeb.Data.Migrations
                 new[] {"Id", "Name", "Value"},
                 new object[,]
                 {
-                    {21, "FcmSenderId", ""},
+                    {23, "DisqusShortname", ""},
+                    {22, "EnableDisqus", "False"},
+                    {21, "FcmSenderId", "0"},
                     {20, "FcmProjectId", ""},
                     {19, "FcmApiKey", ""},
                     {18, "EnableFcm", "False"},
                     {17, "GoogleAnalyticsTrackingCode", ""},
                     {16, "EnableGoogleAnalytics", "False"},
-                    {15, "MangadexGroupId", ""},
+                    {15, "MangadexGroupId", "0"},
                     {14, "MangadexPassword", ""},
                     {13, "MangadexUser", ""},
-                    {12, "EnableMangadexAutoUpload", "False"},
+                    {11, "DiscordChannelId", "0"},
+                    {24, "EnableFacebookPosting", "False"},
                     {10, "DiscordToken", ""},
-                    {22, "EnableDisqus", "False"},
                     {9, "EnableDiscordBot", "False"},
                     {8, "SmtpPassword", ""},
                     {7, "SmtpUser", ""},
                     {6, "SmtpServer", ""},
                     {5, "EnableEmailRecovery", "False"},
                     {4, "EnableRegistration", "False"},
-                    {3, "SiteUrl", "localhost"},
+                    {3, "SiteUrl", "http://localhost"},
                     {2, "SiteDescription", "NaniWeb for scanlation groups."},
                     {1, "SiteName", "NaniWeb"},
-                    {11, "DiscordChannelId", ""},
-                    {23, "DisqusShortname", ""}
+                    {12, "EnableMangadexAutoUpload", "False"},
+                    {25, "FacebookApiKey", ""}
                 });
 
             migrationBuilder.CreateIndex(

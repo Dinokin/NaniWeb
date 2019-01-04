@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NaniWeb.Data.Migrations
 {
     [DbContext(typeof(NaniWebContext))]
-    [Migration("20190103034537_SeedFix1")]
-    partial class SeedFix1
+    [Migration("20190104165353_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -385,7 +385,7 @@ namespace NaniWeb.Data.Migrations
                         {
                             Id = 3,
                             Name = "SiteUrl",
-                            Value = "localhost"
+                            Value = "http://localhost"
                         },
                         new
                         {
