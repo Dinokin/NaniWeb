@@ -76,7 +76,7 @@
         const password = $("#password");
         const passwordConfirm = $("#password_confirm");
 
-        if (!validateUsername(username.val())) {
+        if (!validateGenericInput3Chars(username.val())) {
             username.addClass("is-invalid").focus();
             e.preventDefault(e);
             return;

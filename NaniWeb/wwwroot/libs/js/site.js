@@ -2,16 +2,8 @@
     return genericInput.length >= 3;
 }
 
-function validateUsername(username) {
-    const regex = new RegExp("^[^\\s]+$");
-
-    return regex.test(username) && username.length >= 3;
-}
-
 function validatePassword(password) {
-    const regex = new RegExp("^[^\\s]+$");
-
-    return regex.test(password) && password.length >= 8;
+    return password.length >= 8;
 }
 
 function validateEmail(email) {

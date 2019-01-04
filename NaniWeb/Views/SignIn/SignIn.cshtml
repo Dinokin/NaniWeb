@@ -81,7 +81,7 @@
             const username = $("#username");
             const password = $("#password");
 
-            if (!validateUsername(username.val())) {
+            if (!validateGenericInput3Chars(username.val())) {
                 username.addClass("is-invalid").focus();
                 e.preventDefault(e);
                 return;
