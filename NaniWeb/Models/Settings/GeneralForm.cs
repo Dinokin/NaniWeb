@@ -12,5 +12,8 @@ namespace NaniWeb.Models.Settings
 
         [Required]
         public string SiteUrl { get; set; }
+        
+        [Required]
+        public bool EnableRegistration { get; set; }
     }
 }

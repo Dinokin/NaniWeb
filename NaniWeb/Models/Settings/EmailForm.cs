@@ -4,8 +4,6 @@ namespace NaniWeb.Models.Settings
 {
     public class EmailForm
     {
-        [Required] public bool EnableRegistration { get; set; }
-
         [Required] public bool EnableEmailRecovery { get; set; }
 
         public string SmtpServer { get; set; }

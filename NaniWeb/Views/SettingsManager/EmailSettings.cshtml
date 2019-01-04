@@ -27,13 +27,8 @@
             <form id="email_settings_form" asp-controller="SettingsManager" asp-action="Email" novalidate>
                 <fieldset>
                     <legend>Email settings</legend>
-                    <div class="form-group row text-center">
-                        <div class="form-check col">
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="enable_registration" asp-for="EnableRegistration"/>Enable registration
-                            </label>
-                        </div>
-                        <div class="form-check col">
+                    <div class="form-group">
+                        <div class="form-check">
                             <label class="form-check-label">
                                 <input class="form-check-input" id="enable_email_recovery" asp-for="EnableEmailRecovery"/>Enable email recovery
                             </label>

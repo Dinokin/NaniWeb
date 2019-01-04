@@ -28,7 +28,8 @@ namespace NaniWeb.Controllers
             {
                 SiteName = _settingsKeeper.GetSetting("SiteName").Value,
                 SiteDescription = _settingsKeeper.GetSetting("SiteDescription").Value,
-                SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value
+                SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value,
+                EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value)
             };
 
             return View("GeneralSettings", model);
@@ -39,7 +40,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[4];
+                var tasks = new Task[5];
                 var manifest = new ManifestBuilder
                 {
                     ShortName = generalForm.SiteName,
@@ -61,7 +62,8 @@ namespace NaniWeb.Controllers
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteName", generalForm.SiteName));
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteDescription", generalForm.SiteDescription));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteUrl", generalForm.SiteUrl));
-                tasks[3] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
+                tasks[4] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
 
                 TempData["Error"] = false;
 
@@ -80,7 +82,6 @@ namespace NaniWeb.Controllers
         {
             var model = new EmailForm
             {
-                EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value),
                 EnableEmailRecovery = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value),
                 SmtpServer = _settingsKeeper.GetSetting("SmtpServer").Value,
                 SmtpUser = _settingsKeeper.GetSetting("SmtpUser").Value,
@@ -95,13 +96,12 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[5];
+                var tasks = new Task[4];
 
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", emailForm.EnableRegistration.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser));
-                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword));
+                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword));
 
 
                 TempData["Error"] = false;
