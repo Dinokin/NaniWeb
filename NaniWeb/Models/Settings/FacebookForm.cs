@@ -6,6 +6,6 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableFacebookPosting { get; set; }
 
-        public string FacebookApiKey { get; set; }
+        [Required] public string FacebookApiKey { get; set; }
     }
 }

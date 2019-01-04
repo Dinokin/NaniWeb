@@ -6,11 +6,10 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableMangadexAutoUpload { get; set; }
 
-        public string MangadexUser { get; set; }
+        [Required] public string MangadexUser { get; set; }
 
-        [DataType(DataType.Password)]
-        public string MangadexPassword { get; set; }
+        [DataType(DataType.Password)] public string MangadexPassword { get; set; }
 
-        public int MangadexGroupId { get; set; }
+        [Required] public int MangadexGroupId { get; set; }
     }
 }

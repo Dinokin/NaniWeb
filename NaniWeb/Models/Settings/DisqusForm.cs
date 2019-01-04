@@ -6,6 +6,6 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableDisqus { get; set; }
 
-        public string DisqusShortname { get; set; }
+        [Required] public string DisqusShortname { get; set; }
     }
 }

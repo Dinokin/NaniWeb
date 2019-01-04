@@ -6,6 +6,6 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableGoogleAnalytics { get; set; }
 
-        public string GoogleAnalyticsTrackingCode { get; set; }
+        [Required] public string GoogleAnalyticsTrackingCode { get; set; }
     }
 }

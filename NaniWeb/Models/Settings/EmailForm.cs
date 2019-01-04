@@ -6,10 +6,11 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableEmailRecovery { get; set; }
 
-        public string SmtpServer { get; set; }
+        [Required] public string SmtpServer { get; set; }
 
-        public string SmtpUser { get; set; }
+        [Required] public string SmtpUser { get; set; }
 
+        [Required]
         [DataType(DataType.Password)]
         public string SmtpPassword { get; set; }
     }

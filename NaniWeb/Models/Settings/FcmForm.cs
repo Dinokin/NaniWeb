@@ -7,12 +7,12 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableFcm { get; set; }
 
-        public string FcmApiKey { get; set; }
+        [Required] public string FcmApiKey { get; set; }
 
-        public string FcmProjectId { get; set; }
+        [Required] public string FcmProjectId { get; set; }
 
-        public ulong FcmSenderId { get; set; }
-        
-        public IFormFile FcmKeyFile { get; set; }
+        [Required] public ulong FcmSenderId { get; set; }
+
+        [Required] public IFormFile FcmKeyFile { get; set; }
     }
 }

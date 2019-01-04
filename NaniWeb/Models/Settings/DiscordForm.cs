@@ -6,8 +6,8 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableDiscordBot { get; set; }
 
-        public string DiscordToken { get; set; }
+        [Required] public string DiscordToken { get; set; }
 
-        public ulong DiscordChannelId { get; set; }
+        [Required] public ulong DiscordChannelId { get; set; }
     }
 }

@@ -94,23 +94,36 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Email(EmailForm emailForm)
         {
-            if (ModelState.IsValid)
+            var tasks = new Task[4];
+
+            if (emailForm.EnableEmailRecovery)
             {
-                var tasks = new Task[4];
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser));
+                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword));
 
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword));
-
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer ?? string.Empty));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser ?? string.Empty));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword ?? string.Empty));
 
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
-            }
-            else
-            {
-                TempData["Error"] = true;
             }
 
             return RedirectToAction("Email");
@@ -132,21 +145,34 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Discord(DiscordForm discordForm)
         {
-            if (ModelState.IsValid)
-            {
-                var tasks = new Task[3];
+            var tasks = new Task[3];
 
+            if (discordForm.EnableDiscordBot)
+            {
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDiscordBot", discordForm.EnableDiscordBot.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordToken", discordForm.DiscordToken));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordChannelId", discordForm.DiscordChannelId.ToString()));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDiscordBot", discordForm.EnableDiscordBot.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordToken", discordForm.DiscordToken));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordToken", discordForm.DiscordToken ?? string.Empty));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordChannelId", discordForm.DiscordChannelId.ToString()));
 
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
-            }
-            else
-            {
-                TempData["Error"] = true;
             }
 
             return RedirectToAction("Discord");
@@ -169,22 +195,34 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Mangadex(MangadexForm mangadexForm)
         {
-            if (ModelState.IsValid)
+            var tasks = new Task[4];
+
+            if (mangadexForm.EnableMangadexAutoUpload)
             {
-                var tasks = new Task[4];
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableMangadexAutoUpload", mangadexForm.EnableMangadexAutoUpload.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword));
+                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
 
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableMangadexAutoUpload", mangadexForm.EnableMangadexAutoUpload.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
+                    TempData["Error"] = false;
 
-                TempData["Error"] = false;
-
-                await Task.WhenAll(tasks);
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
             }
             else
             {
-                TempData["Error"] = true;
+                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableMangadexAutoUpload", mangadexForm.EnableMangadexAutoUpload.ToString()));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser ?? string.Empty));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword ?? string.Empty));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
+
+                await Task.WhenAll(tasks);
             }
 
             return RedirectToAction("Mangadex");
@@ -205,20 +243,32 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> GoogleAnalytics(GoogleAnalyticsForm googleAnalyticsForm)
         {
-            if (ModelState.IsValid)
-            {
-                var tasks = new Task[2];
+            var tasks = new Task[2];
 
+            if (googleAnalyticsForm.EnableGoogleAnalytics)
+            {
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableGoogleAnalytics", googleAnalyticsForm.EnableGoogleAnalytics.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableGoogleAnalytics", googleAnalyticsForm.EnableGoogleAnalytics.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode ?? string.Empty));
 
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
-            }
-            else
-            {
-                TempData["Error"] = true;
             }
 
             return RedirectToAction("GoogleAnalytics");
@@ -241,29 +291,46 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Fcm(FcmForm fcmForm)
         {
-            if (ModelState.IsValid)
+            if (fcmForm.EnableFcm)
             {
-                var tasks = new Task[6];
+                if (ModelState.IsValid)
+                {
+                    var tasks = new Task[6];
+
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFcm", fcmForm.EnableFcm.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmApiKey", fcmForm.FcmApiKey));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmProjectId", fcmForm.FcmProjectId));
+                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmSenderId", fcmForm.FcmSenderId.ToString()));
+                    tasks[4] = Task.Run(async () =>
+                    {
+                        using (var stream = System.IO.File.Create($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}fcmkey.json"))
+                        {
+                            await fcmForm.FcmKeyFile.CopyToAsync(stream);
+                        }
+                    });
+                    tasks[5] = Task.Run(async () => await Utils.BuildServiceWorker(fcmForm.FcmApiKey, fcmForm.FcmProjectId, fcmForm.FcmSenderId.ToString(), _hostingEnvironment));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
+                var tasks = new Task[4];
 
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFcm", fcmForm.EnableFcm.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmApiKey", fcmForm.FcmApiKey));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmProjectId", fcmForm.FcmProjectId));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmApiKey", fcmForm.FcmApiKey ?? string.Empty));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmProjectId", fcmForm.FcmProjectId ?? string.Empty));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmSenderId", fcmForm.FcmSenderId.ToString()));
-                tasks[4] = Task.Run(async () =>
-                {
-                    if (fcmForm.FcmKeyFile != null)
-                        using (var stream = System.IO.File.Create($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}fcmkey.json"))
-                            await fcmForm.FcmKeyFile.CopyToAsync(stream);
-                });
-                tasks[5] = Task.Run(async () => await Utils.BuildServiceWorker(fcmForm.FcmApiKey, fcmForm.FcmProjectId, fcmForm.FcmSenderId.ToString(), _hostingEnvironment));
 
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
-            }
-            else
-            {
-                TempData["Error"] = true;
             }
 
             return RedirectToAction("Fcm");
@@ -284,20 +351,32 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Disqus(DisqusForm disqusForm)
         {
-            if (ModelState.IsValid)
-            {
-                var tasks = new Task[2];
+            var tasks = new Task[2];
 
+            if (disqusForm.EnableDisqus)
+            {
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDisqus", disqusForm.EnableDisqus.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DisqusShortname", disqusForm.DisqusShortname));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDisqus", disqusForm.EnableDisqus.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DisqusShortname", disqusForm.DisqusShortname));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DisqusShortname", disqusForm.DisqusShortname ?? string.Empty));
 
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
-            }
-            else
-            {
-                TempData["Error"] = true;
             }
 
             return RedirectToAction("Disqus");
@@ -318,20 +397,32 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Facebook(FacebookForm facebookForm)
         {
-            if (ModelState.IsValid)
-            {
-                var tasks = new Task[2];
+            var tasks = new Task[2];
 
+            if (facebookForm.EnableFacebookPosting)
+            {
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFacebookPosting", facebookForm.EnableFacebookPosting.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FacebookApiKey", facebookForm.FacebookApiKey));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFacebookPosting", facebookForm.EnableFacebookPosting.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FacebookApiKey", facebookForm.FacebookApiKey));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FacebookApiKey", facebookForm.FacebookApiKey ?? string.Empty));
 
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
-            }
-            else
-            {
-                TempData["Error"] = true;
             }
 
             return RedirectToAction("Facebook");
