@@ -55,7 +55,7 @@
         $("#delete_button").click(function(event) {
             event.preventDefault();
             $(".modal").modal("show");
-            deleteAddress = $("#delete_button").attr("href");
+            deleteAddress = $(this).attr("href");
         });
 
         $("#confirm_delete").click(function() {
