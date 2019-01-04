@@ -1,2 +1,118 @@
-@using Microsoft.AspNetCore.Identity
-@model List<IdentityUser<int>>
+@model List<User>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card bg-primary border-secondary mt-5">
+        <h5 class="card-header bg-primary">User List</h5>
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col">
+                    <p><strong>User</strong></p>
+                </div>
+                <div class="col">
+                    <p><strong>Role</strong></p>
+                </div>
+                <div class="col">
+                    <p><strong>Actions</strong></p>
+                </div>
+            </div>
+            @foreach (var user in Model.OrderBy(key => key.Id))
+            {
+                <div class="row">
+                    <div class="col">
+                        <p class="mt-2">@user.Username</p>
+                    </div>
+                    <div class="col">
+                        <p class="mt-2">@user.Role</p>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group btn-block" role="group" aria-label="Actions">
+                            <a class="btn btn-warning w-100 change-role" href="@Url.Action("EditRole", new {userId = user.Id})">Change roles</a>
+                            <a class="btn btn-danger w-100 delete-user" href="@Url.Action("Delete", new {userId = user.Id})">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="role_modal" class="modal text-dark">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select the new role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <select class="form-control" id="role_selector">
+                        <option>None</option>
+                        <option>Uploader</option>
+                        <option>Moderator</option>
+                        <option>Administrator</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm_role" type="button" class="btn btn-success">Confirm</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="delete_modal" class="modal text-dark">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure that you want to permanently delete this account?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm_delete" type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        var address = null;
+        
+        $(function() {
+            $("#users").addClass("active");
+        });
+        
+        $(".change-role").click(function(event) {
+            event.preventDefault();
+            $("#role_modal").modal("show");
+            address = $(this).attr("href");
+        });
+        
+        $(".delete-user").click(function(event) {
+            event.preventDefault();
+            $("#delete_modal").modal("show");
+            address = $(this).attr("href");
+        });
+        
+        $("#confirm_role").click(function(event) {
+            const role = $("#role_selector option:selected").text();
+            window.location = address + "&role=" + role;
+        });
+        
+        $("#confirm_delete").click(function() {
+            window.location = address;
+        });
+    </script>
+}
