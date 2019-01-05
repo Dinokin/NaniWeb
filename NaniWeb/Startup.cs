@@ -100,6 +100,7 @@ namespace NaniWeb
             {
                 options.DefaultRequestCulture = new RequestCulture(CultureInfo.InvariantCulture);
                 options.SupportedCultures = new List<CultureInfo>(new[] {CultureInfo.InvariantCulture});
+                options.SupportedUICultures = new List<CultureInfo>(new[] {CultureInfo.InvariantCulture});
             });
             app.UseStaticFiles();
             app.UseHsts();
