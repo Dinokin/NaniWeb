@@ -15,12 +15,13 @@ namespace NaniWeb.Others.Services
 
         public FirebaseCloudMessaging(SettingsKeeper settingsKeeper)
         {
-            if (bool.Parse(settingsKeeper.GetSetting("EnableFcm").Value))
-                return;
-
             _settingsKeeper = settingsKeeper;
-            var settings = FileBasedFcmClientSettings.CreateFromFile($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}fcmkey.json");
-            _fcmClient = new FcmClient(settings);
+
+            if (bool.Parse(settingsKeeper.GetSetting("EnableFcm").Value))
+            {
+                var settings = FileBasedFcmClientSettings.CreateFromFile($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}fcmkey.json");
+                _fcmClient = new FcmClient(settings);
+            }
         }
 
         public void Dispose()
