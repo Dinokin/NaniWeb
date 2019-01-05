@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -93,6 +96,11 @@ namespace NaniWeb
                 app.UseExceptionHandler("/error");
             }
 
+            app.UseRequestLocalization(options =>
+            {
+                options.DefaultRequestCulture = new RequestCulture(CultureInfo.InvariantCulture);
+                options.SupportedCultures = new List<CultureInfo>(new[] {CultureInfo.InvariantCulture});
+            });
             app.UseStaticFiles();
             app.UseHsts();
             app.UseHttpsRedirection();
