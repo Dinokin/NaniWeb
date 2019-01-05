@@ -54,7 +54,7 @@ namespace NaniWeb.Controllers
                 var tasks = new List<Task>();
 
                 await _naniWebContext.Database.MigrateAsync();
-                var npgsqlConnection = ((NpgsqlConnection) _naniWebContext.Database.GetDbConnection());
+                var npgsqlConnection = (NpgsqlConnection) _naniWebContext.Database.GetDbConnection();
                 npgsqlConnection.Open();
                 npgsqlConnection.ReloadTypes();
                 _settingsKeeper.SynchronizeSettings();

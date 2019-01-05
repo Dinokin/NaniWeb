@@ -165,7 +165,7 @@ namespace NaniWeb
                     if (context.Database.GetPendingMigrations().Any())
                     {
                         context.Database.Migrate();
-                        var npgsqlConnection = ((NpgsqlConnection) context.Database.GetDbConnection());
+                        var npgsqlConnection = (NpgsqlConnection) context.Database.GetDbConnection();
                         npgsqlConnection.Open();
                         npgsqlConnection.ReloadTypes();
                     }
