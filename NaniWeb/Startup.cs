@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -13,6 +14,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,6 +53,10 @@ namespace NaniWeb
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
+            services.AddResponseCompression();
+            services.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
+            services.Configure<GzipCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
+            
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())))
                 .AddViewOptions(options => options.HtmlHelperOptions.ClientValidationEnabled = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
 
@@ -102,6 +108,8 @@ namespace NaniWeb
                 options.SupportedCultures = new List<CultureInfo>(new[] {CultureInfo.InvariantCulture});
                 options.SupportedUICultures = new List<CultureInfo>(new[] {CultureInfo.InvariantCulture});
             });
+            
+            app.UseResponseCompression();
             app.UseStaticFiles();
             app.UseHsts();
             app.UseHttpsRedirection();
