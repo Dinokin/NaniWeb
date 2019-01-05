@@ -6,8 +6,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
 
 namespace NaniWeb.Others
 {
@@ -32,16 +30,7 @@ namespace NaniWeb.Others
         {
             return new X509Certificate2($"{CurrentDirectory}{Path.DirectorySeparatorChar}certificate.pfx");
         }
-
-        public static void ResizeImage(FileInfo origin, DirectoryInfo destination, string fileName, ushort width, ushort height)
-        {
-            using (var image = Image.Load(origin.OpenRead()))
-            {
-                image.Mutate(param => param.Resize(width, height));
-                image.Save($"{destination.FullName}{Path.DirectorySeparatorChar}{fileName}{origin.Extension}");
-            }
-        }
-
+        
         public static string GenerateSlug(string source)
         {
             var output = Regex.Replace(source, @"[^A-Za-z0-9\s]", string.Empty);

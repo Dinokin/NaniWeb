@@ -15,14 +15,12 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0005" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\Migrations" />
     <Folder Include="Views\AnnouncementManager" />
-    <Folder Include="Views\ChapterManager" />
     <Folder Include="Views\Home" />
-    <Folder Include="Views\SeriesManager" />
+    <Folder Include="wwwroot\images\covers" />
+    <Folder Include="wwwroot\images\pages" />
   </ItemGroup>
 </Project>
