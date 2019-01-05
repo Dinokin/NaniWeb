@@ -8,6 +8,8 @@ using NaniWeb.Models.Users;
 
 namespace NaniWeb.Controllers
 {
+    
+    [Authorize(Roles = "Administrator")]
     public class UserManagerController : Controller
     {
         private readonly UserManager<IdentityUser<int>> _userManager;
@@ -17,7 +19,6 @@ namespace NaniWeb.Controllers
             _userManager = userManager;
         }
 
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> List()
         {
             var model = new List<User>();
@@ -37,7 +38,6 @@ namespace NaniWeb.Controllers
             return View("UserList", model);
         }
 
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> EditRole(int userId, string role)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
@@ -51,7 +51,6 @@ namespace NaniWeb.Controllers
             return RedirectToAction("List");
         }
 
-        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
