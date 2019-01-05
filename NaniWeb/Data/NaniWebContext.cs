@@ -90,7 +90,6 @@ namespace NaniWeb.Data
                 entity.Property(series => series.Author).IsRequired();
                 entity.Property(series => series.Artist).IsRequired();
                 entity.Property(series => series.Synopsis).IsRequired();
-                entity.Property(series => series.IsVisible).IsRequired();
                 entity.Property(series => series.Type).IsRequired();
                 entity.Property(series => series.Status).IsRequired();
                 entity.Property(series => series.UrlSlug).IsRequired();
@@ -102,7 +101,6 @@ namespace NaniWeb.Data
             builder.Entity<Chapter>(entity =>
             {
                 entity.Property(chapter => chapter.ChapterNumber).IsRequired();
-                entity.Property(chapter => chapter.IsVisible).IsRequired();
                 entity.Property(chapter => chapter.SeriesId).IsRequired();
                 entity.HasIndex(chapter => new {chapter.ChapterNumber, chapter.SeriesId}).IsUnique();
                 entity.HasMany(chapter => chapter.Pages).WithOne(page => page.Chapter).HasForeignKey(page => page.ChapterId);
@@ -254,7 +252,6 @@ namespace NaniWeb.Data
                 entity.Property(info => info.SeriesId).IsRequired();
                 entity.HasIndex(info => info.SeriesId).IsUnique();
                 entity.Property(info => info.MangadexId).IsRequired();
-                entity.HasIndex(info => info.MangadexId).IsUnique();
             });
 
             builder.Entity<MangadexChapter>(entity =>
@@ -262,7 +259,6 @@ namespace NaniWeb.Data
                 entity.Property(info => info.ChapterId).IsRequired();
                 entity.HasIndex(info => info.ChapterId).IsUnique();
                 entity.Property(info => info.MangadexId).IsRequired();
-                entity.HasIndex(info => info.MangadexId).IsUnique();
             });
         }
     }

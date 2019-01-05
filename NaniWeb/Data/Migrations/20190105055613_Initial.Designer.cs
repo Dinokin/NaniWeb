@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NaniWeb.Data.Migrations
 {
     [DbContext(typeof(NaniWebContext))]
-    [Migration("20190104165353_Initial")]
+    [Migration("20190105055613_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -234,8 +234,6 @@ namespace NaniWeb.Data.Migrations
 
                     b.Property<decimal>("ChapterNumber");
 
-                    b.Property<bool>("IsVisible");
-
                     b.Property<string>("Name");
 
                     b.Property<DateTime>("ReleaseDate");
@@ -268,9 +266,6 @@ namespace NaniWeb.Data.Migrations
                     b.HasIndex("ChapterId")
                         .IsUnique();
 
-                    b.HasIndex("MangadexId")
-                        .IsUnique();
-
                     b.ToTable("MangadexChapters");
                 });
 
@@ -284,9 +279,6 @@ namespace NaniWeb.Data.Migrations
                     b.Property<int>("SeriesId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MangadexId")
-                        .IsUnique();
 
                     b.HasIndex("SeriesId")
                         .IsUnique();
@@ -323,8 +315,6 @@ namespace NaniWeb.Data.Migrations
 
                     b.Property<string>("Author")
                         .IsRequired();
-
-                    b.Property<bool>("IsVisible");
 
                     b.Property<string>("Name")
                         .IsRequired();

@@ -23,7 +23,6 @@ namespace NaniWeb.Data
         public string Author { get; set; }
         public string Artist { get; set; }
         public string Synopsis { get; set; }
-        public bool IsVisible { get; set; }
         public SeriesType Type { get; set; }
         public SeriesStatus Status { get; set; }
         public string UrlSlug { get; set; }

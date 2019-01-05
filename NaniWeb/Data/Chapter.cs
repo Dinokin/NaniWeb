@@ -9,7 +9,6 @@ namespace NaniWeb.Data
         public int Volume { get; set; }
         public decimal ChapterNumber { get; set; }
         public string Name { get; set; }
-        public bool IsVisible { get; set; }
         public int SeriesId { get; set; }
         public DateTime ReleaseDate { get; set; }
 

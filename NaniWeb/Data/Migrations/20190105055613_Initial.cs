@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using NaniWeb.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace NaniWeb.Data.Migrations
@@ -13,8 +14,8 @@ namespace NaniWeb.Data.Migrations
                 .Annotation("Npgsql:Enum:SeriesType", "Manga,Webtoon");
 
             migrationBuilder.CreateTable(
-                "Announcements",
-                table => new
+                name: "Announcements",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -23,11 +24,14 @@ namespace NaniWeb.Data.Migrations
                     UrlSlug = table.Column<string>(nullable: false),
                     PostDate = table.Column<DateTime>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_Announcements", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Announcements", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Roles",
-                table => new
+                name: "Roles",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -35,11 +39,14 @@ namespace NaniWeb.Data.Migrations
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_Roles", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Series",
-                table => new
+                name: "Series",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -47,27 +54,32 @@ namespace NaniWeb.Data.Migrations
                     Author = table.Column<string>(nullable: false),
                     Artist = table.Column<string>(nullable: false),
                     Synopsis = table.Column<string>(nullable: false),
-                    IsVisible = table.Column<bool>(nullable: false),
                     Type = table.Column<Series.SeriesType>(nullable: false),
                     Status = table.Column<Series.SeriesStatus>(nullable: false),
                     UrlSlug = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_Series", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Series", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Settings",
-                table => new
+                name: "Settings",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_Settings", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "Users",
-                table => new
+                name: "Users",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -86,11 +98,14 @@ namespace NaniWeb.Data.Migrations
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_Users", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
-                "RoleClaims",
-                table => new
+                name: "RoleClaims",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -102,23 +117,22 @@ namespace NaniWeb.Data.Migrations
                 {
                     table.PrimaryKey("PK_RoleClaims", x => x.Id);
                     table.ForeignKey(
-                        "FK_RoleClaims_Roles_RoleId",
-                        x => x.RoleId,
-                        "Roles",
-                        "Id",
+                        name: "FK_RoleClaims_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "Chapters",
-                table => new
+                name: "Chapters",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Volume = table.Column<int>(nullable: false),
                     ChapterNumber = table.Column<decimal>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    IsVisible = table.Column<bool>(nullable: false),
                     SeriesId = table.Column<int>(nullable: false),
                     ReleaseDate = table.Column<DateTime>(nullable: false)
                 },
@@ -126,16 +140,16 @@ namespace NaniWeb.Data.Migrations
                 {
                     table.PrimaryKey("PK_Chapters", x => x.Id);
                     table.ForeignKey(
-                        "FK_Chapters_Series_SeriesId",
-                        x => x.SeriesId,
-                        "Series",
-                        "Id",
+                        name: "FK_Chapters_Series_SeriesId",
+                        column: x => x.SeriesId,
+                        principalTable: "Series",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "MangadexSeries",
-                table => new
+                name: "MangadexSeries",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -146,16 +160,16 @@ namespace NaniWeb.Data.Migrations
                 {
                     table.PrimaryKey("PK_MangadexSeries", x => x.Id);
                     table.ForeignKey(
-                        "FK_MangadexSeries_Series_SeriesId",
-                        x => x.SeriesId,
-                        "Series",
-                        "Id",
+                        name: "FK_MangadexSeries_Series_SeriesId",
+                        column: x => x.SeriesId,
+                        principalTable: "Series",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "UserClaims",
-                table => new
+                name: "UserClaims",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -167,16 +181,16 @@ namespace NaniWeb.Data.Migrations
                 {
                     table.PrimaryKey("PK_UserClaims", x => x.Id);
                     table.ForeignKey(
-                        "FK_UserClaims_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
+                        name: "FK_UserClaims_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "UserLogins",
-                table => new
+                name: "UserLogins",
+                columns: table => new
                 {
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
@@ -185,42 +199,42 @@ namespace NaniWeb.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserLogins", x => new {x.LoginProvider, x.ProviderKey});
+                    table.PrimaryKey("PK_UserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        "FK_UserLogins_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
+                        name: "FK_UserLogins_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "UserRoles",
-                table => new
+                name: "UserRoles",
+                columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
                     RoleId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new {x.UserId, x.RoleId});
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        "FK_UserRoles_Roles_RoleId",
-                        x => x.RoleId,
-                        "Roles",
-                        "Id",
+                        name: "FK_UserRoles_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        "FK_UserRoles_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "UserTokens",
-                table => new
+                name: "UserTokens",
+                columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
@@ -229,18 +243,18 @@ namespace NaniWeb.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserTokens", x => new {x.UserId, x.LoginProvider, x.Name});
+                    table.PrimaryKey("PK_UserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        "FK_UserTokens_Users_UserId",
-                        x => x.UserId,
-                        "Users",
-                        "Id",
+                        name: "FK_UserTokens_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "MangadexChapters",
-                table => new
+                name: "MangadexChapters",
+                columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
@@ -251,16 +265,16 @@ namespace NaniWeb.Data.Migrations
                 {
                     table.PrimaryKey("PK_MangadexChapters", x => x.Id);
                     table.ForeignKey(
-                        "FK_MangadexChapters_Chapters_ChapterId",
-                        x => x.ChapterId,
-                        "Chapters",
-                        "Id",
+                        name: "FK_MangadexChapters_Chapters_ChapterId",
+                        column: x => x.ChapterId,
+                        principalTable: "Chapters",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                "Pages",
-                table => new
+                name: "Pages",
+                columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
                     PageNumber = table.Column<int>(nullable: false),
@@ -270,212 +284,200 @@ namespace NaniWeb.Data.Migrations
                 {
                     table.PrimaryKey("PK_Pages", x => x.Id);
                     table.ForeignKey(
-                        "FK_Pages_Chapters_ChapterId",
-                        x => x.ChapterId,
-                        "Chapters",
-                        "Id",
+                        name: "FK_Pages_Chapters_ChapterId",
+                        column: x => x.ChapterId,
+                        principalTable: "Chapters",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
-                "Roles",
-                new[] {"Id", "ConcurrencyStamp", "Name", "NormalizedName"},
-                new object[,]
+                table: "Roles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
                 {
-                    {1, "3cad4e5f-571d-423f-93ab-0b8937e43c73", "Administrator", "ADMINISTRATOR"},
-                    {2, "bda6f3a2-e3e2-4862-95e0-9e5b78a37696", "Moderator", "MODERATOR"},
-                    {3, "53ce78d8-56ea-4aaf-ab3b-c9d3c3bf6c54", "Uploader", "UPLOADER"}
+                    { 1, "3cad4e5f-571d-423f-93ab-0b8937e43c73", "Administrator", "ADMINISTRATOR" },
+                    { 2, "bda6f3a2-e3e2-4862-95e0-9e5b78a37696", "Moderator", "MODERATOR" },
+                    { 3, "53ce78d8-56ea-4aaf-ab3b-c9d3c3bf6c54", "Uploader", "UPLOADER" }
                 });
 
             migrationBuilder.InsertData(
-                "Settings",
-                new[] {"Id", "Name", "Value"},
-                new object[,]
+                table: "Settings",
+                columns: new[] { "Id", "Name", "Value" },
+                values: new object[,]
                 {
-                    {23, "DisqusShortname", ""},
-                    {22, "EnableDisqus", "False"},
-                    {21, "FcmSenderId", "0"},
-                    {20, "FcmProjectId", ""},
-                    {19, "FcmApiKey", ""},
-                    {18, "EnableFcm", "False"},
-                    {17, "GoogleAnalyticsTrackingCode", ""},
-                    {16, "EnableGoogleAnalytics", "False"},
-                    {15, "MangadexGroupId", "0"},
-                    {14, "MangadexPassword", ""},
-                    {13, "MangadexUser", ""},
-                    {11, "DiscordChannelId", "0"},
-                    {24, "EnableFacebookPosting", "False"},
-                    {10, "DiscordToken", ""},
-                    {9, "EnableDiscordBot", "False"},
-                    {8, "SmtpPassword", ""},
-                    {7, "SmtpUser", ""},
-                    {6, "SmtpServer", ""},
-                    {5, "EnableEmailRecovery", "False"},
-                    {4, "EnableRegistration", "False"},
-                    {3, "SiteUrl", "http://localhost"},
-                    {2, "SiteDescription", "NaniWeb for scanlation groups."},
-                    {1, "SiteName", "NaniWeb"},
-                    {12, "EnableMangadexAutoUpload", "False"},
-                    {25, "FacebookApiKey", ""}
+                    { 23, "DisqusShortname", "" },
+                    { 22, "EnableDisqus", "False" },
+                    { 21, "FcmSenderId", "0" },
+                    { 20, "FcmProjectId", "" },
+                    { 19, "FcmApiKey", "" },
+                    { 18, "EnableFcm", "False" },
+                    { 17, "GoogleAnalyticsTrackingCode", "" },
+                    { 16, "EnableGoogleAnalytics", "False" },
+                    { 15, "MangadexGroupId", "0" },
+                    { 14, "MangadexPassword", "" },
+                    { 13, "MangadexUser", "" },
+                    { 11, "DiscordChannelId", "0" },
+                    { 24, "EnableFacebookPosting", "False" },
+                    { 10, "DiscordToken", "" },
+                    { 9, "EnableDiscordBot", "False" },
+                    { 8, "SmtpPassword", "" },
+                    { 7, "SmtpUser", "" },
+                    { 6, "SmtpServer", "" },
+                    { 5, "EnableEmailRecovery", "False" },
+                    { 4, "EnableRegistration", "False" },
+                    { 3, "SiteUrl", "http://localhost" },
+                    { 2, "SiteDescription", "NaniWeb for scanlation groups." },
+                    { 1, "SiteName", "NaniWeb" },
+                    { 12, "EnableMangadexAutoUpload", "False" },
+                    { 25, "FacebookApiKey", "" }
                 });
 
             migrationBuilder.CreateIndex(
-                "IX_Announcements_Title",
-                "Announcements",
-                "Title",
+                name: "IX_Announcements_Title",
+                table: "Announcements",
+                column: "Title",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_Announcements_UrlSlug",
-                "Announcements",
-                "UrlSlug",
+                name: "IX_Announcements_UrlSlug",
+                table: "Announcements",
+                column: "UrlSlug",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_Chapters_SeriesId",
-                "Chapters",
-                "SeriesId");
+                name: "IX_Chapters_SeriesId",
+                table: "Chapters",
+                column: "SeriesId");
 
             migrationBuilder.CreateIndex(
-                "IX_Chapters_ChapterNumber_SeriesId",
-                "Chapters",
-                new[] {"ChapterNumber", "SeriesId"},
+                name: "IX_Chapters_ChapterNumber_SeriesId",
+                table: "Chapters",
+                columns: new[] { "ChapterNumber", "SeriesId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_MangadexChapters_ChapterId",
-                "MangadexChapters",
-                "ChapterId",
+                name: "IX_MangadexChapters_ChapterId",
+                table: "MangadexChapters",
+                column: "ChapterId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_MangadexChapters_MangadexId",
-                "MangadexChapters",
-                "MangadexId",
+                name: "IX_MangadexSeries_SeriesId",
+                table: "MangadexSeries",
+                column: "SeriesId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_MangadexSeries_MangadexId",
-                "MangadexSeries",
-                "MangadexId",
+                name: "IX_Pages_ChapterId",
+                table: "Pages",
+                column: "ChapterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pages_PageNumber_ChapterId",
+                table: "Pages",
+                columns: new[] { "PageNumber", "ChapterId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_MangadexSeries_SeriesId",
-                "MangadexSeries",
-                "SeriesId",
+                name: "IX_RoleClaims_RoleId",
+                table: "RoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "Roles",
+                column: "NormalizedName",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_Pages_ChapterId",
-                "Pages",
-                "ChapterId");
-
-            migrationBuilder.CreateIndex(
-                "IX_Pages_PageNumber_ChapterId",
-                "Pages",
-                new[] {"PageNumber", "ChapterId"},
+                name: "IX_Series_Name",
+                table: "Series",
+                column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_RoleClaims_RoleId",
-                "RoleClaims",
-                "RoleId");
-
-            migrationBuilder.CreateIndex(
-                "RoleNameIndex",
-                "Roles",
-                "NormalizedName",
+                name: "IX_Series_UrlSlug",
+                table: "Series",
+                column: "UrlSlug",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_Series_Name",
-                "Series",
-                "Name",
+                name: "IX_Settings_Name",
+                table: "Settings",
+                column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                "IX_Series_UrlSlug",
-                "Series",
-                "UrlSlug",
-                unique: true);
+                name: "IX_UserClaims_UserId",
+                table: "UserClaims",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                "IX_Settings_Name",
-                "Settings",
-                "Name",
-                unique: true);
+                name: "IX_UserLogins_UserId",
+                table: "UserLogins",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                "IX_UserClaims_UserId",
-                "UserClaims",
-                "UserId");
+                name: "IX_UserRoles_RoleId",
+                table: "UserRoles",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                "IX_UserLogins_UserId",
-                "UserLogins",
-                "UserId");
+                name: "EmailIndex",
+                table: "Users",
+                column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                "IX_UserRoles_RoleId",
-                "UserRoles",
-                "RoleId");
-
-            migrationBuilder.CreateIndex(
-                "EmailIndex",
-                "Users",
-                "NormalizedEmail");
-
-            migrationBuilder.CreateIndex(
-                "UserNameIndex",
-                "Users",
-                "NormalizedUserName",
+                name: "UserNameIndex",
+                table: "Users",
+                column: "NormalizedUserName",
                 unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                "Announcements");
+                name: "Announcements");
 
             migrationBuilder.DropTable(
-                "MangadexChapters");
+                name: "MangadexChapters");
 
             migrationBuilder.DropTable(
-                "MangadexSeries");
+                name: "MangadexSeries");
 
             migrationBuilder.DropTable(
-                "Pages");
+                name: "Pages");
 
             migrationBuilder.DropTable(
-                "RoleClaims");
+                name: "RoleClaims");
 
             migrationBuilder.DropTable(
-                "Settings");
+                name: "Settings");
 
             migrationBuilder.DropTable(
-                "UserClaims");
+                name: "UserClaims");
 
             migrationBuilder.DropTable(
-                "UserLogins");
+                name: "UserLogins");
 
             migrationBuilder.DropTable(
-                "UserRoles");
+                name: "UserRoles");
 
             migrationBuilder.DropTable(
-                "UserTokens");
+                name: "UserTokens");
 
             migrationBuilder.DropTable(
-                "Chapters");
+                name: "Chapters");
 
             migrationBuilder.DropTable(
-                "Roles");
+                name: "Roles");
 
             migrationBuilder.DropTable(
-                "Users");
+                name: "Users");
 
             migrationBuilder.DropTable(
-                "Series");
+                name: "Series");
         }
     }
 }
