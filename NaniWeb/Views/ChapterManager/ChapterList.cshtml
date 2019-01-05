@@ -18,7 +18,7 @@
                     <p><strong>Actions</strong></p>
                 </div>
             </div>
-            @foreach (var chapter in Model.OrderBy(key => key.ChapterNumber))
+            @foreach (var chapter in Model.OrderByDescending(key => key.ChapterNumber))
             {
                 <div class="row text-center text-nowrap">
                     <div class="col-7">
