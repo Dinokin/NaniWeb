@@ -8,29 +8,29 @@
 
 <div class="container">
     <div class="card bg-primary border-secondary mt-5">
-        <h5 class="card-header bg-primary">User List</h5>
+        <h5 class="card-header bg-primary">Users</h5>
         <div class="card-body">
-            <div class="row mb-2">
-                <div class="col">
+            <div class="row text-center text-nowrap mb-2">
+                <div class="col-4">
                     <p><strong>User</strong></p>
                 </div>
-                <div class="col">
+                <div class="col-3">
                     <p><strong>Role</strong></p>
                 </div>
-                <div class="col">
+                <div class="col-5">
                     <p><strong>Actions</strong></p>
                 </div>
             </div>
             @foreach (var user in Model.OrderBy(key => key.Id))
             {
-                <div class="row">
-                    <div class="col">
+                <div class="row text-center text-nowrap">
+                    <div class="col-4">
                         <p class="mt-2">@user.Username</p>
                     </div>
-                    <div class="col">
+                    <div class="col-3">
                         <p class="mt-2">@user.Role</p>
                     </div>
-                    <div class="col">
+                    <div class="col-5">
                         <div class="btn-group btn-block" role="group" aria-label="Actions">
                             <a class="btn btn-warning w-100 change-role" href="@Url.Action("EditRole", new {userId = user.Id})">Change roles</a>
                             <a class="btn btn-danger w-100 delete-user" href="@Url.Action("Delete", new {userId = user.Id})">Delete</a>
