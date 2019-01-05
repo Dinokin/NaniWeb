@@ -10,6 +10,7 @@ using NaniWeb.Data;
 using NaniWeb.Models.SignIn;
 using NaniWeb.Others;
 using NaniWeb.Others.Services;
+using Npgsql;
 
 namespace NaniWeb.Controllers
 {
@@ -53,6 +54,9 @@ namespace NaniWeb.Controllers
                 var tasks = new List<Task>();
 
                 await _naniWebContext.Database.MigrateAsync();
+                var npgsqlConnection = ((NpgsqlConnection) _naniWebContext.Database.GetDbConnection());
+                npgsqlConnection.Open();
+                npgsqlConnection.ReloadTypes();
                 _settingsKeeper.SynchronizeSettings();
 
                 var user = new IdentityUser<int>

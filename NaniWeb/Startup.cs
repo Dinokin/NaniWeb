@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NaniWeb.Data;
 using NaniWeb.Others;
 using NaniWeb.Others.Services;
+using Npgsql;
 
 namespace NaniWeb
 {
@@ -145,7 +146,12 @@ namespace NaniWeb
                 using (var context = scope.ServiceProvider.GetRequiredService<NaniWebContext>())
                 {
                     if (context.Database.GetPendingMigrations().Any())
+                    {
                         context.Database.Migrate();
+                        var npgsqlConnection = ((NpgsqlConnection) context.Database.GetDbConnection());
+                        npgsqlConnection.Open();
+                        npgsqlConnection.ReloadTypes();
+                    }
                 }
         }
     }
