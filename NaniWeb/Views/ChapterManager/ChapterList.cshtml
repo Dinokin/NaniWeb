@@ -1,0 +1,77 @@
+@model List<NaniWeb.Data.Chapter>
+
+@{
+    ViewData["Title"] = "Chapters";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card bg-primary border-secondary mt-5">
+        <h5 class="card-header bg-primary">Chapters</h5>
+        <div class="card-body">
+            <div class="row text-center text-nowrap mb-2">
+                <div class="col-7">
+                    <p><strong>Name</strong></p>
+                </div>
+                <div class="col-5">
+                    <p><strong>Actions</strong></p>
+                </div>
+            </div>
+            @foreach (var chapter in Model.OrderBy(key => key.ChapterNumber))
+            {
+                <div class="row text-center text-nowrap">
+                    <div class="col-7">
+                        <p class="mt-2">@(chapter.Volume > 0 ? $"Vol. 1 " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</p>
+                    </div>
+                    <div class="col-5">
+                        <div class="btn-group btn-block" role="group" aria-label="Actions">
+                            <a class="btn btn-warning w-100" href="@Url.Action("Edit", new {id = chapter.Id})">Edit</a>
+                            <a class="btn btn-danger w-100 delete-chapter" href="@Url.Action("Delete", new {id = chapter.Id})">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div id="delete_modal" class="modal text-dark">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are you sure?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure that you want to permanently delete this chapter?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="confirm_delete" type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        var address = null;
+        
+        $(function() {
+            $("#series").addClass("active");
+        });
+        
+        $(".delete-chapter").click(function(event) {
+            event.preventDefault();
+            $("#delete_modal").modal("show");
+            address = $(this).attr("href");
+        });
+        
+        $("#confirm_delete").click(function() {
+            window.location = address;
+        });
+    </script>
+}

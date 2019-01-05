@@ -1,0 +1,76 @@
+@model ChapterAdd
+
+@{
+    ViewData["Title"] = "Add - Chapter";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card bg-primary border-secondary mt-5">
+        <h5 class="card-header bg-primary">Chapters</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            <form id="discord_settings_form" enctype="multipart/form-data" asp-controller="ChapterManager" asp-action="Add" novalidate>
+                <fieldset>
+                    <legend>Add chapter</legend>
+                    <input type="hidden" asp-for="SeriesId"/>
+                    <div class="form-group">
+                        <label for="chapter_volume">Volume</label>
+                        <input class="form-control" id="chapter_volume" asp-for="Volume" aria-describedby="chapter_volume_help" placeholder="Volume">
+                        <small id="chapter_volume_help" class="form-text text-muted">If this chapter is part of a volume add it here, otherwise keep it zero or empty.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="chapter_number">Chapter number</label>
+                        <input class="form-control" id="chapter_number" asp-for="ChapterNumber" aria-describedby="chapter_number_help" placeholder="Chapter number" type="number" step="0.1">
+                        <small id="chapter_number_help" class="form-text text-muted">The number of this chapter.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="chapter_name">Name</label>
+                        <input class="form-control" id="chapter_name" asp-for="Name" aria-describedby="chapter_name_help" placeholder="Name">
+                        <small id="chapter_name_help" class="form-text text-muted">The name of this chapter.</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="upload_to_mangadex" asp-for="UploadToMangadex"/>Upload to Mangadex
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-group" aria-describedby="chapter_pages_help">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="chapter_pages" accept=".zip" asp-for="Pages">
+                                <label class="custom-file-label" for="chapter_pages" id="chapter_pages_label">Choose file</label>
+                            </div>
+                        </div>
+                        <small id="chapter_pages_help" class="form-text text-muted">A zip file with all the pages in the png format.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Add chapter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#series").addClass("active");
+        });
+        
+        $("#chapter_pages").change(function(event) {
+            const file = event.target.files[0].name;
+            $("#chapter_pages_label").text(file);
+        });
+    </script>
+}
