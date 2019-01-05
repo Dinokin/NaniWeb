@@ -1,7 +1,9 @@
+@inject SettingsKeeper SettingsKeeper
 @model ChapterAdd
 
 @{
     ViewData["Title"] = "Add - Chapter";
+    var enableMangadex = bool.Parse(SettingsKeeper.GetSetting("EnableMangadexAutoUpload").Value);
 }
 
 <partial name="_AdminNav"/>
@@ -39,9 +41,10 @@
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" id="upload_to_mangadex" asp-for="UploadToMangadex"/>Upload to Mangadex
+                                <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)" />Upload to Mangadex
                             </label>
                         </div>
+                        <small id="upload_to_mangadex_help" class="form-text text-muted">Whether you want to upload to mangadex or not. Remember to check if you have a proper mangadex id for this chapter and series.</small>
                     </div>
                     <div class="form-group">
                         <div class="input-group" aria-describedby="chapter_pages_help">

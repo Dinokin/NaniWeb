@@ -1,8 +1,10 @@
 @using NaniWeb.Data
+@inject SettingsKeeper SettingsKeeper
 @model AddSeries
 
 @{
     ViewData["Title"] = "Add - Series";
+    var enableMangadex = bool.Parse(SettingsKeeper.GetSetting("EnableMangadexAutoUpload").Value);
 }
 
 <partial name="_AdminNav"/>
@@ -43,7 +45,7 @@
                     </div>
                     <div class="form-group">
                         <label for="series_mangadex_id">Mangadex ID</label>
-                        <input class="form-control" id="series_mangadex_id" asp-for="MangadexId" aria-describedby="series_mangadex_id_help" placeholder="Mangadex ID">
+                        <input class="form-control" id="series_mangadex_id" asp-for="MangadexId" aria-describedby="series_mangadex_id_help" placeholder="Mangadex ID" @(enableMangadex ? string.Empty : "disabled")>
                         <small id="series_mangadex_id_help" class="form-text text-muted">The mangadex id of this series. Used for automatic uploading.</small>
                     </div>
                     <div class="form-group">
