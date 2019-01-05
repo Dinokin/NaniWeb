@@ -1,0 +1,49 @@
+@model AddAnnouncement
+
+@{
+    ViewData["Title"] = "Add - Announcement";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container">
+    <div class="card bg-primary border-secondary mt-5">
+        <h5 class="card-header bg-primary">Announcements</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            <form id="add_announcement_form" asp-controller="AnnouncementManager" asp-action="Add" novalidate>
+                <fieldset>
+                    <legend>Add announcement</legend>
+                    <div class="form-group">
+                        <label for="announcement_title">Title</label>
+                        <input class="form-control" id="announcement_title" asp-for="Title" aria-describedby="announcement_title_help" placeholder="Title">
+                        <small id="announcement_title_help" class="form-text text-muted">The title of this announcement.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="announcement_content">Content</label>
+                        <textarea class="form-control" id="announcement_content" asp-for="Content" aria-describedby="announcement_content_help" placeholder="Content" rows="10"></textarea>
+                        <small id="announcement_content_help" class="form-text text-muted">The content of this announcement. Use HTML.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Add announcement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#announcements").addClass("active");
+        });
+    </script>
+}
