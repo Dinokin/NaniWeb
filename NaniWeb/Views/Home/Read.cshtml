@@ -1,0 +1,200 @@
+@using NaniWeb.Data
+@inject SettingsKeeper SettingsKeeper
+
+@{
+    var series = (Series) ViewData["Series"];
+    var chapters = (LinkedList<Chapter>) ViewData["Chapters"];
+    var chapter = (Chapter) ViewData["Chapter"];
+    var pages = (List<Page>) ViewData["Pages"];
+    var lastPage = pages.Last();
+    var prevChapter = ViewData["prevChapter"] as Chapter;
+    var nextChapter = ViewData["nextChapter"] as Chapter;
+    var readerMode = (Series.SeriesType) ViewData["ReaderMode"];
+    ViewData["Title"] = $"Chapter {chapter.ChapterNumber} - {series.Name}";
+    ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
+    ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}_chapter_{chapter.ChapterNumber}";
+    ViewData["DisqusTitle"] = $"Chapter {chapter.ChapterNumber} - {series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
+}
+
+<partial name="_HomeNav"/>
+
+<div id="top" class="container my-2 rounded bg-light">
+    @if (readerMode == Series.SeriesType.Manga)
+    {
+        <div class="row">
+            <div class="col-2 my-auto">
+                @if (prevChapter != null)
+                {
+                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
+                }
+                else
+                {
+                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Prev</a>
+
+                }
+            </div>
+            <div class="col-4 my-auto">
+                <select id="chapter_selector" class="w-100">
+                    @foreach (var chap in chapters)
+                    {
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chap.ChapterNumber})" selected="@(chap == chapter ? "selected" : null)">@(chap.Volume > 0 ? $"Vol. {chap.Volume} " : string.Empty)Ch. @(chap.ChapterNumber)@(string.IsNullOrEmpty(chap.Name) ? string.Empty : $" - {chap.Name}")</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 my-auto">
+                <select id="page_selector" class="w-100">
+                    @foreach (var chPage in pages)
+                    {
+                        <option value="@chPage.PageNumber">Page @(chPage.PageNumber + 1)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 my-auto">
+                <select id="mode_selector" class="w-100">
+                    @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
+                    {
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@mode</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 my-auto">
+                @if (nextChapter != null)
+                {
+                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
+                }
+                else
+                {
+                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Next</a>
+
+                } 
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col-2 my-auto">
+                @if (prevChapter != null)
+                {
+                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
+                }
+                else
+                {
+                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Prev</a>
+
+                }
+            </div>
+            <div class="col-6 my-auto">
+                <select id="chapter_selector" class="w-100">
+                    @foreach (var chap in chapters)
+                    {
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chap.ChapterNumber})" selected="@(chap == chapter ? "selected" : null)">@(chap.Volume > 0 ? $"Vol. {chap.Volume} " : string.Empty)Ch. @(chap.ChapterNumber)@(string.IsNullOrEmpty(chap.Name) ? string.Empty : $" - {chap.Name}")</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 my-auto">
+                <select id="mode_selector" class="w-100">
+                    @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
+                    {
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@mode</option>
+                    }
+                </select>
+            </div>
+            <div class="col-2 my-auto">
+                @if (nextChapter != null)
+                {
+                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
+                }
+                else
+                {
+                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Next</a>
+
+                } 
+            </div>
+        </div>
+    }
+</div>
+<div id="pages" class="container mw-100">
+    @if (readerMode == Series.SeriesType.Manga)
+    {
+        <a href="#"><img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt=""/></a>
+    }
+    else
+    {
+        foreach (var chPage in pages)
+        {
+            <img class="img-fluid mx-auto d-block" src="~/images/pages/@($"{chPage.Id}.png")" alt=""/>
+        }
+    }
+</div>
+<div id="bottom" class="container my-2 rounded bg-light">
+    <partial name="_DisqusDiv"/>
+</div>
+
+@section Body
+{
+    <partial name="_DisqusScript"/>
+
+    <script>
+        $(function() {
+            $("#projects").addClass("active");
+        });
+        
+        $("#chapter_selector").change(function() {
+            window.location = this.value;
+        });
+        
+        $("#mode_selector").change(function() {
+            window.location = this.value;
+        });
+    </script>
+
+    @if (readerMode == Series.SeriesType.Manga)
+    {
+        <script>
+            const nextAddress = "@Html.Raw(chapter == chapters.First() ? Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty}) : Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter?.ChapterNumber}))";
+            const page = $("#manga_page");
+            var index = 0;
+            
+            const pages = [
+                @foreach (var chPage in pages)
+                {
+                    @Html.Raw($"\"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
+                }
+            ];
+
+            function previous() {
+                if (index > 0) {
+                    index--;
+                    page.attr("src", pages[index]);
+                    $('#page_selector').val(index);
+                }
+            };
+
+            function next() {
+                if (index < pages.length - 1) {
+                    index++;
+                    page.attr("src", pages[index]);
+                    $('#page_selector').val(index);
+                } else {
+                    window.location = nextAddress;
+                }
+            };
+
+            $("#pages").click(function(e) {
+                const pWidth = $(this).innerWidth();
+                const pOffset = $(this).offset();
+                const x = e.pageX - pOffset.left;
+                if (pWidth / 2 > x)
+                    previous();
+                else
+                    next();
+            });
+            
+            $("#page_selector").change(function() {
+                index = this.value;
+                page.attr("src", pages[index]);
+            });
+        </script>
+    }
+}
