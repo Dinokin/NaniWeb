@@ -35,9 +35,15 @@ namespace NaniWeb.Controllers
         }
 
         [Route("{action}/{urlSlug}")]
-        public IActionResult Project(string urlSlug)
+        public async Task<IActionResult> Project(string urlSlug)
         {
-            return null;
+            var series = await _naniWebContext.Series.SingleAsync(srs => srs.UrlSlug == urlSlug);
+            var chapters = await _naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber).ToListAsync();
+
+            ViewData["Series"] = series;
+            ViewData["Chapters"] = chapters;
+
+            return View("Project");
         }
 
         [Route("{action}/{urlSlug}/{chapterNumber:decimal}")]

@@ -1,0 +1,82 @@
+@using NaniWeb.Data
+@inject SettingsKeeper SettingsKeeper
+
+@{
+    var series = (Series) ViewData["Series"];
+    var chapters = (List<Chapter>) ViewData["Chapters"];
+    var disqusEnable = bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value);
+    ViewData["Title"] = $"{series.Name}";
+    ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
+    ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
+    ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
+}
+
+<partial name="_HomeNav"/>
+
+<div class="container">
+    <div class="my-3">
+        <img id="manga_page" class="img-fluid img-thumbnail mx-auto d-block rounded" src="~/images/covers/@($"{series.Id}.png")" alt=""/>
+    </div>
+    <div class="my-3 bg-light text-dark rounded h-100">
+        <div class="py-3 mx-3">
+            <h3>@series.Name</h3>
+            <h5><strong>Author:</strong> @series.Author</h5>
+            <h5><strong>Artist:</strong> @series.Artist</h5>
+            <h5><strong>Synopsis:</strong> @series.Synopsis</h5>
+            @switch (series.Status)
+            {
+                case Series.SeriesStatus.Hiatus:
+                    <h5><strong>Scanlation Status:</strong><span class="text-warning"> @series.Status</span></h5>
+                    break;
+                case Series.SeriesStatus.Dropped:
+                    <h5><strong>Scanlation Status:</strong><span class="text-danger"> @series.Status</span></h5>
+                    break;
+                case Series.SeriesStatus.Ongoing:
+                    <h5><strong>Scanlation Status:</strong><span class="text-success"> @series.Status</span></h5>
+                    break;
+                case Series.SeriesStatus.Completed:
+                    <h5><strong>Scanlation Status:</strong><span class="text-info"> @series.Status</span></h5>
+                    break;
+            }
+        </div>
+    </div>
+    <div class="my-3 bg-light text-dark rounded">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active show" data-toggle="tab" href="#chapter_list">Chapters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link @(disqusEnable ? "show" : "disabled")" data-toggle="tab" href="#comments">Comments</a>
+            </li>
+        </ul>
+        <div class="tab-content h-100">
+            <div class="tab-pane fade active show mx-3 my-3" id="chapter_list">
+                @foreach (var chapter in chapters)
+                {
+                    <div class="row">
+                        <div class="col-9">
+                            <a href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})">@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</a>
+                        </div>
+                        <div class="col-3 text-center">
+                            @chapter.ReleaseDate.ToString("d")
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="tab-pane fade mx-3 my-3" id="comments">
+                <partial name="_DisqusDiv"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <partial name="_DisqusScript"/>
+
+    <script>
+        $(function() {
+            $("#projects").addClass("active");
+        });
+    </script>
+}
