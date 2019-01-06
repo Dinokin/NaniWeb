@@ -10,7 +10,7 @@
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
     ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
     ViewData["FcmTopic"] = $"\"series_{series.Id}\"";
-    ViewData["FcmSubscriptionTitle"] = "Toggle subscription";
+    ViewData["FcmSubscriptionTitle"] = "Be notified about new chapters.";
 }
 
 <partial name="_HomeNav"/>
