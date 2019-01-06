@@ -13,9 +13,9 @@
 
         firebase.initializeApp(config);
         const messaging = firebase.messaging();
-        var fcmTopic = @ViewData["FcmTopic"];
-        var subscribeUrl = "@Url.Action("Subscribe", "Subscription")";
-        var unsubscribeUrl = "@Url.Action("Unsubscribe", "Subscription")";
+        var fcmTopic = @Html.Raw(ViewData["FcmTopic"]);
+        var subscribeUrl = "@Url.Action("Subscribe", "Subscription", new {topic = " ", token = " "}).Replace("/%20/%20", string.Empty)";
+        var unsubscribeUrl = "@Url.Action("Unsubscribe", "Subscription", new {topic = " ", token = " "}).Replace("/%20/%20", string.Empty)";
 
         $(function() {
             if (window.localStorage.getItem(fcmTopic) === "Subscribed") {
