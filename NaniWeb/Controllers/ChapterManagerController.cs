@@ -18,6 +18,7 @@ namespace NaniWeb.Controllers
     
     public class ChapterManagerController : Controller
     {
+        private readonly DiscordBot _discordBot;
         private readonly FacebookPosting _facebookPosting;
         private readonly FirebaseCloudMessaging _firebaseCloudMessaging;
         private readonly IHostingEnvironment _hostingEnvironment;
@@ -25,8 +26,9 @@ namespace NaniWeb.Controllers
         private readonly NaniWebContext _naniWebContext;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(FacebookPosting facebookPosting, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
+        public ChapterManagerController(DiscordBot discordBot, FacebookPosting facebookPosting, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
         {
+            _discordBot = discordBot;
             _facebookPosting = facebookPosting;
             _firebaseCloudMessaging = firebaseCloudMessaging;
             _hostingEnvironment = hostingEnvironment;
@@ -141,6 +143,9 @@ namespace NaniWeb.Controllers
                 tasks[2] = Task.Run(async () =>
                 {
                     await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, series.Id.ToString());
+                tasks[3] = Task.Run(async () =>
+                {
+                    await _discordBot.SendMessage($"@everyone **{series} - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}");
                 });
 
                 await Task.WhenAll(tasks);
