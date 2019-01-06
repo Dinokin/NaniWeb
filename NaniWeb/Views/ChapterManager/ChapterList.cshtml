@@ -1,7 +1,8 @@
-@model List<NaniWeb.Data.Chapter>
+@using NaniWeb.Data
 
 @{
     ViewData["Title"] = "Chapters";
+    var chapters = (List<Chapter>) ViewData["Chapters"];
 }
 
 <partial name="_AdminNav"/>
@@ -12,17 +13,17 @@
         <div class="card-body">
             <div class="row text-center text-nowrap mb-2">
                 <div class="col-7">
-                    <p><strong>Name</strong></p>
+                    <strong>Name</strong>
                 </div>
                 <div class="col-5">
-                    <p><strong>Actions</strong></p>
+                    <strong>Actions</strong>
                 </div>
             </div>
-            @foreach (var chapter in Model.OrderByDescending(key => key.ChapterNumber))
+            @foreach (var chapter in chapters)
             {
-                <div class="row text-center text-nowrap">
-                    <div class="col-7">
-                        <p class="mt-2">@(chapter.Volume > 0 ? $"Vol. 1 " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</p>
+                <div class="row text-center text-nowrap mb-1">
+                    <div class="col-7 my-auto">
+                        @(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")
                     </div>
                     <div class="col-5">
                         <div class="btn-group btn-block" role="group" aria-label="Actions">

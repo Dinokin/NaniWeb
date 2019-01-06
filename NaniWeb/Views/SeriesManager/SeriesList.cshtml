@@ -1,7 +1,8 @@
-@model List<NaniWeb.Data.Series>
+@using NaniWeb.Data
 
 @{
     ViewData["Title"] = "Series";
+    var series = (List<Series>) ViewData["Series"];
 }
 
 <partial name="_AdminNav"/>
@@ -12,23 +13,23 @@
         <div class="card-body">
             <div class="row text-center text-nowrap mb-2">
                 <div class="col-7">
-                    <p><strong>Name</strong></p>
+                    <strong>Name</strong>
                 </div>
                 <div class="col-5">
-                    <p><strong>Actions</strong></p>
+                    <strong>Actions</strong>
                 </div>
             </div>
-            @foreach (var series in Model.OrderBy(key => key.Id))
+            @foreach (var seriesItem in series)
             {
-                <div class="row text-center text-nowrap">
-                    <div class="col-7">
-                        <a href="@Url.Action("List", "ChapterManager", new {id = series.Id})"><p class="mt-2">@series.Name</p></a>
+                <div class="row text-center text-nowrap mb-1">
+                    <div class="col-7 my-auto">
+                        <a href="@Url.Action("List", "ChapterManager", new {id = seriesItem.Id})">@seriesItem.Name</a>
                     </div>
                     <div class="col-5">
                         <div class="btn-group btn-block" role="group" aria-label="Actions">
-                            <a class="btn btn-success w-100" href="@Url.Action("Add", "ChapterManager", new {id = series.Id})">Add chapter</a>
-                            <a class="btn btn-warning w-100" href="@Url.Action("Edit", new {id = series.Id})">Edit</a>
-                            <a class="btn btn-danger w-100 delete-series" href="@Url.Action("Delete", new {id = series.Id})">Delete</a>
+                            <a class="btn btn-success w-100" href="@Url.Action("Add", "ChapterManager", new {id = seriesItem.Id})">Add chapter</a>
+                            <a class="btn btn-warning w-100" href="@Url.Action("Edit", new {id = seriesItem.Id})">Edit</a>
+                            <a class="btn btn-danger w-100 delete-series" href="@Url.Action("Delete", new {id = seriesItem.Id})">Delete</a>
                         </div>
                     </div>
                 </div>
