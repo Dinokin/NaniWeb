@@ -104,10 +104,10 @@ namespace NaniWeb.Controllers
                 await _naniWebContext.Chapters.AddAsync(chapter);
                 await _naniWebContext.SaveChangesAsync();
                 
-                var siteName = _settingsKeeper.GetSetting("SiteName");
-                var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
-                var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}/assets/icon.png";
-                var tasks = new Task[3];
+                var siteName = _settingsKeeper.GetSetting("SiteName").Value;
+                var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
+                var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
+                var tasks = new Task[4];
                 
                 tasks[0] = Task.Run(async () =>
                 {
