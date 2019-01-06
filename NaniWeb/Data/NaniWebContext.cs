@@ -244,6 +244,16 @@ namespace NaniWeb.Data
                     Id = 25,
                     Name = "FacebookApiKey",
                     Value = string.Empty
+                }, new Setting
+                {
+                    Id = 26,
+                    Name = "GroupsEmailAddress",
+                    Value = string.Empty,
+                }, new Setting
+                {
+                    Id = 27,
+                    Name = "SiteFooterCode",
+                    Value = string.Empty
                 });
             });
 

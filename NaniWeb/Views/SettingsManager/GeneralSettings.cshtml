@@ -50,6 +50,16 @@
                         <input class="form-control" id="site_url" asp-for="SiteUrl" aria-describedby="site_url_help" placeholder="Email address">
                         <small id="site_url_help" class="form-text text-muted">Your website's url without trailing slashes. ex: https://google.com, https://mangadex.org</small>
                     </div>
+                    <div class="form-group">
+                        <label for="site_email">Site Email</label>
+                        <input class="form-control" id="site_email" asp-for="SiteEmail" aria-describedby="site_email_help" placeholder="Email address">
+                        <small id="site_email_help" class="form-text text-muted">The destination of the messages sent through the contact form.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="site_footer">Site footer</label>
+                        <textarea class="form-control" id="site_footer" asp-for="SiteFooter" aria-describedby="site_footer_help" placeholder="Footer" rows="5"></textarea>
+                        <small id="site_footer_help" class="form-text text-muted">The code for your site's footer. In HTML.</small>
+                    </div>
                 </fieldset>
                 <div>
                     <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
