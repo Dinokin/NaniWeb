@@ -31,7 +31,9 @@ namespace NaniWeb.Controllers
                 SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value,
                 EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value),
                 SiteEmail = _settingsKeeper.GetSetting("GroupsEmailAddress").Value,
-                SiteFooter = _settingsKeeper.GetSetting("SiteFooterCode").Value
+                SiteFooter = _settingsKeeper.GetSetting("SiteFooterCode").Value,
+                SiteSideBar = _settingsKeeper.GetSetting("SiteSideBar").Value,
+                SiteAboutPage = _settingsKeeper.GetSetting("SiteAboutPage").Value
             };
 
             return View("GeneralSettings", model);
@@ -42,7 +44,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[7];
+                var tasks = new Task[9];
                 var manifest = new ManifestBuilder
                 {
                     ShortName = generalForm.SiteName,
@@ -67,7 +69,9 @@ namespace NaniWeb.Controllers
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
                 tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", generalForm.SiteEmail));
                 tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
-                tasks[6] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
+                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
+                tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
+                tasks[8] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
 
                 TempData["Error"] = false;
 

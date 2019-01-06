@@ -1,0 +1,5 @@
+@inject SettingsKeeper SettingsKeeper
+
+<div>
+    @Html.Raw(SettingsKeeper.GetSetting("SiteSideBar").Value)
+</div>

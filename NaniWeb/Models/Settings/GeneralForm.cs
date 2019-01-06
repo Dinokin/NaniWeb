@@ -14,5 +14,9 @@ namespace NaniWeb.Models.Settings
         [Required] [EmailAddress] public string SiteEmail { get; set; }
         
         [Required] public string SiteFooter { get; set; }
+        
+        [Required] public string SiteSideBar { get; set; }
+        
+        [Required] public string SiteAboutPage { get; set; }
     }
 }

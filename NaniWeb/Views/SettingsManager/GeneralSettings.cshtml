@@ -56,6 +56,16 @@
                         <small id="site_email_help" class="form-text text-muted">The destination of the messages sent through the contact form.</small>
                     </div>
                     <div class="form-group">
+                        <label for="site_about">About page</label>
+                        <textarea class="form-control" id="site_about" asp-for="SiteAboutPage" aria-describedby="site_about_help" placeholder="About" rows="5"></textarea>
+                        <small id="site_about_help" class="form-text text-muted">The code for your site's about page. In HTML.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="site_site_panel">Side panel</label>
+                        <textarea class="form-control" id="site_site_panel" asp-for="SiteSideBar" aria-describedby="site_site_panel_help" placeholder="Side panel" rows="5"></textarea>
+                        <small id="site_site_panel_help" class="form-text text-muted">The code for your site's side panel. In HTML.</small>
+                    </div>
+                    <div class="form-group">
                         <label for="site_footer">Site footer</label>
                         <textarea class="form-control" id="site_footer" asp-for="SiteFooter" aria-describedby="site_footer_help" placeholder="Footer" rows="5"></textarea>
                         <small id="site_footer_help" class="form-text text-muted">The code for your site's footer. In HTML.</small>

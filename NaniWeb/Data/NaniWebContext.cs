@@ -254,6 +254,16 @@ namespace NaniWeb.Data
                     Id = 27,
                     Name = "SiteFooterCode",
                     Value = string.Empty
+                }, new Setting
+                {
+                    Id = 28,
+                    Name = "SiteSideBar",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 29,
+                    Name = "SiteAboutPage",
+                    Value = string.Empty
                 });
             });
 
