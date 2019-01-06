@@ -328,3 +328,8 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+manifest.json
+firebase-messaging-sw.js
+NaniWeb/wwwroot/images/covers/*
+NaniWeb/wwwroot/images/pages/*
