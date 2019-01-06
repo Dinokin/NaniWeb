@@ -74,7 +74,7 @@ namespace NaniWeb.Others.Services
                 var request = new TopicManagementRequest
                 {
                     RegistrationTokens = new[] {token},
-                    Topic = topic
+                    Topic = $"/topics/{topic}"
                 };
 
                 await _fcmClient.SubscribeToTopic(request);
@@ -88,7 +88,7 @@ namespace NaniWeb.Others.Services
                 var request = new TopicManagementRequest
                 {
                     RegistrationTokens = new[] {token},
-                    Topic = topic
+                    Topic = $"/topics/{topic}"
                 };
 
                 await _fcmClient.UnsubscribeFromTopic(request);
