@@ -142,7 +142,8 @@ namespace NaniWeb.Controllers
                 });
                 tasks[2] = Task.Run(async () =>
                 {
-                    await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, series.Id.ToString());
+                    await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
+                });
                 tasks[3] = Task.Run(async () =>
                 {
                     await _discordBot.SendMessage($"@everyone **{series} - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}");
