@@ -5,7 +5,7 @@
         })
         .then(function(token) {
             const xhr = new XMLHttpRequest();
-            xhr.open("POST", unsubscribeUrl + "/" + fcmTopic + "/" + token, true);
+            xhr.open("GET", subscribeUrl + "/" + fcmTopic + "/" + token, true);
             xhr.send();
             window.localStorage.setItem(fcmTopic,"Subscribed");
         })
@@ -14,16 +14,18 @@
         });
 }
 
-function unsubscribe() {
+async function unsubscribe() {
+    const token = await messaging.getToken();
+    
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", unsubscribeUrl + "/" + fcmTopic + "/" + messaging.getToken(), true);
+    xhr.open("GET", unsubscribeUrl + "/" + fcmTopic + "/" + token, true);
     xhr.send();
     window.localStorage.setItem(fcmTopic,"Not subscribed");
 }
 
-$("#fcm_toggle").toggle(function() {
-    if (this.is(":checked"))
+$("#fcm_toggle").change(async function() {
+    if (this.checked)
         subscribe();
     else
-        unsubscribe();
+        await unsubscribe();
 });
