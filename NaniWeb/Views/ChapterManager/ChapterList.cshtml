@@ -21,7 +21,7 @@
             </div>
             @foreach (var chapter in chapters)
             {
-                <div class="row text-center text-nowrap mb-1">
+                <div class="row text-center text-nowrap my-1">
                     <div class="col-7 my-auto">
                         @(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")
                     </div>
