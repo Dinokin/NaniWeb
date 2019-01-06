@@ -25,9 +25,9 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator, Uploader")]
         public async Task<IActionResult> List()
         {
-            var model = await _naniWebContext.Series.ToListAsync();
+            ViewData["Series"] = await _naniWebContext.Series.OrderBy(key => key.Id).ToListAsync();
 
-            return View("SeriesList", model);
+            return View("SeriesList");
         }
 
         [HttpGet]

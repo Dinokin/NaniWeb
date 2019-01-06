@@ -12,23 +12,23 @@
         <div class="card-body">
             <div class="row text-center text-nowrap mb-2">
                 <div class="col-4">
-                    <p><strong>User</strong></p>
+                    <strong>User</strong>
                 </div>
                 <div class="col-3">
-                    <p><strong>Role</strong></p>
+                    <strong>Role</strong>
                 </div>
                 <div class="col-5">
-                    <p><strong>Actions</strong></p>
+                    <strong>Actions</strong>
                 </div>
             </div>
             @foreach (var user in Model.OrderBy(key => key.Id))
             {
-                <div class="row text-center text-nowrap">
-                    <div class="col-4">
-                        <p class="mt-2">@user.Username</p>
+                <div class="row text-center text-nowrap mb-1">
+                    <div class="col-4 my-auto">
+                        @user.Username
                     </div>
-                    <div class="col-3">
-                        <p class="mt-2">@user.Role</p>
+                    <div class="col-3 my-auto">
+                        @user.Role
                     </div>
                     <div class="col-5">
                         <div class="btn-group btn-block" role="group" aria-label="Actions">

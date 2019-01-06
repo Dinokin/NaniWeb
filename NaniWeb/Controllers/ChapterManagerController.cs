@@ -38,9 +38,9 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator, Uploader")]
         public async Task<IActionResult> List(int id)
         {
-            var model = await _naniWebContext.Chapters.Where(chp => chp.SeriesId == id).ToListAsync();
+            ViewData["Chapters"] = await _naniWebContext.Chapters.Where(chp => chp.SeriesId == id).OrderByDescending(key => key.ChapterNumber).ToListAsync();
             
-            return View("ChapterList", model);
+            return View("ChapterList");
         }
 
         [HttpGet]
