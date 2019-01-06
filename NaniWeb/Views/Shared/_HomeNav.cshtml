@@ -1,0 +1,28 @@
+@inject SettingsKeeper SettingsKeeper
+
+<nav class="navbar navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="@Url.Action("Index", "Home")">@SettingsKeeper.GetSetting("SiteName").Value</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbar">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" id="home">
+                <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
+            </li>
+            <li class="nav-item" id="announcements">
+                <a class="nav-link" href="@Url.Action("Announcement", "Home")">Announcements</a>
+            </li>
+            <li class="nav-item" id="projects">
+                <a class="nav-link" href="@Url.Action("Projects", "Home")">Projects</a>
+            </li>
+            <li class="nav-item" id="about">
+                <a class="nav-link" href="@Url.Action("About", "Home")">About Us</a>
+            </li>
+            <li class="nav-item" id="contact">
+                <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
+            </li>
+        </ul>
+    </div>
+</nav>
