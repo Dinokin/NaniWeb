@@ -9,6 +9,8 @@
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
     ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
+    ViewData["FcmTopic"] = $"\"series_{series.Id}\"";
+    ViewData["FcmSubscriptionTitle"] = "Toggle subscription";
 }
 
 <partial name="_HomeNav"/>
@@ -17,7 +19,7 @@
     <div class="my-3">
         <img id="manga_page" class="img-fluid img-thumbnail mx-auto d-block rounded" src="~/images/covers/@($"{series.Id}.png")" alt=""/>
     </div>
-    <div class="my-3 bg-light text-dark rounded h-100">
+    <div class="bg-light text-dark rounded">
         <div class="py-3 mx-3">
             <h3>@series.Name</h3>
             <h5><strong>Author:</strong> @series.Author</h5>
@@ -38,6 +40,10 @@
                     <h5><strong>Scanlation Status:</strong><span class="text-info"> @series.Status</span></h5>
                     break;
             }
+            @if (bool.Parse(SettingsKeeper.GetSetting("EnableFcm").Value))
+            {
+                <h5 class="form-inline"><strong class="mr-2">Subscribe:</strong><partial name="_FcmDiv"/></h5>
+            }
         </div>
     </div>
     <div class="my-3 bg-light text-dark rounded">
@@ -49,8 +55,8 @@
                 <a class="nav-link @(disqusEnable ? "show" : "disabled")" data-toggle="tab" href="#comments">Comments</a>
             </li>
         </ul>
-        <div class="tab-content h-100">
-            <div class="tab-pane fade active show mx-3 my-3" id="chapter_list">
+        <div class="tab-content">
+            <div class="tab-pane fade active show mx-3 py-3" id="chapter_list">
                 @foreach (var chapter in chapters)
                 {
                     <div class="row">
@@ -73,6 +79,7 @@
 @section Body
 {
     <partial name="_DisqusScript"/>
+    <partial name="_FcmScript"/>
 
     <script>
         $(function() {
