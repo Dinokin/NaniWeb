@@ -34,7 +34,7 @@ namespace NaniWeb.Others
         public static string GenerateSlug(string source)
         {
             var output = Regex.Replace(source, @"[^A-Za-z0-9\s]", string.Empty);
-            return Regex.Replace(output, @"[\s]", "-");
+            return Regex.Replace(output, @"[\s]", "-").ToLower();
         }
 
         public static async Task BuildServiceWorker(string firebaseApiKey, string firebaseProjectId, string firebaseSenderId, IHostingEnvironment environment)
