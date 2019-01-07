@@ -1,0 +1,64 @@
+@model Contact
+
+@{
+    ViewData["Title"] = "Contact";
+}
+
+<partial name="_HomeNav"/>
+ 
+ <div class="container mt-5">
+     <div class="row">
+         <div class="col-lg-8">
+             <div class="card bg-primary border-secondary mb-3">
+                 <h5 class="card-header bg-primary">Contact</h5>
+                 <div class="card-body">
+                     @if (TempData["Error"] != null && (bool) TempData["Error"])
+                     {
+                         <div class="alert alert-dismissible alert-danger">
+                             <button type="button" class="close" data-dismiss="alert">&times;</button>
+                             Something went wrong. Please check your data and try again.
+                         </div>
+                     }
+                     else if (TempData["Error"] != null && !(bool) TempData["Error"])
+                     {
+                         <div class="alert alert-dismissible alert-success">
+                             <button type="button" class="close" data-dismiss="alert">&times;</button>
+                             Message sent successfully.
+                         </div>
+                     }
+                     <form id="contact_form" asp-controller="Home" asp-action="Contact" novalidate>
+                         <fieldset>
+                             <div class="form-group">
+                                 <label for="contact_name">Name</label>
+                                 <input class="form-control" id="contact_name" asp-for="Name" placeholder="Name">
+                             </div>
+                             <div class="form-group">
+                                 <label for="contact_email">Email</label>
+                                 <input class="form-control" id="contact_email" asp-for="Destination" placeholder="Email address">
+                             </div>
+                             <div class="form-group">
+                                 <label for="contact_content">Message</label>
+                                 <textarea class="form-control" id="contact_content" asp-for="Content" placeholder="Content" rows="10"></textarea>
+                             </div>
+                         </fieldset>
+                         <div>
+                             <button class="btn btn-success float-right mt-3" id="submit" type="submit">Send message</button>
+                         </div>
+                     </form>
+                 </div>
+             </div>
+         </div>
+         <div class="col-lg-4">
+             <partial name="_SidePanel"/>
+         </div>
+     </div>
+ </div>
+ 
+ @section Body
+ {
+     <script>
+         $(function() {
+             $("#contact").addClass("active");
+         });
+     </script>
+ }

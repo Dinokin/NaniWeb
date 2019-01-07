@@ -1,0 +1,33 @@
+@using NaniWeb.Data
+
+@{
+    var announcement = (Announcement) ViewData["Announcement"];
+    ViewData["Title"] = $"{announcement.Title} - Announcements";
+}
+
+<partial name="_HomeNav"/>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card bg-primary border-secondary mb-3">
+                <h5 class="card-header bg-primary">@announcement.Title</h5>
+                <div class="card-body">
+                    @Html.Raw(announcement.Content);
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <partial name="_SidePanel"/>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#announcements").addClass("active");
+        });
+    </script>
+}

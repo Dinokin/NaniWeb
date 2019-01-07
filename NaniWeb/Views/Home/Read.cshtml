@@ -18,18 +18,18 @@
 
 <partial name="_HomeNav"/>
 
-<div id="top" class="container my-2 rounded bg-light">
+<div id="top" class="container mt-5 mb-3 rounded border border-secondary">
     @if (readerMode == Series.SeriesType.Manga)
     {
         <div class="row">
             <div class="col-2 my-auto">
                 @if (prevChapter != null)
                 {
-                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
+                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
                 }
                 else
                 {
-                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Prev</a>
+                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Prev</a>
 
                 }
             </div>
@@ -60,11 +60,11 @@
             <div class="col-2 my-auto">
                 @if (nextChapter != null)
                 {
-                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
+                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
                 }
                 else
                 {
-                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Next</a>
+                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Next</a>
 
                 } 
             </div>
@@ -76,11 +76,11 @@
             <div class="col-2 my-auto">
                 @if (prevChapter != null)
                 {
-                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
+                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
                 }
                 else
                 {
-                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Prev</a>
+                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Prev</a>
 
                 }
             </div>
@@ -103,18 +103,18 @@
             <div class="col-2 my-auto">
                 @if (nextChapter != null)
                 {
-                    <a class="btn btn-info w-100 h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
+                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
                 }
                 else
                 {
-                    <a class="btn btn-info w-100 h-75 my-1 disabled" href="#">Next</a>
+                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Next</a>
 
                 } 
             </div>
         </div>
     }
 </div>
-<div id="pages" class="container mw-100">
+<div id="pages" class="container my-2 mw-100">
     @if (readerMode == Series.SeriesType.Manga)
     {
         <a href="#"><img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt=""/></a>
@@ -123,11 +123,11 @@
     {
         foreach (var chPage in pages)
         {
-            <img class="img-fluid mx-auto d-block" src="~/images/pages/@($"{chPage.Id}.png")" alt=""/>
+            <img class="img-fluid mx-auto d-block @(series.Type == Series.SeriesType.Manga ? "my-1" : string.Empty )" src="~/images/pages/@($"{chPage.Id}.png")" alt=""/>
         }
     }
 </div>
-<div id="bottom" class="container my-2 rounded bg-light">
+<div id="bottom" class="container my-2 rounded border border-secondary">
     <partial name="_DisqusDiv"/>
 </div>
 
@@ -152,6 +152,11 @@
     @if (readerMode == Series.SeriesType.Manga)
     {
         <script>
+            
+            $(function() {
+                $("#bottom").addClass("d-none");
+            });
+            
             const nextAddress = "@Html.Raw(chapter == chapters.First() ? Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty}) : Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter?.ChapterNumber}))";
             const page = $("#manga_page");
             var index = 0;
@@ -176,6 +181,10 @@
                     index++;
                     page.attr("src", pages[index]);
                     $('#page_selector').val(index);
+
+                    if (index == pages.length -1) {
+                        $("#bottom").removeClass("d-none");
+                    }
                 } else {
                     window.location = nextAddress;
                 }
@@ -194,6 +203,10 @@
             $("#page_selector").change(function() {
                 index = this.value;
                 page.attr("src", pages[index]);
+                
+                if (index == pages.length -1) {
+                    $("#bottom").removeClass("d-none");
+                }
             });
         </script>
     }

@@ -1,0 +1,46 @@
+@using NaniWeb.Data
+
+@{
+    ViewData["Title"] = "Projects";
+    var series = (List<Series>) ViewData["series"];
+}
+
+<partial name="_HomeNav"/>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card bg-primary border-secondary mb-3">
+                <h5 class="card-header bg-primary">Projects</h5>
+                <div class="card-body">
+                    <div class="row">
+                        @foreach (var srs in series)
+                        {
+                            <div class="col-md-4 my-1">
+                                <div class="card bg-primary border-secondary mx-auto">
+                                    <img class="card-img-top" width="209" height="300" src="~/images/covers/@($"{srs.Id}.png")" alt="Series cover">
+                                    <div class="card-body text-center">
+                                        <h6 class="card-title project-title"><a href="@Url.Action("Project", new {urlSlug = srs.UrlSlug})">@srs.Name</a></h6>
+                                        <strong>Status: </strong><span>@srs.Status</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <partial name="_SidePanel"/>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $(function() {
+            $("#projects").addClass("active");
+        });
+    </script>
+}

@@ -3,35 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NaniWeb.Data;
+using NaniWeb.Models.Home;
 
 namespace NaniWeb.Controllers
 {
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        private readonly IEmailSender _emailSender;
         private readonly NaniWebContext _naniWebContext;
 
-        public HomeController(NaniWebContext naniWebContext)
+        public HomeController(IEmailSender emailSender, NaniWebContext naniWebContext)
         {
+            _emailSender = emailSender;
             _naniWebContext = naniWebContext;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return null;
+            var latestReleases = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(16).Include(chp => chp.Series).ToListAsync();
+            
+            ViewData["latestReleases"] = latestReleases;
+            
+            return View("Home");
         }
 
-        public IActionResult Announcement(string urlSlug)
+        public async Task<IActionResult> Announcement(string urlSlug)
         {
-            return null;
+            var announcement = await _naniWebContext.Announcements.SingleAsync(ann => ann.UrlSlug == urlSlug);
+
+            ViewData["Announcement"] = announcement;
+            
+            return View();
         }
 
-        public IActionResult Announcements()
+        public async Task<IActionResult> Announcements()
         {
-            return null;
+            var announcements = await _naniWebContext.Announcements.OrderByDescending(ann => ann.PostDate).ToListAsync();
+            
+            ViewData["Announcements"] = announcements;
+            
+            return View();
         }
 
         [Route("{action}/{urlSlug}")]
@@ -81,19 +97,39 @@ namespace NaniWeb.Controllers
             return View("Read");
         }
 
-        public IActionResult Projects()
+        public async Task<IActionResult> Projects()
         {
-            return null;
+            var series = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToListAsync();
+
+            ViewData["series"] = series;
+            
+            return View();
         }
 
         public IActionResult About()
         {
-            return null;
+            return View();
         }
 
+        [HttpGet]
         public IActionResult Contact()
         {
-            return null;
+            return View();
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Contact(Contact contact)
+        {
+            if (ModelState.IsValid)
+            {
+                await _emailSender.SendEmailAsync(contact.Destination, $"Message from {contact.Name}", $"{contact.Content}{Environment.NewLine}Sent by: {contact.Destination}");
+                
+                TempData["Error"] = false;
+            }
+            else
+                TempData["Error"] = true;
+
+            return RedirectToAction("Contact");
         }
     }
 }

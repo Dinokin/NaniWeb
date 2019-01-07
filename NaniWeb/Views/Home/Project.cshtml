@@ -15,40 +15,27 @@
 
 <partial name="_HomeNav"/>
 
-<div class="container">
-    <div class="my-3">
+<div class="container mt-5">
+    <div class="mb-3">
         <img id="manga_page" class="img-fluid img-thumbnail mx-auto d-block rounded" src="~/images/covers/@($"{series.Id}.png")" alt=""/>
     </div>
-    <div class="bg-light text-dark rounded">
+    <div class="rounded border border-secondary">
         <div class="py-3 mx-3">
             <h3>@series.Name</h3>
             <h5><strong>Author:</strong> @series.Author</h5>
             <h5><strong>Artist:</strong> @series.Artist</h5>
             <h5><strong>Synopsis:</strong> @series.Synopsis</h5>
-            @switch (series.Status)
-            {
-                case Series.SeriesStatus.Hiatus:
-                    <h5><strong>Scanlation Status:</strong><span class="text-warning"> @series.Status</span></h5>
-                    break;
-                case Series.SeriesStatus.Dropped:
-                    <h5><strong>Scanlation Status:</strong><span class="text-danger"> @series.Status</span></h5>
-                    break;
-                case Series.SeriesStatus.Ongoing:
-                    <h5><strong>Scanlation Status:</strong><span class="text-success"> @series.Status</span></h5>
-                    break;
-                case Series.SeriesStatus.Completed:
-                    <h5><strong>Scanlation Status:</strong><span class="text-info"> @series.Status</span></h5>
-                    break;
-            }
+            <h5><strong>Scanlation Status:</strong><span> @series.Status</span></h5>
+
             @if (bool.Parse(SettingsKeeper.GetSetting("EnableFcm").Value))
             {
                 <h5 class="form-inline"><strong class="mr-2">Subscribe:</strong><partial name="_FcmDiv"/></h5>
             }
         </div>
     </div>
-    <div class="my-3 bg-light text-dark rounded">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
+    <div class="my-3 rounded border border-secondary">
+        <ul class="nav nav-tabs border-secondary pt-1 pl-1">
+            <li class="nav-item pr-1">
                 <a class="nav-link active show" data-toggle="tab" href="#chapter_list">Chapters</a>
             </li>
             <li class="nav-item">
@@ -64,7 +51,7 @@
                             <a href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})">@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</a>
                         </div>
                         <div class="col-3 text-center">
-                            @chapter.ReleaseDate.ToString("d")
+                            @chapter.ReleaseDate.ToString("d/M/yy")
                         </div>
                     </div>
                 }

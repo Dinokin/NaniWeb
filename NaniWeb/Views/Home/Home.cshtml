@@ -1,0 +1,49 @@
+@using NaniWeb.Data
+
+@{
+    var latestReleases = (List<Chapter>) ViewData["latestReleases"];
+    ViewData["Title"] = "Latest releases";
+}
+
+<partial name="_HomeNav"/>
+ 
+ <div class="container my-5">
+     <div class="row">
+         <div class="col-lg-8">
+             <div class="card bg-primary border-secondary mb-3">
+                 <h5 class="card-header bg-primary">Latest releases</h5>
+                 <div class="card-body">
+                     @foreach (var release in latestReleases)
+                     {
+                         <div class="row my-1">
+                             <div class="col-sm-1 my-auto">
+                                 <img class="img-fluid rounded mx-auto d-block" src="~/images/covers/@($"{release.Series.Id}.png")" alt="Series cover">
+                             </div>
+                             <div class="col-sm-5 my-auto text-truncate text-center">
+                                 <a href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug})">@release.Series.Name</a>
+                             </div>
+                             <div class="col-sm-4 my-auto text-truncate text-center">
+                                 <a href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug, chapterNumber = release.ChapterNumber})">@(release.Volume > 0 ? $"Vol. {release.Volume} " : string.Empty)Ch. @(release.ChapterNumber)@(string.IsNullOrEmpty(release.Name) ? string.Empty : $" - {release.Name}")</a>
+                             </div>
+                             <div class="col-sm-2 my-auto text-truncate text-center">
+                                 @release.ReleaseDate.ToString("d/M/yy")
+                             </div>
+                         </div>
+                     }
+                 </div>
+             </div>
+         </div>
+         <div class="col-lg-4">
+             <partial name="_SidePanel"/>
+         </div>
+     </div>
+ </div>
+ 
+ @section Body
+ {
+     <script>
+         $(function() {
+             $("#home").addClass("active");
+         });
+     </script>
+ }
