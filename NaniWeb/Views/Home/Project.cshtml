@@ -10,26 +10,30 @@
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
     ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
     ViewData["FcmTopic"] = $"\"series_{series.Id}\"";
-    ViewData["FcmSubscriptionTitle"] = "Be notified about new chapters.";
+}
+
+@section Header
+{
+    <partial name="_GoogleAnalytics"/>
 }
 
 <partial name="_HomeNav"/>
 
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="mb-3">
         <img id="manga_page" class="img-fluid img-thumbnail mx-auto d-block rounded" src="~/images/covers/@($"{series.Id}.png")" alt=""/>
     </div>
     <div class="rounded border border-secondary">
         <div class="py-3 mx-3">
             <h3>@series.Name</h3>
-            <h5><strong>Author:</strong> @series.Author</h5>
-            <h5><strong>Artist:</strong> @series.Artist</h5>
-            <h5><strong>Synopsis:</strong> @series.Synopsis</h5>
-            <h5><strong>Scanlation Status:</strong><span> @series.Status</span></h5>
+            <strong>Author:</strong><span> @series.Author</span><br/>
+            <strong>Artist:</strong><span> @series.Artist</span><br/>
+            <strong>Synopsis:</strong><span> @series.Synopsis</span><br/>
+            <strong>Scanlation Status:</strong><span> @series.Status</span>
 
             @if (bool.Parse(SettingsKeeper.GetSetting("EnableFcm").Value))
             {
-                <h5 class="form-inline"><strong class="mr-2">Subscribe:</strong><partial name="_FcmDiv"/></h5>
+                <div class="form-inline"><strong>Subscribe:</strong><span class="ml-1"><partial name="_FcmDiv"/></span></div>
             }
         </div>
     </div>
@@ -46,12 +50,12 @@
             <div class="tab-pane fade active show mx-3 py-3" id="chapter_list">
                 @foreach (var chapter in chapters)
                 {
-                    <div class="row">
-                        <div class="col-9">
+                    <div class="row my-1">
+                        <div class="col-8 text-truncate">
                             <a href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})">@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</a>
                         </div>
-                        <div class="col-3 text-center">
-                            @chapter.ReleaseDate.ToString("d/M/yy")
+                        <div class="col-4 text-truncate">
+                            <span class="float-right">@chapter.ReleaseDate.ToString("dd/MM/yyyy")</span>
                         </div>
                     </div>
                 }

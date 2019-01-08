@@ -5,6 +5,11 @@
     var series = (List<Series>) ViewData["series"];
 }
 
+@section Header
+{
+    <partial name="_GoogleAnalytics"/>
+}
+
 <partial name="_HomeNav"/>
 
 <div class="container mt-5">
@@ -16,9 +21,9 @@
                     <div class="row">
                         @foreach (var srs in series)
                         {
-                            <div class="col-md-4 my-1">
+                            <div class="col-sm-4 my-1">
                                 <div class="card bg-primary border-secondary mx-auto">
-                                    <img class="card-img-top" width="209" height="300" src="~/images/covers/@($"{srs.Id}.png")" alt="Series cover">
+                                    <img class="card-img-top" src="~/images/covers/@($"{srs.Id}_small.png")" alt="Series cover">
                                     <div class="card-body text-center">
                                         <h6 class="card-title project-title"><a href="@Url.Action("Project", new {urlSlug = srs.UrlSlug})">@srs.Name</a></h6>
                                         <strong>Status: </strong><span>@srs.Status</span>

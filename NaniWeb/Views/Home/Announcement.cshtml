@@ -5,6 +5,11 @@
     ViewData["Title"] = $"{announcement.Title} - Announcements";
 }
 
+@section Header
+{
+    <partial name="_GoogleAnalytics"/>
+}
+
 <partial name="_HomeNav"/>
 
 <div class="container mt-5">
@@ -13,7 +18,7 @@
             <div class="card bg-primary border-secondary mb-3">
                 <h5 class="card-header bg-primary">@announcement.Title</h5>
                 <div class="card-body">
-                    @Html.Raw(announcement.Content);
+                    @Html.Raw(announcement.Content)
                 </div>
             </div>
         </div>

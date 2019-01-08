@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
@@ -17,17 +18,8 @@ namespace NaniWeb
         {
             return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().ConfigureKestrel((context, options) =>
             {
+                options.Listen(IPAddress.Any, 5580);
                 options.Limits.MaxRequestBodySize = 100000000;
-                
-                if (context.HostingEnvironment.IsProduction())
-                {
-                    options.Listen(IPAddress.Any, 80, listenOptions => { listenOptions.Protocols = HttpProtocols.Http1; });
-                    options.Listen(IPAddress.Any, 443, listenOptions =>
-                    {
-                        listenOptions.Protocols = HttpProtocols.Http2;
-                        listenOptions.UseHttps(Utils.GetCertificate());
-                    });
-                }
             });
         }
     }

@@ -25,13 +25,13 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var role = (await _userManager.GetRolesAsync(user))[0];
+            var role = await _userManager.GetRolesAsync(user);
 
             var model = new Profile
             {
                 Username = user.UserName,
                 Email = user.Email,
-                Role = role ?? "None"
+                Role = role.Count > 0 ? role[0] : "None"
             };
 
             return View("Profile", model);

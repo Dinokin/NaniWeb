@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NaniWeb.Data;
 using NaniWeb.Models.Home;
+using NaniWeb.Others.Services;
 
 namespace NaniWeb.Controllers
 {
@@ -16,16 +17,18 @@ namespace NaniWeb.Controllers
     {
         private readonly IEmailSender _emailSender;
         private readonly NaniWebContext _naniWebContext;
+        private readonly SettingsKeeper _settingsKeeper;
 
-        public HomeController(IEmailSender emailSender, NaniWebContext naniWebContext)
+        public HomeController(IEmailSender emailSender, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
         {
             _emailSender = emailSender;
             _naniWebContext = naniWebContext;
+            _settingsKeeper = settingsKeeper;
         }
 
         public async Task<IActionResult> Index()
         {
-            var latestReleases = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(16).Include(chp => chp.Series).ToListAsync();
+            var latestReleases = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(10).Include(chp => chp.Series).ToListAsync();
             
             ViewData["latestReleases"] = latestReleases;
             
@@ -34,7 +37,7 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> Announcement(string urlSlug)
         {
-            var announcement = await _naniWebContext.Announcements.SingleAsync(ann => ann.UrlSlug == urlSlug);
+            var announcement = await _naniWebContext.Announcements.SingleOrDefaultAsync(ann => ann.UrlSlug == urlSlug);
 
             ViewData["Announcement"] = announcement;
             
@@ -53,7 +56,7 @@ namespace NaniWeb.Controllers
         [Route("{action}/{urlSlug}")]
         public async Task<IActionResult> Project(string urlSlug)
         {
-            var series = await _naniWebContext.Series.SingleAsync(srs => srs.UrlSlug == urlSlug);
+            var series = await _naniWebContext.Series.SingleOrDefaultAsync(srs => srs.UrlSlug == urlSlug);
             var chapters = await _naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber).ToListAsync();
 
             ViewData["Series"] = series;
@@ -65,13 +68,15 @@ namespace NaniWeb.Controllers
         [Route("{action}/{urlSlug}/{chapterNumber:decimal}")]
         public async Task<IActionResult> Project(string urlSlug, decimal chapterNumber, Series.SeriesType? mode)
         {
-            var series = await _naniWebContext.Series.SingleAsync(srs => srs.UrlSlug == urlSlug);
+            var seriesList = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToListAsync();
+            var series = seriesList.Single(srs => srs.UrlSlug == urlSlug);
             var chapters = new LinkedList<Chapter>(_naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber));
             var chapter = chapters.Single(chp => chp.ChapterNumber == chapterNumber);
             var pages = await _naniWebContext.Pages.Where(pg => pg.Chapter == chapter).OrderBy(pg => pg.PageNumber).ToListAsync();
             var prevChapter = chapters.Find(chapter)?.Next?.Value;
             var nextChapter = chapters.Find(chapter)?.Previous?.Value;
 
+            ViewData["SeriesList"] = seriesList;
             ViewData["Series"] = series;
             ViewData["Chapters"] = chapters;
             ViewData["Chapter"] = chapter;
@@ -122,7 +127,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _emailSender.SendEmailAsync(contact.Destination, $"Message from {contact.Name}", $"{contact.Content}{Environment.NewLine}Sent by: {contact.Destination}");
+                await _emailSender.SendEmailAsync($"{_settingsKeeper.GetSetting("GroupsEmailAddress").Value}", $"Message from {contact.Name}", $"{contact.Content}{Environment.NewLine}Sent by: {contact.Destination}");
                 
                 TempData["Error"] = false;
             }

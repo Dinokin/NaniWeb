@@ -111,8 +111,6 @@ namespace NaniWeb
             
             app.UseResponseCompression();
             app.UseStaticFiles();
-            app.UseHsts();
-            app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseMvc(routes =>
             {

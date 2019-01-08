@@ -67,6 +67,12 @@ namespace NaniWeb.Controllers
                 {
                     await addSeries.Cover.CopyToAsync(file);
                 }
+                
+                var fileInfo = new FileInfo(path);
+                var destination = fileInfo.Directory;
+                
+                Utils.ResizeImage(fileInfo, destination, $"{series.Id}_small", 209, 300);
+                Utils.ResizeImage(fileInfo, destination, $"{series.Id}_smaller", 209/2, 300/2);
 
                 return RedirectToAction("List");
             }
@@ -126,6 +132,12 @@ namespace NaniWeb.Controllers
                     {
                         await editSeries.Cover.CopyToAsync(file);
                     }
+                    
+                    var fileInfo = new FileInfo(path);
+                    var destination = fileInfo.Directory;
+                
+                    Utils.ResizeImage(fileInfo, destination, $"{series.Id}_small", 209, 300);
+                    Utils.ResizeImage(fileInfo, destination, $"{series.Id}_smaller", 209/2, 300/2);
                 }
 
                 return RedirectToAction("List");

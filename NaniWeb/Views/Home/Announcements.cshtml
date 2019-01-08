@@ -5,6 +5,11 @@
     ViewData["Title"] = "Announcements";
 }
 
+@section Header
+{
+    <partial name="_GoogleAnalytics"/>
+}
+
 <partial name="_HomeNav"/>
 
 <div class="container mt-5">
@@ -15,12 +20,12 @@
                 <div class="card-body">
                     @foreach (var announcement in announcements)
                     {
-                        <div class="row">
+                        <div class="row my-1">
                             <div class="col-9">
                                 <a href="@Url.Action("Announcement", new {urlSlug = announcement.UrlSlug})">@announcement.Title</a>
                             </div>
                             <div class="col-3 text-center">
-                                @announcement.PostDate.ToString("d/M/yy")
+                                @announcement.PostDate.ToString("dd/MM/yyyy")
                             </div>
                         </div>
                     }                </div>

@@ -35,3 +35,12 @@
     height: 50px;
     line-height: 50px;
 }
+
+.clickable {
+    cursor: pointer;
+}
+
+.blur {
+    -webkit-filter: blur(4px); /* Safari 6.0 - 9.0 */
+    filter: blur(4px);
+}

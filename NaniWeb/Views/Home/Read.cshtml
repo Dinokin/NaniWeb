@@ -3,6 +3,7 @@
 
 @{
     var series = (Series) ViewData["Series"];
+    var seriesList = (List<Series>) ViewData["SeriesList"];
     var chapters = (LinkedList<Chapter>) ViewData["Chapters"];
     var chapter = (Chapter) ViewData["Chapter"];
     var pages = (List<Page>) ViewData["Pages"];
@@ -16,114 +17,92 @@
     ViewData["DisqusTitle"] = $"Chapter {chapter.ChapterNumber} - {series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
 }
 
+@section Header
+{
+    <partial name="_GoogleAnalytics"/>
+}
+
 <partial name="_HomeNav"/>
 
-<div id="top" class="container mt-5 mb-3 rounded border border-secondary">
+<div id="top" class="container my-2 border border-secondary rounded">
     @if (readerMode == Series.SeriesType.Manga)
     {
         <div class="row">
-            <div class="col-2 my-auto">
-                @if (prevChapter != null)
-                {
-                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
-                }
-                else
-                {
-                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Prev</a>
-
-                }
+            <div class="col-sm-4 my-1">
+                <select id="series_selector" class="custom-select w-100">
+                    @foreach (var srs in seriesList)
+                    {
+                        <option value="@Url.Action("Project", new {urlSlug = srs.UrlSlug, chapterNumber = string.Empty})" selected="@(srs == series ? "selected" : null)">@srs.Name</option>
+                    }
+                </select>
             </div>
-            <div class="col-4 my-auto">
-                <select id="chapter_selector" class="w-100">
+            <div class="col-sm-4 my-1">
+                <select id="chapter_selector" class="custom-select w-100">
                     @foreach (var chap in chapters)
                     {
                         <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chap.ChapterNumber})" selected="@(chap == chapter ? "selected" : null)">@(chap.Volume > 0 ? $"Vol. {chap.Volume} " : string.Empty)Ch. @(chap.ChapterNumber)@(string.IsNullOrEmpty(chap.Name) ? string.Empty : $" - {chap.Name}")</option>
                     }
                 </select>
             </div>
-            <div class="col-2 my-auto">
-                <select id="page_selector" class="w-100">
+            <div class="col-sm-2 my-1">
+                <select id="page_selector" class="custom-select w-100">
                     @foreach (var chPage in pages)
                     {
                         <option value="@chPage.PageNumber">Page @(chPage.PageNumber + 1)</option>
                     }
                 </select>
             </div>
-            <div class="col-2 my-auto">
-                <select id="mode_selector" class="w-100">
+            <div class="col-sm-2 my-1">
+                <select id="mode_selector" class="custom-select w-100">
                     @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
                     {
-                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@mode</option>
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single page" : "Long strip")</option>
                     }
                 </select>
-            </div>
-            <div class="col-2 my-auto">
-                @if (nextChapter != null)
-                {
-                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
-                }
-                else
-                {
-                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Next</a>
-
-                } 
             </div>
         </div>
     }
     else
     {
         <div class="row">
-            <div class="col-2 my-auto">
-                @if (prevChapter != null)
-                {
-                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
-                }
-                else
-                {
-                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Prev</a>
-
-                }
+            <div class="col-sm-5 my-1">
+                <select id="series_selector" class="custom-select w-100">
+                    @foreach (var srs in seriesList)
+                    {
+                        <option value="@Url.Action("Project", new {urlSlug = srs.UrlSlug, chapterNumber = string.Empty})" selected="@(srs == series ? "selected" : null)">@srs.Name</option>
+                    }
+                </select>
             </div>
-            <div class="col-6 my-auto">
-                <select id="chapter_selector" class="w-100">
+            <div class="col-sm-5 my-1">
+                <select id="chapter_selector" class="custom-select w-100">
                     @foreach (var chap in chapters)
                     {
                         <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chap.ChapterNumber})" selected="@(chap == chapter ? "selected" : null)">@(chap.Volume > 0 ? $"Vol. {chap.Volume} " : string.Empty)Ch. @(chap.ChapterNumber)@(string.IsNullOrEmpty(chap.Name) ? string.Empty : $" - {chap.Name}")</option>
                     }
                 </select>
             </div>
-            <div class="col-2 my-auto">
-                <select id="mode_selector" class="w-100">
+            <div class="col-sm-2 my-1">
+                <select id="mode_selector" class="custom-select w-100">
                     @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
                     {
-                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@mode</option>
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single page" : "Long strip")</option>
                     }
                 </select>
-            </div>
-            <div class="col-2 my-auto">
-                @if (nextChapter != null)
-                {
-                    <a class="btn btn-success btn-block h-75 my-1" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
-                }
-                else
-                {
-                    <a class="btn btn-success btn-block h-75 my-1 disabled" href="#">Next</a>
-
-                } 
             </div>
         </div>
     }
 </div>
 <div id="pages" class="container my-2 mw-100">
+
     @if (readerMode == Series.SeriesType.Manga)
     {
-        <a href="#"><img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt=""/></a>
+        <img id="manga_page" class="img-fluid mx-auto d-block clickable" src="~/images/pages/@($"{pages[0].Id}.png")" alt="">
     }
     else
     {
         foreach (var chPage in pages)
         {
-            <img class="img-fluid mx-auto d-block @(series.Type == Series.SeriesType.Manga ? "my-1" : string.Empty )" src="~/images/pages/@($"{chPage.Id}.png")" alt=""/>
+            <img class="img-fluid mx-auto d-block @(series.Type == Series.SeriesType.Manga ? "my-2" : string.Empty)" src="~/images/pages/@($"{chPage.Id}.png")" alt=""/>
         }
     }
 </div>
@@ -139,12 +118,8 @@
         $(function() {
             $("#projects").addClass("active");
         });
-        
-        $("#chapter_selector").change(function() {
-            window.location = this.value;
-        });
-        
-        $("#mode_selector").change(function() {
+
+        $("#series_selector,#mode_selector,#chapter_selector").change(function() {
             window.location = this.value;
         });
     </script>
@@ -152,19 +127,20 @@
     @if (readerMode == Series.SeriesType.Manga)
     {
         <script>
-            
+
             $(function() {
                 $("#bottom").addClass("d-none");
             });
-            
-            const nextAddress = "@Html.Raw(chapter == chapters.First() ? Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty}) : Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter?.ChapterNumber}))";
+
+            const nextAddress =
+                "@Html.Raw(chapter == chapters.First() ? Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty}) : Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter?.ChapterNumber}))";
             const page = $("#manga_page");
             var index = 0;
-            
+
             const pages = [
                 @foreach (var chPage in pages)
                 {
-                    @Html.Raw($"\"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
+                    @Html.Raw($"(new Image()).src = \"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
                 }
             ];
 
@@ -172,6 +148,7 @@
                 if (index > 0) {
                     index--;
                     page.attr("src", pages[index]);
+                    blur();
                     $('#page_selector').val(index);
                 }
             };
@@ -180,15 +157,28 @@
                 if (index < pages.length - 1) {
                     index++;
                     page.attr("src", pages[index]);
+                    blur();
                     $('#page_selector').val(index);
 
-                    if (index == pages.length -1) {
+                    if (index == pages.length - 1) {
                         $("#bottom").removeClass("d-none");
                     }
                 } else {
                     window.location = nextAddress;
                 }
             };
+
+            function blur() {
+                const img = $("#manga_page");
+
+                img.addClass("blur");
+            };
+
+            function removeBlur() {
+                const img = $("#manga_page");
+
+                img.removeClass("blur");
+            }
 
             $("#pages").click(function(e) {
                 const pWidth = $(this).innerWidth();
@@ -199,12 +189,17 @@
                 else
                     next();
             });
-            
+
+            $("#manga_page").on("load",
+                function() {
+                    removeBlur();
+                });
+
             $("#page_selector").change(function() {
                 index = this.value;
                 page.attr("src", pages[index]);
-                
-                if (index == pages.length -1) {
+
+                if (index == pages.length - 1) {
                     $("#bottom").removeClass("d-none");
                 }
             });
