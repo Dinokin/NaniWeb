@@ -3,12 +3,12 @@
 
 @{
     var series = (Series) ViewData["Series"];
-    var seriesList = (List<Series>) ViewData["SeriesList"];
-    var chapters = (LinkedList<Chapter>) ViewData["Chapters"];
+    var seriesList = (Series[]) ViewData["SeriesList"];
+    var chapters = (Chapter[]) ViewData["Chapters"];
     var chapter = (Chapter) ViewData["Chapter"];
-    var pages = (List<Page>) ViewData["Pages"];
+    var pages = (Page[]) ViewData["Pages"];
     var lastPage = pages.Last();
-    var nextChapter = ViewData["nextChapter"] as Chapter;
+    var nextChapter = ViewData["NextChapter"] as Chapter;
     var readerMode = (Series.SeriesType) ViewData["ReaderMode"];
     ViewData["Title"] = $"Chapter {chapter.ChapterNumber} - {series.Name}";
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
@@ -95,7 +95,9 @@
 
     @if (readerMode == Series.SeriesType.Manga)
     {
-        <a href="#"><img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt=""></a>
+        <a href="#">
+            <img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt="">
+        </a>
     }
     else
     {

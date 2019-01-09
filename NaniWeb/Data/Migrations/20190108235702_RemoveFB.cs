@@ -7,35 +7,35 @@ namespace NaniWeb.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 24,
-                columns: new[] { "Name", "Value" },
-                values: new object[] { "RecaptchaSiteKey", "" });
+                "Settings",
+                "Id",
+                24,
+                new[] {"Name", "Value"},
+                new object[] {"RecaptchaSiteKey", ""});
 
             migrationBuilder.UpdateData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 25,
-                column: "Name",
-                value: "RecaptchaSecretKey");
+                "Settings",
+                "Id",
+                25,
+                "Name",
+                "RecaptchaSecretKey");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.UpdateData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 24,
-                columns: new[] { "Name", "Value" },
-                values: new object[] { "EnableFacebookPosting", "False" });
+                "Settings",
+                "Id",
+                24,
+                new[] {"Name", "Value"},
+                new object[] {"EnableFacebookPosting", "False"});
 
             migrationBuilder.UpdateData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 25,
-                column: "Name",
-                value: "FacebookApiKey");
+                "Settings",
+                "Id",
+                25,
+                "Name",
+                "FacebookApiKey");
         }
     }
 }

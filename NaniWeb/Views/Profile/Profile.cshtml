@@ -2,13 +2,13 @@
 @model Profile
 
 @{
-    ViewData["Title"] = "Profile";
     var enableEmail = bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value);
+    ViewData["Title"] = "Profile";
 }
 
 <partial name="_HomeNav"/>
 
-<div class="container w-25 mt-5">
+<div class="container profile-card w-25 mt-5">
     <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Profile</h5>
         <div class="card-body">
@@ -18,11 +18,11 @@
                 <p>Role: @Model.Role</p>
             </div>
             <div>
-                <div class="btn-group btn-block mb-1" role="group" aria-label="Actions">
-                    <a class="btn btn-warning w-100" href="@Url.Action("ChangePassword")">Change password</a>
-                    <a class="btn btn-warning w-100 @(enableEmail ? string.Empty : "disabled")" href="@Url.Action("ChangeEmail")">Change email</a>
+                <div class="btn-group-vertical btn-block mb-1" role="group" aria-label="Actions">
+                    <a class="btn btn-warning w-100" href="@Url.Action("ChangePassword")">Change Password</a>
+                    <a class="btn btn-warning w-100 @(enableEmail ? string.Empty : "disabled")" href="@Url.Action("ChangeEmail")">Change Email</a>
                 </div>
-                <a id="delete_button" class="btn btn-danger btn-block" href="@Url.Action("DeleteAccount")">Delete account</a>
+                <a id="delete_button" class="btn btn-danger btn-block" href="@Url.Action("DeleteAccount")">Delete Account</a>
             </div>
         </div>
     </div>

@@ -248,7 +248,7 @@ namespace NaniWeb.Data
                 {
                     Id = 26,
                     Name = "GroupsEmailAddress",
-                    Value = string.Empty,
+                    Value = string.Empty
                 }, new Setting
                 {
                     Id = 27,

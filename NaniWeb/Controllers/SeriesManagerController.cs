@@ -52,7 +52,7 @@ namespace NaniWeb.Controllers
                     Type = addSeries.Type,
                     Status = addSeries.Status,
                     UrlSlug = Utils.GenerateSlug(addSeries.Name),
-                    MangadexInfo = new MangadexSeries()
+                    MangadexInfo = new MangadexSeries
                     {
                         MangadexId = addSeries.MangadexId ?? 0
                     }
@@ -62,23 +62,23 @@ namespace NaniWeb.Controllers
                 await _naniWebContext.SaveChangesAsync();
 
                 var path = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}{series.Id}.png";
-                
+
                 using (var file = System.IO.File.Create(path))
                 {
                     await addSeries.Cover.CopyToAsync(file);
                 }
-                
+
                 var fileInfo = new FileInfo(path);
                 var destination = fileInfo.Directory;
-                
+
                 Utils.ResizeImage(fileInfo, destination, $"{series.Id}_small", 209, 300);
-                Utils.ResizeImage(fileInfo, destination, $"{series.Id}_smaller", 209/2, 300/2);
+                Utils.ResizeImage(fileInfo, destination, $"{series.Id}_smaller", 209 / 2, 300 / 2);
 
                 return RedirectToAction("List");
             }
 
             TempData["Error"] = true;
-            
+
             return RedirectToAction("Add");
         }
 
@@ -99,7 +99,7 @@ namespace NaniWeb.Controllers
                 Status = series.Status,
                 MangadexId = mangadex.MangadexId
             };
-            
+
             return View("EditSeries", model);
         }
 
@@ -110,7 +110,7 @@ namespace NaniWeb.Controllers
             {
                 var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == editSeries.SeriesId);
                 var mangadex = await _naniWebContext.MangadexSeries.SingleOrDefaultAsync(srs => srs.Series == series);
-                
+
                 series.Name = editSeries.Name;
                 series.Author = editSeries.Author;
                 series.Artist = editSeries.Artist;
@@ -132,19 +132,19 @@ namespace NaniWeb.Controllers
                     {
                         await editSeries.Cover.CopyToAsync(file);
                     }
-                    
+
                     var fileInfo = new FileInfo(path);
                     var destination = fileInfo.Directory;
-                
+
                     Utils.ResizeImage(fileInfo, destination, $"{series.Id}_small", 209, 300);
-                    Utils.ResizeImage(fileInfo, destination, $"{series.Id}_smaller", 209/2, 300/2);
+                    Utils.ResizeImage(fileInfo, destination, $"{series.Id}_smaller", 209 / 2, 300 / 2);
                 }
 
                 return RedirectToAction("List");
             }
 
             TempData["Error"] = true;
-            
+
             return RedirectToAction("Edit");
         }
 
@@ -157,7 +157,7 @@ namespace NaniWeb.Controllers
             var pages = _naniWebContext.Pages.Where(pg => pg.Chapter.SeriesId == id);
 
             System.IO.File.Delete($"{coversLocation}{series.Id}.png");
-            
+
             foreach (var page in pages)
                 System.IO.File.Delete($"{pagesLocation}{page.Id}.png");
 

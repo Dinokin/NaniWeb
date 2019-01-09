@@ -41,7 +41,7 @@
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)" />Upload to Mangadex
+                                <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)"/>Upload to Mangadex
                             </label>
                         </div>
                         <small id="upload_to_mangadex_help" class="form-text text-muted">Whether you want to upload to mangadex or not. Remember to check if you have a proper mangadex id for this chapter and series.</small>
@@ -70,7 +70,7 @@
         $(function() {
             $("#series").addClass("active");
         });
-        
+
         $("#chapter_pages").change(function(event) {
             const file = event.target.files[0].name;
             $("#chapter_pages_label").text(file);

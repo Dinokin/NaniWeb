@@ -36,11 +36,11 @@
     line-height: 50px;
 }
 
-.clickable {
-    cursor: pointer;
-}
-
 .blur {
     -webkit-filter: blur(4px); /* Safari 6.0 - 9.0 */
     filter: blur(4px);
+}
+
+.profile-card {
+    min-width: 310px;
 }

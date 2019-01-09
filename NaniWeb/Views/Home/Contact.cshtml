@@ -12,86 +12,86 @@
 }
 
 <partial name="_HomeNav"/>
- 
- <div class="container mt-5">
-     <div class="row">
-         <div class="col-lg-8">
-             <div class="card bg-primary border-secondary mb-3">
-                 <h5 class="card-header bg-primary">Contact</h5>
-                 <div class="card-body">
-                     @if (TempData["Error"] != null && (bool) TempData["Error"])
-                     {
-                         <div class="alert alert-dismissible alert-danger">
-                             <button type="button" class="close" data-dismiss="alert">&times;</button>
-                             Something went wrong. Please check your data and try again.
-                         </div>
-                     }
-                     else if (TempData["Error"] != null && !(bool) TempData["Error"])
-                     {
-                         <div class="alert alert-dismissible alert-success">
-                             <button type="button" class="close" data-dismiss="alert">&times;</button>
-                             Message sent successfully.
-                         </div>
-                     }
-                     <form id="contact_form" asp-controller="Home" asp-action="Contact" novalidate>
-                         <fieldset>
-                             <div class="form-group">
-                                 <label for="contact_name">Name</label>
-                                 <input class="form-control" id="contact_name" asp-for="Name" placeholder="Name">
-                             </div>
-                             <div class="form-group">
-                                 <label for="contact_email">Email</label>
-                                 <input class="form-control" id="contact_email" asp-for="Destination" placeholder="Email address">
-                             </div>
-                             <div class="form-group">
-                                 <label for="contact_content">Message</label>
-                                 <textarea class="form-control" id="contact_content" asp-for="Content" placeholder="Content" rows="10"></textarea>
-                             </div>
-                             <div class="g-recaptcha" data-sitekey="@recaptchaKey"></div>
-                         </fieldset>
-                         <div>
-                             <button class="btn btn-success float-right mt-3" id="submit" type="submit">Send message</button>
-                         </div>
-                     </form>
-                 </div>
-             </div>
-         </div>
-         <div class="col-lg-4">
-             <partial name="_SidePanel"/>
-         </div>
-     </div>
- </div>
- 
- @section Body
- {
-     <script src='https://www.google.com/recaptcha/api.js'></script>
-     <script>
-         $(function() {
-             $("#contact").addClass("active");
-         });
-         
-         $('#contact_form').submit(function(e) {
-             const name = $("#contact_name");
-             const email = $("#contact_email");
-             const content = $("#contact_content");
 
-             if (!validateGenericInput3Chars(name.val())) {
-                 name.addClass("is-invalid").focus();
-                 e.preventDefault(e);
-                 return;
-             }
-             
-             if (!validateEmail(email.val())) {
-                 email.addClass("is-invalid").focus();
-                 e.preventDefault(e);
-                 return;
-             }
-             
-             if (!validateGenericInput3Chars(content.val())) {
-                 content.addClass("is-invalid").focus();
-                 e.preventDefault(e);
-                 return;
-             }
-         });
-     </script>
- }
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card bg-primary border-secondary mb-3">
+                <h5 class="card-header bg-primary">Contact</h5>
+                <div class="card-body">
+                    @if (TempData["Error"] != null && (bool) TempData["Error"])
+                    {
+                        <div class="alert alert-dismissible alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            Something went wrong. Please check your data and try again.
+                        </div>
+                    }
+                    else if (TempData["Error"] != null && !(bool) TempData["Error"])
+                    {
+                        <div class="alert alert-dismissible alert-success">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            Message sent successfully.
+                        </div>
+                    }
+                    <form id="contact_form" asp-controller="Home" asp-action="Contact" novalidate>
+                        <fieldset>
+                            <div class="form-group">
+                                <label for="contact_name">Name</label>
+                                <input class="form-control" id="contact_name" asp-for="Name" placeholder="Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_email">Email</label>
+                                <input class="form-control" id="contact_email" asp-for="Destination" placeholder="Email address">
+                            </div>
+                            <div class="form-group">
+                                <label for="contact_content">Message</label>
+                                <textarea class="form-control" id="contact_content" asp-for="Content" placeholder="Content" rows="10"></textarea>
+                            </div>
+                            <div class="g-recaptcha" data-sitekey="@recaptchaKey"></div>
+                        </fieldset>
+                        <div>
+                            <button class="btn btn-success float-right mt-3" id="submit" type="submit">Send message</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <partial name="_SidePanel"/>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script src="https://www.google.com/recaptcha/api.js?hl=en"></script>
+    <script>
+        $(function() {
+            $("#contact").addClass("active");
+        });
+
+        $('#contact_form').submit(function(e) {
+            const name = $("#contact_name");
+            const email = $("#contact_email");
+            const content = $("#contact_content");
+
+            if (!validateGenericInput3Chars(name.val())) {
+                name.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+
+            if (!validateEmail(email.val())) {
+                email.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+
+            if (!validateGenericInput3Chars(content.val())) {
+                content.addClass("is-invalid").focus();
+                e.preventDefault(e);
+                return;
+            }
+        });
+    </script>
+}

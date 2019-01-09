@@ -58,7 +58,9 @@ namespace NaniWeb.Controllers
                 await _emailSender.SendEmailAsync(user.Email, "Email change requested", $"Click on the following link to change your email. Link: {callbackUrl}");
             }
             else
+            {
                 TempData["Error"] = true;
+            }
 
             return View("NewEmail");
         }

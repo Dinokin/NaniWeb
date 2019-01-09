@@ -15,7 +15,6 @@ using NaniWeb.Others.Services;
 
 namespace NaniWeb.Controllers
 {
-    
     public class ChapterManagerController : Controller
     {
         private readonly DiscordBot _discordBot;
@@ -25,7 +24,8 @@ namespace NaniWeb.Controllers
         private readonly NaniWebContext _naniWebContext;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
+        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
+            SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
             _firebaseCloudMessaging = firebaseCloudMessaging;
@@ -39,7 +39,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> List(int id)
         {
             ViewData["Chapters"] = await _naniWebContext.Chapters.Where(chp => chp.SeriesId == id).OrderByDescending(key => key.ChapterNumber).ToListAsync();
-            
+
             return View("ChapterList");
         }
 
@@ -52,7 +52,7 @@ namespace NaniWeb.Controllers
             {
                 SeriesId = series.Id
             };
-            
+
             return View("AddChapter", model);
         }
 
@@ -70,7 +70,7 @@ namespace NaniWeb.Controllers
                     Name = chapterAdd.Name ?? string.Empty,
                     SeriesId = series.Id,
                     Pages = new List<Page>(),
-                    ReleaseDate = DateTime.UtcNow,
+                    ReleaseDate = DateTime.UtcNow
                 };
 
                 var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
@@ -82,7 +82,7 @@ namespace NaniWeb.Controllers
                 {
                     await chapterAdd.Pages.CopyToAsync(stream);
                 }
-                
+
                 ZipFile.ExtractToDirectory(pagesZip, tempPages.FullName);
                 var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name).ToList();
 
@@ -97,7 +97,7 @@ namespace NaniWeb.Controllers
                     {
                         page.Id = Guid.NewGuid();
                     } while (System.IO.File.Exists($"{destination}{page.Id}.png"));
-                    
+
                     chapter.Pages.Add(page);
 
                     pageList[i].CopyTo($"{destination}{page.Id}.png");
@@ -105,35 +105,31 @@ namespace NaniWeb.Controllers
 
                 await _naniWebContext.Chapters.AddAsync(chapter);
                 await _naniWebContext.SaveChangesAsync();
-                
+
                 var siteName = _settingsKeeper.GetSetting("SiteName").Value;
                 var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
                 var tasks = new Task[3];
-                
+
                 tasks[0] = Task.Run(async () =>
                 {
                     var mangadexSeries = await _naniWebContext.MangadexSeries.SingleOrDefaultAsync(srs => srs.SeriesId == series.Id);
 
                     MangadexChapter mangadexChapter = null;
-                    
+
                     if (chapterAdd.UploadToMangadex && mangadexSeries.MangadexId > 0)
-                    {
                         using (var stream = System.IO.File.OpenRead(pagesZip))
                         {
                             mangadexChapter = await _mangadexUploader.UploadChapter(series, chapter, mangadexSeries, stream);
                         }
-                    }
 
                     if (mangadexChapter == null)
-                    {
                         mangadexChapter = new MangadexChapter
                         {
                             Chapter = chapter,
                             ChapterId = chapter.Id,
                             MangadexId = 0
                         };
-                    }
 
                     await _naniWebContext.MangadexChapters.AddAsync(mangadexChapter);
                     await _naniWebContext.SaveChangesAsync();
@@ -142,22 +138,19 @@ namespace NaniWeb.Controllers
                 {
                     await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
                 });
-                tasks[2] = Task.Run(async () =>
-                {
-                    await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}");
-                });
+                tasks[2] = Task.Run(async () => { await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}"); });
 
                 await Task.WhenAll(tasks);
                 temp.Delete(true);
-                
+
                 return RedirectToAction("List", new {id = series.Id});
             }
-            
+
             TempData["Error"] = true;
-            
+
             return RedirectToAction("Add");
         }
-        
+
         [HttpGet]
         [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Edit(int id)
@@ -172,7 +165,7 @@ namespace NaniWeb.Controllers
                 Name = chapter.Name,
                 MangadexId = mangadex.MangadexId
             };
-            
+
             return View("EditChapter", model);
         }
 
@@ -196,22 +189,24 @@ namespace NaniWeb.Controllers
                     var tempPages = temp.CreateSubdirectory("Pages");
                     var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
                     var pagesZip = $"{temp.FullName}{Path.DirectorySeparatorChar}pages.zip";
-                    
+
                     var pages = _naniWebContext.Pages.Where(pg => pg.Chapter == chapter);
 
                     foreach (var page in pages)
                         System.IO.File.Delete($"{destination}{page.Id}.png");
-                    
+
                     _naniWebContext.Pages.RemoveRange(pages);
-                                        
+
                     using (var stream = System.IO.File.Create(pagesZip))
+                    {
                         await chapterEdit.Pages.CopyToAsync(stream);
-                    
+                    }
+
                     ZipFile.ExtractToDirectory(pagesZip, tempPages.FullName);
                     var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name).ToList();
                     chapter.Pages = new List<Page>();
-                    
-                    
+
+
                     for (var i = 0; i < pageList.Count; i++)
                     {
                         var page = new Page
@@ -223,7 +218,7 @@ namespace NaniWeb.Controllers
                         {
                             page.Id = Guid.NewGuid();
                         } while (System.IO.File.Exists($"{destination}{page.Id}.png"));
-                        
+
                         chapter.Pages.Add(page);
 
                         pageList[i].CopyTo($"{destination}{page.Id}.png");
@@ -234,15 +229,17 @@ namespace NaniWeb.Controllers
                         var mangadexSeries = await _naniWebContext.MangadexSeries.SingleAsync(mgdx => mgdx.SeriesId == mangadexChapter.Chapter.SeriesId);
 
                         using (var stream = System.IO.File.OpenRead(pagesZip))
+                        {
                             await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, mangadexChapter, stream);
+                        }
                     }
-                    
+
                     temp.Delete(true);
                 }
 
                 _naniWebContext.Chapters.Update(chapter);
                 await _naniWebContext.SaveChangesAsync();
-                
+
                 return RedirectToAction("List", new {id = chapter.SeriesId});
             }
 
@@ -258,7 +255,7 @@ namespace NaniWeb.Controllers
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == chapter.SeriesId);
             var pages = _naniWebContext.Pages.Where(pg => pg.Chapter == chapter);
             var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
-            
+
             foreach (var page in pages)
                 System.IO.File.Delete($"{destination}{page.Id}.png");
 

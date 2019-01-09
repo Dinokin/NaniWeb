@@ -45,7 +45,8 @@ namespace NaniWeb.Controllers
 
             var result = await _signInManager.PasswordSignInAsync(loginForm.Username, loginForm.Password, loginForm.Remember, true);
 
-            if (result.Succeeded) return RedirectToAction("Index", "Profile");
+            if (result.Succeeded)
+                return RedirectToAction("Index", "Profile");
 
             TempData["Result"] = "Error";
 

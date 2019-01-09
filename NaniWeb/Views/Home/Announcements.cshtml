@@ -1,7 +1,6 @@
 @using NaniWeb.Data
-
 @{
-    var announcements = (List<Announcement>) ViewData["Announcements"];
+    var announcements = (Announcement[]) ViewData["Announcements"];
     ViewData["Title"] = "Announcements";
 }
 
@@ -36,7 +35,8 @@
                                 @announcement.PostDate.ToString("dd/MM/yyyy")
                             </div>
                         </div>
-                    }                </div>
+                    }
+                </div>
             </div>
         </div>
         <div class="col-lg-4">

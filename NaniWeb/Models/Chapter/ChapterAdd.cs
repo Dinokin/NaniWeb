@@ -11,9 +11,9 @@ namespace NaniWeb.Models.Chapter
         [Required] public decimal ChapterNumber { get; set; }
 
         public string Name { get; set; }
-        
+
         [Required] public IFormFile Pages { get; set; }
-        
+
         [Required] public bool UploadToMangadex { get; set; }
     }
 }

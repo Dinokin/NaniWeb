@@ -1,5 +1,4 @@
 @using NaniWeb.Data
-
 @{
     ViewData["Title"] = "Chapters";
     var chapters = (List<Chapter>) ViewData["Chapters"];
@@ -60,17 +59,17 @@
 {
     <script>
         var address = null;
-        
+
         $(function() {
             $("#series").addClass("active");
         });
-        
+
         $(".delete-chapter").click(function(event) {
             event.preventDefault();
             $("#delete_modal").modal("show");
             address = $(this).attr("href");
         });
-        
+
         $("#confirm_delete").click(function() {
             window.location = address;
         });

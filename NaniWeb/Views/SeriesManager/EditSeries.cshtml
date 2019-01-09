@@ -1,5 +1,5 @@
-@using NaniWeb.Data
 @inject SettingsKeeper SettingsKeeper
+@using NaniWeb.Data
 @model EditSeries
 
 @{
@@ -85,7 +85,7 @@
         $(function() {
             $("#series").addClass("active");
         });
-        
+
         $("#series_cover").change(function(event) {
             const file = event.target.files[0].name;
             $("#series_cover_label").text(file);

@@ -2,9 +2,9 @@
 @model SignInForm
 
 @{
-    ViewData["Title"] = "Sign in";
     var enableRegistration = bool.Parse(SettingsKeeper.GetSetting("EnableRegistration").Value);
     var enableEmail = bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value);
+    ViewData["Title"] = "Sign In";
 }
 
 @section Header
@@ -65,12 +65,12 @@
     </div>
     <div class="custom-control custom-checkbox text-center mb-3">
         <input class="custom-control-input" id="remember" asp-for="Remember">
-        <label class="custom-control-label" for="remember">Remember me</label>
+        <label class="custom-control-label" for="remember">Remember Me</label>
     </div>
-    <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
+    <button class="btn btn-lg btn-success btn-block" type="submit">Sign In</button>
     <div class="btn-group btn-block" role="group" aria-label="Account actions">
-        <a class="btn btn-lg btn-primary w-100 @(enableRegistration ? string.Empty : "disabled")" href="@Url.Action("SignUp")">Sign up</a>
-        <a class="btn btn-lg btn-warning w-100 @(enableEmail ? string.Empty : "disabled")" href="@Url.Action("ResetPassword")">Reset password</a>
+        <a class="btn btn-lg btn-primary w-100 @(enableRegistration ? string.Empty : "disabled")" href="@Url.Action("SignUp")">Sign Up</a>
+        <a class="btn btn-lg btn-warning w-100 @(enableEmail ? string.Empty : "disabled")" href="@Url.Action("ResetPassword")">Reset Password</a>
     </div>
 </form>
 

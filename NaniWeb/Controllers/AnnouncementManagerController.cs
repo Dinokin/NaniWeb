@@ -9,7 +9,6 @@ using NaniWeb.Others;
 
 namespace NaniWeb.Controllers
 {
-    
     [Authorize(Roles = "Administrator, Moderator")]
     public class AnnouncementManagerController : Controller
     {
@@ -23,7 +22,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> List()
         {
             var model = await _naniWebContext.Announcements.ToListAsync();
-            
+
             return View("AnnouncementList", model);
         }
 
@@ -32,7 +31,7 @@ namespace NaniWeb.Controllers
         {
             return View("AddAnnouncement");
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Add(AddAnnouncement addAnnouncement)
         {
@@ -53,7 +52,7 @@ namespace NaniWeb.Controllers
             }
 
             TempData["Error"] = true;
-            
+
             return RedirectToAction("Add");
         }
 
@@ -67,7 +66,7 @@ namespace NaniWeb.Controllers
                 Title = announcement.Title,
                 Content = announcement.Content
             };
-            
+
             return View("EditAnnouncement", model);
         }
 

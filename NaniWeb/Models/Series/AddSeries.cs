@@ -12,13 +12,13 @@ namespace NaniWeb.Models.Series
         [Required] public string Artist { get; set; }
 
         [Required] public string Synopsis { get; set; }
-        
+
         public int? MangadexId { get; set; }
-        
+
         [Required] public Data.Series.SeriesType Type { get; set; }
 
         [Required] public Data.Series.SeriesStatus Status { get; set; }
-        
+
         [Required] public IFormFile Cover { get; set; }
     }
 }

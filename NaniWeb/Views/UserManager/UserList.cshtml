@@ -1,39 +1,39 @@
-@model List<User>
-
+@using Microsoft.AspNetCore.Identity
 @{
+    var users = (Tuple<IdentityUser<int>, string>[]) ViewData["Users"];
     ViewData["Title"] = "Users";
 }
 
 <partial name="_AdminNav"/>
 
-<div class="container">
-    <div class="card bg-primary border-secondary mt-5">
+<div class="container mt-5">
+    <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Users</h5>
         <div class="card-body">
-            <div class="row text-center text-nowrap mb-2">
+            <div class="row text-center mb-2">
                 <div class="col-4">
                     <strong>User</strong>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <strong>Role</strong>
                 </div>
-                <div class="col-5">
+                <div class="col-4">
                     <strong>Actions</strong>
                 </div>
             </div>
-            @foreach (var user in Model.OrderBy(key => key.Id))
+            @foreach (var (item1, item2) in users)
             {
-                <div class="row text-center text-nowrap mb-1">
-                    <div class="col-4 my-auto">
-                        @user.Username
+                <div class="row mb-1">
+                    <div class="col-4 my-auto text-center text-truncate">
+                        @item1.UserName
                     </div>
-                    <div class="col-3 my-auto">
-                        @user.Role
+                    <div class="col-4 my-auto text-center text-truncate">
+                        @item2
                     </div>
-                    <div class="col-5">
-                        <div class="btn-group btn-block" role="group" aria-label="Actions">
-                            <a class="btn btn-warning w-100 change-role" href="@Url.Action("EditRole", new {userId = user.Id})">Change roles</a>
-                            <a class="btn btn-danger w-100 delete-user" href="@Url.Action("Delete", new {userId = user.Id})">Delete</a>
+                    <div class="col-4">
+                        <div class="btn-group-vertical btn-block" role="group" aria-label="Actions">
+                            <a class="btn btn-sm btn-warning change-role text-truncate" href="@Url.Action("EditRole", new {userId = item1.Id})">Change roles</a>
+                            <a class="btn btn-sm btn-danger delete-user text-truncate" href="@Url.Action("Delete", new {userId = item1.Id})">Delete</a>
                         </div>
                     </div>
                 </div>
@@ -89,28 +89,28 @@
 {
     <script>
         var address = null;
-        
+
         $(function() {
             $("#users").addClass("active");
         });
-        
+
         $(".change-role").click(function(event) {
             event.preventDefault();
             $("#role_modal").modal("show");
             address = $(this).attr("href");
         });
-        
+
         $(".delete-user").click(function(event) {
             event.preventDefault();
             $("#delete_modal").modal("show");
             address = $(this).attr("href");
         });
-        
+
         $("#confirm_role").click(function(event) {
             const role = $("#role_selector option:selected").text();
             window.location = address + "&role=" + role;
         });
-        
+
         $("#confirm_delete").click(function() {
             window.location = address;
         });

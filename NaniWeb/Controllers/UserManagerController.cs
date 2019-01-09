@@ -1,14 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NaniWeb.Models.Users;
 
 namespace NaniWeb.Controllers
 {
-    
     [Authorize(Roles = "Administrator")]
     public class UserManagerController : Controller
     {
@@ -21,21 +20,18 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> List()
         {
-            var model = new List<User>();
-            
-            foreach (var identityUser in _userManager.Users)
+            var users = await _userManager.Users.OrderBy(user => user.UserName).ToArrayAsync();
+            var userRoleArray = new Tuple<IdentityUser<int>, string>[_userManager.Users.Count()];
+
+            for (var i = 0; i < users.Length; i++)
             {
-                var roles = await _userManager.GetRolesAsync(identityUser);
-                
-                model.Add(new User
-                {
-                    Id = identityUser.Id,
-                    Username = identityUser.UserName,
-                    Role = roles.Count > 0 ? roles[0] : "None"
-                });
+                var roles = await _userManager.GetRolesAsync(users[i]);
+                userRoleArray[i] = new Tuple<IdentityUser<int>, string>(users[i], roles.Count > 0 ? roles[0] : "None");
             }
-            
-            return View("UserList", model);
+
+            ViewData["Users"] = userRoleArray;
+
+            return View("UserList");
         }
 
         public async Task<IActionResult> EditRole(int userId, string role)
@@ -55,7 +51,7 @@ namespace NaniWeb.Controllers
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
             await _userManager.DeleteAsync(user);
-            
+
             return RedirectToAction("List");
         }
     }

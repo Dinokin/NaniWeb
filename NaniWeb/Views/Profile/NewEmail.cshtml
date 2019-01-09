@@ -1,14 +1,14 @@
 @model NewEmailForm
 
 @{
-    ViewData["Title"] = "Change email - Profile";
+    ViewData["Title"] = "Change Email - Profile";
 }
 
 <partial name="_HomeNav"/>
 
-<div class="container w-25 mt-5">
+<div class="container profile-card w-25 mt-5">
     <div class="card bg-primary border-secondary">
-        <h5 class="card-header bg-primary">Change email</h5>
+        <h5 class="card-header bg-primary">Change Email</h5>
         <div class="card-body">
             @if (TempData["Error"] != null && (bool) TempData["Error"])
             {
@@ -27,13 +27,13 @@
             <form id="new_email_form" asp-action="ChangeEmail" novalidate>
                 <fieldset>
                     <div class="form-group">
-                        <label for="email">New email address</label>
-                        <input class="form-control" id="email" asp-for="NewEmail" aria-describedby="email_help" placeholder="Email address">
+                        <label for="email">New Email Address</label>
+                        <input class="form-control" id="email" asp-for="NewEmail" aria-describedby="email_help" placeholder="Email Address">
                         <small id="email_help" class="form-text text-muted">Your new email address.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-block btn-warning" id="submit" type="submit">Send confirmation</button>
+                    <button class="btn btn-block btn-warning" id="submit" type="submit">Send Confirmation</button>
                 </div>
             </form>
         </div>

@@ -1,9 +1,6 @@
 ﻿using System.Net;
-using System.Runtime.InteropServices;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
-using NaniWeb.Others;
 
 namespace NaniWeb
 {
