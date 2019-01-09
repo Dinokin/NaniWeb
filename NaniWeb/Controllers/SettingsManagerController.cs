@@ -132,6 +132,9 @@ namespace NaniWeb.Controllers
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer ?? string.Empty));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser ?? string.Empty));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword ?? string.Empty));
+                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", emailForm.SiteEmail));
+                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSiteKey", emailForm.RecaptchaSiteKey));
+                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSecretKey", emailForm.RecaptchaSecretKey));
 
                 TempData["Error"] = false;
 
@@ -233,6 +236,8 @@ namespace NaniWeb.Controllers
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser ?? string.Empty));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword ?? string.Empty));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
+                
+                TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
             }

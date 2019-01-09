@@ -1,12 +1,16 @@
 ﻿using System;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NaniWeb.Data;
 using NaniWeb.Models.Home;
+using NaniWeb.Others;
 using NaniWeb.Others.Services;
 
 namespace NaniWeb.Controllers
@@ -14,13 +18,15 @@ namespace NaniWeb.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IEmailSender _emailSender;
         private readonly NaniWebContext _naniWebContext;
         private readonly ReCaptcha _reCaptcha;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public HomeController(IEmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
+        public HomeController(IHostingEnvironment hostingEnvironment, IEmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
         {
+            _hostingEnvironment = hostingEnvironment;
             _emailSender = emailSender;
             _naniWebContext = naniWebContext;
             _reCaptcha = reCaptcha;
@@ -58,6 +64,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Project(string urlSlug)
         {
             var series = await _naniWebContext.Series.Include(srs => srs.Chapters).SingleAsync(srs => srs.UrlSlug == urlSlug);
+            series.Chapters = series.Chapters.OrderByDescending(chp => chp.ChapterNumber).ToList();
 
             ViewData["Series"] = series;
 
@@ -97,6 +104,36 @@ namespace NaniWeb.Controllers
             }
 
             return View("Read");
+        }
+
+        public async Task<FileResult> Download(string urlSlug, decimal chapterNumber)
+        {
+            var chapter = await _naniWebContext.Chapters.Include(chp => chp.Series).Include(chp => chp.Pages).SingleAsync(chp => chp.Series.UrlSlug == urlSlug && chp.ChapterNumber == chapterNumber);
+            var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
+            var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
+            var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
+            var pagesOrigin = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+
+
+            if (System.IO.File.Exists(file))
+            {
+                var bytes = await System.IO.File.ReadAllBytesAsync(file);
+                return File(bytes, "application/zip", $"{chapter.Series.Name}_{chapterNumber}.zip");
+            }
+            else
+            {
+                for (var i = 0; i < chapter.Pages.Count ; i++)
+                {
+                    System.IO.File.Copy($"{pagesOrigin}{chapter.Pages[i].Id}.png", $"{temp.FullName}{Path.DirectorySeparatorChar}{i}.png");
+                }
+
+                ZipFile.CreateFromDirectory(temp.FullName, file, CompressionLevel.Optimal, false);
+
+                temp.Delete(true);
+
+                var bytes = await System.IO.File.ReadAllBytesAsync(file);
+                return File(bytes, "application/zip", $"{chapter.Series.Name}_{chapterNumber}.zip");
+            }
         }
 
         public async Task<IActionResult> Projects()

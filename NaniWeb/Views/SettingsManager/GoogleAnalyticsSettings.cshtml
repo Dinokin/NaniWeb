@@ -26,23 +26,23 @@
             }
             <form id="google_analytics_settings_form" asp-controller="SettingsManager" asp-action="GoogleAnalytics" novalidate>
                 <fieldset>
-                    <legend>Google Analytics settings</legend>
+                    <legend>Google Analytics Settings</legend>
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" aria-describedby="enable_google_analytics_help" id="enable_google_analytics" asp-for="EnableGoogleAnalytics"/>Enable google analytics
+                                <input class="form-check-input" aria-describedby="enable_google_analytics_help" id="enable_google_analytics" asp-for="EnableGoogleAnalytics"/>Enable Google Analytics
                             </label>
                         </div>
-                        <small id="enable_google_analytics_help" class="form-text text-muted">Whether you want to enable google analytics on this site.</small>
+                        <small id="enable_google_analytics_help" class="form-text text-muted">Enable Google Analytics on public pages.</small>
                     </div>
                     <div class="form-group">
-                        <label for="google_analytics_tracking_code">Tracking code</label>
-                        <input class="form-control" id="google_analytics_tracking_code" asp-for="GoogleAnalyticsTrackingCode" aria-describedby="google_analytics_tracking_code_help" placeholder="Google Analytics tracking code">
-                        <small id="google_analytics_tracking_code_help" class="form-text text-muted">The code used by google analytics to identify your website.</small>
+                        <label for="google_analytics_tracking_code">Tracking Code</label>
+                        <input class="form-control" id="google_analytics_tracking_code" asp-for="GoogleAnalyticsTrackingCode" aria-describedby="google_analytics_tracking_code_help" placeholder="Tracking Code">
+                        <small id="google_analytics_tracking_code_help" class="form-text text-muted">The code used by Google Analytics to identify this website.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Settings</button>
                 </div>
             </form>
         </div>

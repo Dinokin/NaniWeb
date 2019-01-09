@@ -1,6 +1,7 @@
-@model List<NaniWeb.Data.Announcement>
+@using NaniWeb.Data
 
 @{
+    var announcements = (Announcement[]) ViewData["Announcements"];
     ViewData["Title"] = "Announcements";
 }
 
@@ -22,7 +23,7 @@
                     </p>
                 </div>
             </div>
-            @foreach (var announcement in Model.OrderByDescending(key => key.PostDate))
+            @foreach (var announcement in announcements)
             {
                 <div class="row text-center text-nowrap">
                     <div class="col-7">

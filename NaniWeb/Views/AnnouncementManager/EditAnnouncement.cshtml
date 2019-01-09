@@ -19,7 +19,7 @@
             }
             <form id="edit_announcement_form" asp-controller="AnnouncementManager" asp-action="Edit" novalidate>
                 <fieldset>
-                    <legend>Edit announcement</legend>
+                    <legend>Edit Announcement</legend>
                     <input type="hidden" asp-for="AnnouncementId"/>
                     <div class="form-group">
                         <label for="announcement_title">Title</label>
@@ -29,11 +29,11 @@
                     <div class="form-group">
                         <label for="announcement_content">Content</label>
                         <textarea class="form-control" id="announcement_content" asp-for="Content" aria-describedby="announcement_content_help" placeholder="Content" rows="10"></textarea>
-                        <small id="announcement_content_help" class="form-text text-muted">The content of this announcement. Use HTML.</small>
+                        <small id="announcement_content_help" class="form-text text-muted">The content of this announcement. This must be written in HTML.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save edits</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Edits</button>
                 </div>
             </form>
         </div>

@@ -26,23 +26,23 @@
             }
             <form id="disqus_settings_form" asp-controller="SettingsManager" asp-action="Disqus" novalidate>
                 <fieldset>
-                    <legend>Disqus settings</legend>
+                    <legend>Disqus Settings</legend>
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
                                 <input class="form-check-input" aria-describedby="enable_disqus_help" id="enable_disqus" asp-for="EnableDisqus"/>Enable disqus
                             </label>
                         </div>
-                        <small id="enable_disqus_help" class="form-text text-muted">Whether you want to enable disqus forum on this site.</small>
+                        <small id="enable_disqus_help" class="form-text text-muted">Enable disqus forums on the project pages and on the reader.</small>
                     </div>
                     <div class="form-group">
-                        <label for="disqus_shortname">Disqus shortname</label>
-                        <input class="form-control" id="disqus_shortname" asp-for="DisqusShortname" aria-describedby="disqus_shortname_help" placeholder="Disqus shortname">
+                        <label for="disqus_shortname">Disqus Shortname</label>
+                        <input class="form-control" id="disqus_shortname" asp-for="DisqusShortname" aria-describedby="disqus_shortname_help" placeholder="Disqus Shortname">
                         <small id="disqus_shortname_help" class="form-text text-muted">Your disqus forum's shortname.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Settings</button>
                 </div>
             </form>
         </div>

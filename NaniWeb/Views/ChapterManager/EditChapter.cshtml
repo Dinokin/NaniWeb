@@ -21,7 +21,7 @@
             }
             <form id="discord_settings_form" enctype="multipart/form-data" asp-controller="ChapterManager" asp-action="Edit" novalidate>
                 <fieldset>
-                    <legend>Edit chapter</legend>
+                    <legend>Edit Chapter</legend>
                     <input type="hidden" asp-for="ChapterId"/>
                     <div class="form-group">
                         <label for="chapter_volume">Volume</label>
@@ -29,8 +29,8 @@
                         <small id="chapter_volume_help" class="form-text text-muted">If this chapter is part of a volume add it here, otherwise keep it zero or empty.</small>
                     </div>
                     <div class="form-group">
-                        <label for="chapter_number">Chapter number</label>
-                        <input class="form-control" id="chapter_number" asp-for="ChapterNumber" aria-describedby="chapter_number_help" placeholder="Chapter number" type="number" step="0.01">
+                        <label for="chapter_number">Chapter Number</label>
+                        <input class="form-control" id="chapter_number" asp-for="ChapterNumber" aria-describedby="chapter_number_help" placeholder="Chapter Number" type="number" step="0.01">
                         <small id="chapter_number_help" class="form-text text-muted">The number of this chapter.</small>
                     </div>
                     <div class="form-group">
@@ -44,25 +44,25 @@
                                 <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)"/>Upload to Mangadex
                             </label>
                         </div>
-                        <small id="upload_to_mangadex_help" class="form-text text-muted">Whether you want to upload to mangadex or not. Remember to check if you have a proper mangadex id for this chapter and series.</small>
+                        <small id="upload_to_mangadex_help" class="form-text text-muted">Whether you want to upload this chapter to Mangadex or not. Remember to check if you have a proper Mangadex ID for this chapter and series.</small>
                     </div>
                     <div class="form-group">
                         <label for="chapter_mangadex_id">Mangadex ID</label>
                         <input class="form-control" id="chapter_mangadex_id" asp-for="MangadexId" aria-describedby="chapter_mangadex_id_help" placeholder="Mangadex ID" @(enableMangadex ? string.Empty : "disabled")>
-                        <small id="chapter_mangadex_id_help" class="form-text text-muted">The mangadex id of this chapter. Used for automatic uploading.</small>
+                        <small id="chapter_mangadex_id_help" class="form-text text-muted">The Mangadex ID of this chapter. Used for automatic uploading.</small>
                     </div>
                     <div class="form-group">
                         <div class="input-group" aria-describedby="chapter_pages_help">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="chapter_pages" accept=".zip" asp-for="Pages">
-                                <label class="custom-file-label" for="chapter_pages" id="chapter_pages_label">Choose file</label>
+                                <label class="custom-file-label" for="chapter_pages" id="chapter_pages_label">Choose File</label>
                             </div>
                         </div>
-                        <small id="chapter_pages_help" class="form-text text-muted">A zip file with all the pages in the png format.</small>
+                        <small id="chapter_pages_help" class="form-text text-muted">A zip file with all pages. The pages must be in the PNG format.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save edits</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Edits</button>
                 </div>
             </form>
         </div>

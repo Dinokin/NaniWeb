@@ -26,19 +26,19 @@
             }
             <form id="discord_settings_form" asp-controller="SettingsManager" asp-action="Discord" novalidate>
                 <fieldset>
-                    <legend>Discord settings</legend>
+                    <legend>Discord Settings</legend>
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" aria-describedby="enable_discord_help" id="enable_discord" asp-for="EnableDiscordBot"/>Enable discord bot
+                                <input class="form-check-input" aria-describedby="enable_discord_help" id="enable_discord" asp-for="EnableDiscordBot"/>Enable Discord Announcements
                             </label>
                         </div>
-                        <small id="enable_discord_help" class="form-text text-muted">Whether you want to enable discord auto-upload or not.</small>
+                        <small id="enable_discord_help" class="form-text text-muted">Enable automatic discord announcements.</small>
                     </div>
                     <div class="form-group">
-                        <label for="discord_token">Discord token</label>
-                        <input class="form-control" id="discord_token" asp-for="DiscordToken" aria-describedby="discord_token_help" placeholder="Discord token">
-                        <small id="discord_token_help" class="form-text text-muted">Your bot's token. Necessary to connect to discord's servers.</small>
+                        <label for="discord_token">Discord Token</label>
+                        <input class="form-control" id="discord_token" asp-for="DiscordToken" aria-describedby="discord_token_help" placeholder="Discord Token">
+                        <small id="discord_token_help" class="form-text text-muted">Your bot's access token.</small>
                     </div>
                     <div class="form-group">
                         <label for="discord_channel_id">Channel ID</label>
@@ -47,7 +47,7 @@
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Settings</button>
                 </div>
             </form>
         </div>

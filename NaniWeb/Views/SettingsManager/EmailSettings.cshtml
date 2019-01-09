@@ -26,14 +26,14 @@
             }
             <form id="email_settings_form" asp-controller="SettingsManager" asp-action="Email" novalidate>
                 <fieldset>
-                    <legend>Email settings</legend>
+                    <legend>Email Settings</legend>
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" aria-describedby="enable_email_recovery_help" id="enable_email_recovery" asp-for="EnableEmailRecovery"/>Enable email recovery
+                                <input class="form-check-input" aria-describedby="enable_email_recovery_help" id="enable_email_recovery" asp-for="EnableEmailRecovery"/>Enable Email
                             </label>
                         </div>
-                        <small id="enable_email_recovery_help" class="form-text text-muted">Whether you want to enable email validation and password recovery on this site.</small>
+                        <small id="enable_email_recovery_help" class="form-text text-muted">This functionality enables account recovery thought email and a contact form.</small>
                     </div>
                     <div class="form-group">
                         <label for="smtp_server">SMTP Server</label>
@@ -42,28 +42,28 @@
                     </div>
                     <div class="form-group">
                         <label for="smtp_user">SMTP User</label>
-                        <input class="form-control" id="smtp_user" asp-for="SmtpUser" aria-describedby="smtp_user_help" placeholder="SMTP Server user">
+                        <input class="form-control" id="smtp_user" asp-for="SmtpUser" aria-describedby="smtp_user_help" placeholder="SMTP Server User">
                         <small id="smtp_user_help" class="form-text text-muted">The user to authenticate with the specified SMTP server.</small>
                     </div>
                     <div class="form-group">
                         <label for="smtp_password">SMTP Password</label>
-                        <input class="form-control" id="smtp_password" asp-for="SmtpPassword" aria-describedby="smtp_password_help" placeholder="SMTP Server password">
+                        <input class="form-control" id="smtp_password" asp-for="SmtpPassword" aria-describedby="smtp_password_help" placeholder="SMTP Server Password">
                         <small id="smtp_password_help" class="form-text text-muted">The password to authenticate with the specified SMTP server.</small>
                     </div>
                     <div class="form-group">
-                        <label for="site_email">Site email</label>
-                        <input class="form-control" id="site_email" asp-for="SiteEmail" aria-describedby="site_email_help" placeholder="Email address">
+                        <label for="site_email">Site Email</label>
+                        <input class="form-control" id="site_email" asp-for="SiteEmail" aria-describedby="site_email_help" placeholder="Email Address">
                         <small id="site_email_help" class="form-text text-muted">The destination of the messages sent through the contact form.</small>
                     </div>
                     <div class="form-group">
-                        <label for="recaptcha_site_key">Recaptcha site key</label>
-                        <input class="form-control" id="recaptcha_site_key" asp-for="RecaptchaSiteKey" aria-describedby="recaptcha_site_key_help" placeholder="Recaptcha site key">
-                        <small id="recaptcha_site_key_help" class="form-text text-muted">Your recaptcha site key.</small>
+                        <label for="recaptcha_site_key">ReCaptcha Site Key</label>
+                        <input class="form-control" id="recaptcha_site_key" asp-for="RecaptchaSiteKey" aria-describedby="recaptcha_site_key_help" placeholder="ReCaptcha Site Key">
+                        <small id="recaptcha_site_key_help" class="form-text text-muted">Your site key. Settings up ReCaptcha is necessary to avoid spam through the contact form.</small>
                     </div>
                     <div class="form-group">
-                        <label for="recaptcha_secret_key">Recaptcha secret key</label>
-                        <input class="form-control" id="recaptcha_secret_key" asp-for="RecaptchaSecretKey" aria-describedby="recaptcha_secret_key_help" placeholder="Recaptcha secret key">
-                        <small id="recaptcha_secret_key_help" class="form-text text-muted">Your recaptcha secret key.</small>
+                        <label for="recaptcha_secret_key">ReCaptcha Secret Key</label>
+                        <input class="form-control" id="recaptcha_secret_key" asp-for="RecaptchaSecretKey" aria-describedby="recaptcha_secret_key_help" placeholder="ReCaptcha Secret Key">
+                        <small id="recaptcha_secret_key_help" class="form-text text-muted">Your secret key.</small>
                     </div>
                 </fieldset>
                 <div>

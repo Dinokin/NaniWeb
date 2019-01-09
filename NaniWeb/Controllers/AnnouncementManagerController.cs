@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,11 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> List()
         {
-            var model = await _naniWebContext.Announcements.ToListAsync();
+            var announcements = await _naniWebContext.Announcements.OrderByDescending(ann => ann.PostDate).ToArrayAsync();
 
-            return View("AnnouncementList", model);
+            ViewData["Announcements"] = announcements;
+
+            return View("AnnouncementList");
         }
 
         [HttpGet]

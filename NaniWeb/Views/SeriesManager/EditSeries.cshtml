@@ -22,7 +22,7 @@
             }
             <form id="edit_series_form" enctype="multipart/form-data" asp-controller="SeriesManager" asp-action="Edit" novalidate>
                 <fieldset>
-                    <legend>Edit series</legend>
+                    <legend>Edit Series</legend>
                     <input type="hidden" asp-for="SeriesId"/>
                     <div class="form-group">
                         <label for="series_name">Name</label>
@@ -50,29 +50,29 @@
                         <small id="series_mangadex_id_help" class="form-text text-muted">The mangadex id of this series. Used for automatic uploading.</small>
                     </div>
                     <div class="form-group">
-                        <label for="series_type">Series type</label>
+                        <label for="series_type">Series Type</label>
                         <select class="form-control" id="series_type" asp-for="Type" asp-items="Html.GetEnumSelectList<Series.SeriesType>()" aria-describedby="series_type_help">
                         </select>
                         <small id="series_type_help" class="form-text text-muted">The type of this series. Used to determine the default layout for the reader.</small>
                     </div>
                     <div class="form-group">
-                        <label for="series_status">Series status</label>
+                        <label for="series_status">Series Status</label>
                         <select class="form-control" id="series_status" asp-for="Status" asp-items="Html.GetEnumSelectList<Series.SeriesStatus>()" aria-describedby="series_status_help">
                         </select>
-                        <small id="series_status_help" class="form-text text-muted">The status of this series.</small>
+                        <small id="series_status_help" class="form-text text-muted">The scanlation status of this series.</small>
                     </div>
                     <div class="form-group">
                         <div class="input-group" aria-describedby="series_cover_help">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="series_cover" accept=".png" asp-for="Cover">
-                                <label class="custom-file-label" for="series_cover" id="series_cover_label">Choose file</label>
+                                <label class="custom-file-label" for="series_cover" id="series_cover_label">Choose File</label>
                             </div>
                         </div>
-                        <small id="series_cover_help" class="form-text text-muted">A cover page for this series in the png format.</small>
+                        <small id="series_cover_help" class="form-text text-muted">A cover page for this series. The image must be in the PNG format.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save edits</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Edits</button>
                 </div>
             </form>
         </div>

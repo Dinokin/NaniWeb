@@ -33,22 +33,22 @@
                                 <input class="form-check-input" aria-describedby="enable_fcm_help" id="enable_fcm" asp-for="EnableFcm"/>Enable FCM
                             </label>
                         </div>
-                        <small id="enable_fcm_help" class="form-text text-muted">Whether you want to firebase push notification service.</small>
+                        <small id="enable_fcm_help" class="form-text text-muted">Enable Firebase Cloud Messaging push notifications.</small>
                     </div>
                     <div class="form-group">
-                        <label for="fcm_api_key">FCM Api key</label>
-                        <input class="form-control" id="fcm_api_key" asp-for="FcmApiKey" aria-describedby="fcm_api_key_help" placeholder="FCM Api key">
-                        <small id="fcm_api_key_help" class="form-text text-muted">Your firebase api key.</small>
+                        <label for="fcm_api_key">Firebase Api Key</label>
+                        <input class="form-control" id="fcm_api_key" asp-for="FcmApiKey" aria-describedby="fcm_api_key_help" placeholder="Firebase Api Key">
+                        <small id="fcm_api_key_help" class="form-text text-muted">Your Firebase's Api Key.</small>
                     </div>
                     <div class="form-group">
-                        <label for="fcm_project_id">FCM Project id</label>
-                        <input class="form-control" id="fcm_project_id" asp-for="FcmProjectId" aria-describedby="fcm_project_id_help" placeholder="FCM Project ID">
-                        <small id="fcm_project_id_help" class="form-text text-muted">Your firebase project ID.</small>
+                        <label for="fcm_project_id">Firebase Project ID</label>
+                        <input class="form-control" id="fcm_project_id" asp-for="FcmProjectId" aria-describedby="fcm_project_id_help" placeholder="Firebase Project ID">
+                        <small id="fcm_project_id_help" class="form-text text-muted">Your Firebase's Project ID.</small>
                     </div>
                     <div class="form-group">
                         <label for="fcm_sender_id">FCM Sender ID</label>
                         <input class="form-control" id="fcm_sender_id" asp-for="FcmSenderId" aria-describedby="fcm_sender_id_help" placeholder="FCM Sender ID">
-                        <small id="fcm_sender_id_help" class="form-text text-muted">Your firebase cloud messaging sender ID.</small>
+                        <small id="fcm_sender_id_help" class="form-text text-muted">Your Firebase Cloud Messaging Sender ID.</small>
                     </div>
                     <div class="form-group">
                         <div class="input-group" aria-describedby="fcm_file_help">
@@ -57,11 +57,11 @@
                                 <label class="custom-file-label" for="fcm_key" id="fcm_key_label">Choose file</label>
                             </div>
                         </div>
-                        <small id="fcm_file_help" class="form-text text-muted">The key file that you downloaded from the firebase console.</small>
+                        <small id="fcm_file_help" class="form-text text-muted">A key file. Downloadable from your Firebase's project console.</small>
                     </div>
                 </fieldset>
                 <div>
-                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save settings</button>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Settings</button>
                 </div>
             </form>
         </div>

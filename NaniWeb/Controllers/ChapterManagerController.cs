@@ -38,7 +38,9 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator, Uploader")]
         public async Task<IActionResult> List(int id)
         {
-            ViewData["Chapters"] = await _naniWebContext.Chapters.Where(chp => chp.SeriesId == id).OrderByDescending(key => key.ChapterNumber).ToListAsync();
+            var chapters = await _naniWebContext.Chapters.Where(chp => chp.SeriesId == id).OrderByDescending(key => key.ChapterNumber).ToArrayAsync();
+
+            ViewData["Chapters"] = chapters;
 
             return View("ChapterList");
         }
@@ -48,6 +50,7 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Add(int id)
         {
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
+            
             var model = new ChapterAdd
             {
                 SeriesId = series.Id
@@ -136,7 +139,7 @@ namespace NaniWeb.Controllers
                 });
                 tasks[1] = Task.Run(async () =>
                 {
-                    await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
+                    await _firebaseCloudMessaging.SendNotification($"A new release is available at {siteName}!", $"New chapter of {series.Name} is available at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
                 });
                 tasks[2] = Task.Run(async () => { await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}"); });
 
@@ -189,8 +192,9 @@ namespace NaniWeb.Controllers
                     var tempPages = temp.CreateSubdirectory("Pages");
                     var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
                     var pagesZip = $"{temp.FullName}{Path.DirectorySeparatorChar}pages.zip";
-
                     var pages = _naniWebContext.Pages.Where(pg => pg.Chapter == chapter);
+                    var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
+                    var downloadFile = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
 
                     foreach (var page in pages)
                         System.IO.File.Delete($"{destination}{page.Id}.png");
@@ -222,6 +226,9 @@ namespace NaniWeb.Controllers
                         chapter.Pages.Add(page);
 
                         pageList[i].CopyTo($"{destination}{page.Id}.png");
+                        
+                        if (System.IO.File.Exists(downloadFile))
+                            System.IO.File.Delete(downloadFile);
                     }
 
                     if (chapterEdit.UploadToMangadex && mangadexChapter.MangadexId > 0)

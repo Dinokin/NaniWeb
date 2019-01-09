@@ -44,3 +44,22 @@
 .profile-card {
     min-width: 310px;
 }
+
+.mw-50 {
+    max-width: 50%;
+}
+
+.to-top {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.6 !important;
+    box-shadow: none !important;
+    outline:0 !important;
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
+    font-size: 16px;
+    padding-left: 12px;
+    padding-top: 10px;
+}

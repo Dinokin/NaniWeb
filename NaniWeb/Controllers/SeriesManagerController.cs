@@ -25,7 +25,9 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator, Uploader")]
         public async Task<IActionResult> List()
         {
-            ViewData["Series"] = await _naniWebContext.Series.OrderBy(key => key.Id).ToListAsync();
+            var series = await _naniWebContext.Series.OrderBy(key => key.Id).ToArrayAsync();
+
+            ViewData["Series"] = series;
 
             return View("SeriesList");
         }
@@ -86,8 +88,8 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Edit(int id)
         {
-            var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
-            var mangadex = await _naniWebContext.MangadexSeries.SingleOrDefaultAsync(srs => srs.Series == series);
+            var series = await _naniWebContext.Series.Include(srs => srs.MangadexInfo).SingleAsync(srs => srs.Id == id);
+
             var model = new EditSeries
             {
                 SeriesId = series.Id,
@@ -97,7 +99,7 @@ namespace NaniWeb.Controllers
                 Synopsis = series.Synopsis,
                 Type = series.Type,
                 Status = series.Status,
-                MangadexId = mangadex.MangadexId
+                MangadexId = series.MangadexInfo.MangadexId
             };
 
             return View("EditSeries", model);
@@ -108,8 +110,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == editSeries.SeriesId);
-                var mangadex = await _naniWebContext.MangadexSeries.SingleOrDefaultAsync(srs => srs.Series == series);
+                var series = await _naniWebContext.Series.Include(srs => srs.MangadexInfo).SingleAsync(srs => srs.Id == editSeries.SeriesId);
 
                 series.Name = editSeries.Name;
                 series.Author = editSeries.Author;
@@ -118,8 +119,7 @@ namespace NaniWeb.Controllers
                 series.Type = editSeries.Type;
                 series.Status = editSeries.Status;
                 series.UrlSlug = Utils.GenerateSlug(editSeries.Name);
-                mangadex.MangadexId = editSeries.MangadexId ?? 0;
-                series.MangadexInfo = mangadex;
+                series.MangadexInfo.MangadexId = editSeries.MangadexId ?? 0;
 
                 _naniWebContext.Series.Update(series);
                 await _naniWebContext.SaveChangesAsync();
@@ -154,7 +154,7 @@ namespace NaniWeb.Controllers
             var coversLocation = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}";
             var pagesLocation = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
-            var pages = _naniWebContext.Pages.Where(pg => pg.Chapter.SeriesId == id);
+            var pages = _naniWebContext.Pages.Where(pg => pg.Chapter.SeriesId == series.Id);
 
             System.IO.File.Delete($"{coversLocation}{series.Id}.png");
 

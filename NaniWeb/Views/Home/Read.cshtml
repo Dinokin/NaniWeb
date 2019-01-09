@@ -19,6 +19,11 @@
 @section Header
 {
     <partial name="_GoogleAnalytics"/>
+    
+    @if (readerMode == Series.SeriesType.Webtoon)
+    {
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    }
 }
 
 <partial name="_HomeNav"/>
@@ -27,35 +32,33 @@
     @if (readerMode == Series.SeriesType.Manga)
     {
         <div class="row">
-            <div class="col-sm-4 my-1">
-                <select id="series_selector" class="custom-select w-100">
+            <div class="col-md-4 my-1 px-1">
+                <select id="series_selector" class="custom-select">
                     @foreach (var srs in seriesList)
                     {
                         <option value="@Url.Action("Project", new {urlSlug = srs.UrlSlug, chapterNumber = string.Empty})" selected="@(srs == series ? "selected" : null)">@srs.Name</option>
                     }
                 </select>
             </div>
-            <div class="col-sm-4 my-1">
-                <select id="chapter_selector" class="custom-select w-100">
+            <div class="col-md-4 my-1 px-1">
+                <select id="chapter_selector" class="custom-select">
                     @foreach (var chap in chapters)
                     {
                         <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chap.ChapterNumber})" selected="@(chap == chapter ? "selected" : null)">@(chap.Volume > 0 ? $"Vol. {chap.Volume} " : string.Empty)Ch. @(chap.ChapterNumber)@(string.IsNullOrEmpty(chap.Name) ? string.Empty : $" - {chap.Name}")</option>
                     }
                 </select>
             </div>
-            <div class="col-sm-2 my-1">
-                <select id="page_selector" class="custom-select w-100">
+            <div class="col-md-4 my-1 px-1 form-inline flex-nowrap">
+                <select id="page_selector" class="custom-select mw-50 w-100 mr-3">
                     @foreach (var chPage in pages)
                     {
                         <option value="@chPage.PageNumber">Page @(chPage.PageNumber + 1)</option>
                     }
                 </select>
-            </div>
-            <div class="col-sm-2 my-1">
-                <select id="mode_selector" class="custom-select w-100">
+                <select id="mode_selector" class="custom-select mw-50 w-100">
                     @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
                     {
-                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single page" : "Long strip")</option>
+                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single Page" : "Long Strip")</option>
                     }
                 </select>
             </div>
@@ -64,7 +67,7 @@
     else
     {
         <div class="row">
-            <div class="col-sm-5 my-1">
+            <div class="col-sm-5 my-1 px-1">
                 <select id="series_selector" class="custom-select w-100">
                     @foreach (var srs in seriesList)
                     {
@@ -72,7 +75,7 @@
                     }
                 </select>
             </div>
-            <div class="col-sm-5 my-1">
+            <div class="col-sm-5 my-1 px-1">
                 <select id="chapter_selector" class="custom-select w-100">
                     @foreach (var chap in chapters)
                     {
@@ -80,7 +83,7 @@
                     }
                 </select>
             </div>
-            <div class="col-sm-2 my-1">
+            <div class="col-sm-2 my-1 px-1">
                 <select id="mode_selector" class="custom-select w-100">
                     @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
                     {
@@ -110,6 +113,13 @@
 <div id="bottom" class="container my-2 rounded border border-secondary">
     <partial name="_DisqusDiv"/>
 </div>
+
+@if (readerMode == Series.SeriesType.Webtoon)
+{
+    <div>
+        <a class="to-top btn btn-lg btn-dark fas fa-chevron-up" id="to_top"href="#"></a>
+    </div>
+}
 
 @section Body
 {
