@@ -90,10 +90,14 @@ namespace NaniWeb.Controllers
                 {
                     var page = new Page
                     {
-                        Id = Guid.NewGuid(),
                         PageNumber = i
                     };
 
+                    do
+                    {
+                        page.Id = Guid.NewGuid();
+                    } while (System.IO.File.Exists($"{destination}{page.Id}.png"));
+                    
                     chapter.Pages.Add(page);
 
                     pageList[i].CopyTo($"{destination}{page.Id}.png");
@@ -212,10 +216,14 @@ namespace NaniWeb.Controllers
                     {
                         var page = new Page
                         {
-                            Id = Guid.NewGuid(),
                             PageNumber = i
                         };
 
+                        do
+                        {
+                            page.Id = Guid.NewGuid();
+                        } while (System.IO.File.Exists($"{destination}{page.Id}.png"));
+                        
                         chapter.Pages.Add(page);
 
                         pageList[i].CopyTo($"{destination}{page.Id}.png");
