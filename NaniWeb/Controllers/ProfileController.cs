@@ -54,8 +54,8 @@ namespace NaniWeb.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, newEmailForm.NewEmail);
 
-                var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("Confirm", "SignIn", new {userId = user.Id, code})}";
-                await _emailSender.SendEmailAsync(user.Email, "Email change requested", $"Click <a href='{callbackUrl}'>here</a> to confirm your new email.");
+                var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Confirm", "SignIn", new {userId = user.Id, code})}";
+                await _emailSender.SendEmailAsync(user.Email, "Email change requested", $"Click on the following link to change your email. Link: {callbackUrl}");
             }
             else
                 TempData["Error"] = true;

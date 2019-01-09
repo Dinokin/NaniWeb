@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="@SettingsKeeper.GetSetting("SiteDescription").Value">
-    <title>@ViewData["Title"] - @SettingsKeeper.GetSetting("SiteName").Value</title>
+    <title>@ViewData["Title"]@(ViewData["TitleSeparator"] ?? " - ")@SettingsKeeper.GetSetting("SiteName").Value</title>
     <link rel="icon" href="~/assets/icon.png">
     <link rel="stylesheet" href="~/libs/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/libs/css/site_v1.css"/>

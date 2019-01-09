@@ -8,7 +8,6 @@
     var chapter = (Chapter) ViewData["Chapter"];
     var pages = (List<Page>) ViewData["Pages"];
     var lastPage = pages.Last();
-    var prevChapter = ViewData["prevChapter"] as Chapter;
     var nextChapter = ViewData["nextChapter"] as Chapter;
     var readerMode = (Series.SeriesType) ViewData["ReaderMode"];
     ViewData["Title"] = $"Chapter {chapter.ChapterNumber} - {series.Name}";
@@ -92,11 +91,11 @@
         </div>
     }
 </div>
-<div id="pages" class="container my-2 mw-100">
+<div id="pages" class="container my-2 p-0 mw-100">
 
     @if (readerMode == Series.SeriesType.Manga)
     {
-        <img id="manga_page" class="img-fluid mx-auto d-block clickable" src="~/images/pages/@($"{pages[0].Id}.png")" alt="">
+        <a href="#"><img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt=""></a>
     }
     else
     {

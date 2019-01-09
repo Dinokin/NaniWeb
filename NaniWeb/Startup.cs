@@ -83,11 +83,11 @@ namespace NaniWeb
             });
 
             services.AddSingleton(typeof(SettingsKeeper));
-            services.AddTransient(typeof(DiscordBot));
+            services.AddTransient(typeof(ReCaptcha));
             services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient(typeof(DiscordBot));
             services.AddTransient(typeof(MangadexUploader));
             services.AddTransient(typeof(FirebaseCloudMessaging));
-            services.AddTransient(typeof(FacebookPosting));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

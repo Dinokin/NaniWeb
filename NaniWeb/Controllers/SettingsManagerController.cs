@@ -31,6 +31,8 @@ namespace NaniWeb.Controllers
                 SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value,
                 EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value),
                 SiteEmail = _settingsKeeper.GetSetting("GroupsEmailAddress").Value,
+                RecaptchaSiteKey = _settingsKeeper.GetSetting("RecaptchaSiteKey").Value,
+                RecaptchaSecretKey = _settingsKeeper.GetSetting("RecaptchaSecretKey").Value,
                 SiteFooter = _settingsKeeper.GetSetting("SiteFooterCode").Value,
                 SiteSideBar = _settingsKeeper.GetSetting("SiteSideBar").Value,
                 SiteAboutPage = _settingsKeeper.GetSetting("SiteAboutPage").Value
@@ -44,7 +46,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[9];
+                var tasks = new Task[11];
                 var manifest = new ManifestBuilder
                 {
                     ShortName = generalForm.SiteName,
@@ -68,10 +70,12 @@ namespace NaniWeb.Controllers
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteUrl", generalForm.SiteUrl));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
                 tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", generalForm.SiteEmail));
-                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
-                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
-                tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
-                tasks[8] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
+                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSiteKey", generalForm.RecaptchaSiteKey));
+                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSecretKey", generalForm.RecaptchaSecretKey));
+                tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
+                tasks[8] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
+                tasks[9] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
+                tasks[10] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
 
                 TempData["Error"] = false;
 
@@ -388,52 +392,6 @@ namespace NaniWeb.Controllers
             }
 
             return RedirectToAction("Disqus");
-        }
-
-        [HttpGet]
-        public IActionResult Facebook()
-        {
-            var model = new FacebookForm
-            {
-                EnableFacebookPosting = bool.Parse(_settingsKeeper.GetSetting("EnableFacebookPosting").Value),
-                FacebookApiKey = _settingsKeeper.GetSetting("FacebookApiKey").Value
-            };
-
-            return View("FacebookSettings", model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Facebook(FacebookForm facebookForm)
-        {
-            var tasks = new Task[2];
-
-            if (facebookForm.EnableFacebookPosting)
-            {
-                if (ModelState.IsValid)
-                {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFacebookPosting", facebookForm.EnableFacebookPosting.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FacebookApiKey", facebookForm.FacebookApiKey));
-
-                    TempData["Error"] = false;
-
-                    await Task.WhenAll(tasks);
-                }
-                else
-                {
-                    TempData["Error"] = true;
-                }
-            }
-            else
-            {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFacebookPosting", facebookForm.EnableFacebookPosting.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FacebookApiKey", facebookForm.FacebookApiKey ?? string.Empty));
-
-                TempData["Error"] = false;
-
-                await Task.WhenAll(tasks);
-            }
-
-            return RedirectToAction("Facebook");
         }
     }
 }

@@ -23,9 +23,12 @@
             <li class="nav-item" id="about">
                 <a class="nav-link" href="@Url.Action("About", "Home")">About Us</a>
             </li>
-            <li class="nav-item" id="contact">
-                <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
-            </li>
+            @if (bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value))
+            {
+                <li class="nav-item" id="contact">
+                    <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>
+                </li>
+            }
         </ul>
         @if (SignInManager.IsSignedIn(User))
         {

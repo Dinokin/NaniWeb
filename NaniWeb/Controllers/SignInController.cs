@@ -103,8 +103,8 @@ namespace NaniWeb.Controllers
                 if (enableEmail)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("Confirm", new {userId = user.Id, code})}";
-                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
+                    var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Confirm", new {userId = user.Id, code})}";
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by clicking on the following link. Link: {callbackUrl}");
                 }
 
                 TempData["Result"] = enableEmail ? "EmailRegSent" : "RegComplete";
@@ -159,9 +159,9 @@ namespace NaniWeb.Controllers
                 return RedirectToAction("ResetPassword");
             }
 
-            var code = _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl")}{Url.Action("NewPassword", new {userId = user.Id, code})}";
-            await _emailSender.SendEmailAsync(user.Email, "Password reset requested", $"Click <a href='{callbackUrl}'>here</a> to reset your password.");
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("NewPassword", new {userId = user.Id, code})}";
+            await _emailSender.SendEmailAsync(user.Email, "Password reset requested", $"If you requested a password reset, click on the following link. Link: {callbackUrl}");
             TempData["Result"] = "EmailResSent";
 
             return RedirectToAction("SignIn");

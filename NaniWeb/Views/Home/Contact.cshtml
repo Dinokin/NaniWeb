@@ -1,7 +1,9 @@
+@inject SettingsKeeper SettingsKeeper;
 @model Contact
 
 @{
     ViewData["Title"] = "Contact";
+    var recaptchaKey = SettingsKeeper.GetSetting("RecaptchaSiteKey").Value;
 }
 
 @section Header
@@ -45,6 +47,7 @@
                                  <label for="contact_content">Message</label>
                                  <textarea class="form-control" id="contact_content" asp-for="Content" placeholder="Content" rows="10"></textarea>
                              </div>
+                             <div class="g-recaptcha" data-sitekey="@recaptchaKey"></div>
                          </fieldset>
                          <div>
                              <button class="btn btn-success float-right mt-3" id="submit" type="submit">Send message</button>
@@ -61,9 +64,34 @@
  
  @section Body
  {
+     <script src='https://www.google.com/recaptcha/api.js'></script>
      <script>
          $(function() {
              $("#contact").addClass("active");
+         });
+         
+         $('#contact_form').submit(function(e) {
+             const name = $("#contact_name");
+             const email = $("#contact_email");
+             const content = $("#contact_content");
+
+             if (!validateGenericInput3Chars(name.val())) {
+                 name.addClass("is-invalid").focus();
+                 e.preventDefault(e);
+                 return;
+             }
+             
+             if (!validateEmail(email.val())) {
+                 email.addClass("is-invalid").focus();
+                 e.preventDefault(e);
+                 return;
+             }
+             
+             if (!validateGenericInput3Chars(content.val())) {
+                 content.addClass("is-invalid").focus();
+                 e.preventDefault(e);
+                 return;
+             }
          });
      </script>
  }

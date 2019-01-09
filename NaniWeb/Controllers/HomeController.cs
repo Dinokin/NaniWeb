@@ -17,12 +17,14 @@ namespace NaniWeb.Controllers
     {
         private readonly IEmailSender _emailSender;
         private readonly NaniWebContext _naniWebContext;
+        private readonly ReCaptcha _reCaptcha;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public HomeController(IEmailSender emailSender, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
+        public HomeController(IEmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
         {
             _emailSender = emailSender;
             _naniWebContext = naniWebContext;
+            _reCaptcha = reCaptcha;
             _settingsKeeper = settingsKeeper;
         }
 
@@ -73,7 +75,6 @@ namespace NaniWeb.Controllers
             var chapters = new LinkedList<Chapter>(_naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber));
             var chapter = chapters.Single(chp => chp.ChapterNumber == chapterNumber);
             var pages = await _naniWebContext.Pages.Where(pg => pg.Chapter == chapter).OrderBy(pg => pg.PageNumber).ToListAsync();
-            var prevChapter = chapters.Find(chapter)?.Next?.Value;
             var nextChapter = chapters.Find(chapter)?.Previous?.Value;
 
             ViewData["SeriesList"] = seriesList;
@@ -81,7 +82,6 @@ namespace NaniWeb.Controllers
             ViewData["Chapters"] = chapters;
             ViewData["Chapter"] = chapter;
             ViewData["Pages"] = pages;
-            ViewData["prevChapter"] = prevChapter;
             ViewData["nextChapter"] = nextChapter;
 
             if (mode == null && Request.Cookies["ReaderMode"] != null)
@@ -125,7 +125,7 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Contact(Contact contact)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && await _reCaptcha.ValidateResponse(Request.Form["g-recaptcha-response"]))
             {
                 await _emailSender.SendEmailAsync($"{_settingsKeeper.GetSetting("GroupsEmailAddress").Value}", $"Message from {contact.Name}", $"{contact.Content}{Environment.NewLine}Sent by: {contact.Destination}");
                 

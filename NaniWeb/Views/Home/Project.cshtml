@@ -52,7 +52,7 @@
                 {
                     <div class="row my-1">
                         <div class="col-8 text-truncate">
-                            <a href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})">@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</a>
+                            <a class="float-left" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})">@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</a>
                         </div>
                         <div class="col-4 text-truncate">
                             <span class="float-right">@chapter.ReleaseDate.ToString("dd/MM/yyyy")</span>

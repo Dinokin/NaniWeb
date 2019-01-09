@@ -237,12 +237,12 @@ namespace NaniWeb.Data
                 }, new Setting
                 {
                     Id = 24,
-                    Name = "EnableFacebookPosting",
-                    Value = false.ToString()
+                    Name = "RecaptchaSiteKey",
+                    Value = string.Empty
                 }, new Setting
                 {
                     Id = 25,
-                    Name = "FacebookApiKey",
+                    Name = "RecaptchaSecretKey",
                     Value = string.Empty
                 }, new Setting
                 {

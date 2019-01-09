@@ -19,17 +19,15 @@ namespace NaniWeb.Controllers
     public class ChapterManagerController : Controller
     {
         private readonly DiscordBot _discordBot;
-        private readonly FacebookPosting _facebookPosting;
         private readonly FirebaseCloudMessaging _firebaseCloudMessaging;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly MangadexUploader _mangadexUploader;
         private readonly NaniWebContext _naniWebContext;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(DiscordBot discordBot, FacebookPosting facebookPosting, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
+        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
-            _facebookPosting = facebookPosting;
             _firebaseCloudMessaging = firebaseCloudMessaging;
             _hostingEnvironment = hostingEnvironment;
             _mangadexUploader = mangadexUploader;
@@ -107,7 +105,7 @@ namespace NaniWeb.Controllers
                 var siteName = _settingsKeeper.GetSetting("SiteName").Value;
                 var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
-                var tasks = new Task[4];
+                var tasks = new Task[3];
                 
                 tasks[0] = Task.Run(async () =>
                 {
@@ -138,15 +136,11 @@ namespace NaniWeb.Controllers
                 });
                 tasks[1] = Task.Run(async () =>
                 {
-                    await _facebookPosting.Post($"New chapter available for {series.Name} at {siteName}! Read it here: {chapterUrl}");
+                    await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
                 });
                 tasks[2] = Task.Run(async () =>
                 {
-                    await _firebaseCloudMessaging.SendNotification($"New chapter available at {siteName}!", $"New chapter available for {series.Name} at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
-                });
-                tasks[3] = Task.Run(async () =>
-                {
-                    await _discordBot.SendMessage($"@everyone **{series} - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}");
+                    await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}");
                 });
 
                 await Task.WhenAll(tasks);
