@@ -111,6 +111,7 @@ namespace NaniWeb.Controllers
 
                 var siteName = _settingsKeeper.GetSetting("SiteName").Value;
                 var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
+                var chapterDownloadUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Download", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
                 var tasks = new Task[3];
 
@@ -141,7 +142,10 @@ namespace NaniWeb.Controllers
                 {
                     await _firebaseCloudMessaging.SendNotification($"A new release is available at {siteName}!", $"New chapter of {series.Name} is available at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
                 });
-                tasks[2] = Task.Run(async () => { await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}"); });
+                tasks[2] = Task.Run(async () =>
+                {
+                    await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}{Environment.NewLine}Download it here: {chapterDownloadUrl}");
+                });
 
                 await Task.WhenAll(tasks);
                 temp.Delete(true);
