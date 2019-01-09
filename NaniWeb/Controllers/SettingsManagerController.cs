@@ -30,9 +30,6 @@ namespace NaniWeb.Controllers
                 SiteDescription = _settingsKeeper.GetSetting("SiteDescription").Value,
                 SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value,
                 EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value),
-                SiteEmail = _settingsKeeper.GetSetting("GroupsEmailAddress").Value,
-                RecaptchaSiteKey = _settingsKeeper.GetSetting("RecaptchaSiteKey").Value,
-                RecaptchaSecretKey = _settingsKeeper.GetSetting("RecaptchaSecretKey").Value,
                 SiteFooter = _settingsKeeper.GetSetting("SiteFooterCode").Value,
                 SiteSideBar = _settingsKeeper.GetSetting("SiteSideBar").Value,
                 SiteAboutPage = _settingsKeeper.GetSetting("SiteAboutPage").Value
@@ -46,7 +43,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[11];
+                var tasks = new Task[8];
                 var manifest = new ManifestBuilder
                 {
                     ShortName = generalForm.SiteName,
@@ -69,13 +66,10 @@ namespace NaniWeb.Controllers
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteDescription", generalForm.SiteDescription));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteUrl", generalForm.SiteUrl));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
-                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", generalForm.SiteEmail));
-                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSiteKey", generalForm.RecaptchaSiteKey));
-                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSecretKey", generalForm.RecaptchaSecretKey));
-                tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
-                tasks[8] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
-                tasks[9] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
-                tasks[10] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
+                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
+                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
+                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
+                tasks[7] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
 
                 TempData["Error"] = false;
 
@@ -97,7 +91,10 @@ namespace NaniWeb.Controllers
                 EnableEmailRecovery = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value),
                 SmtpServer = _settingsKeeper.GetSetting("SmtpServer").Value,
                 SmtpUser = _settingsKeeper.GetSetting("SmtpUser").Value,
-                SmtpPassword = _settingsKeeper.GetSetting("SmtpPassword").Value
+                SmtpPassword = _settingsKeeper.GetSetting("SmtpPassword").Value,
+                SiteEmail = _settingsKeeper.GetSetting("GroupsEmailAddress").Value,
+                RecaptchaSiteKey = _settingsKeeper.GetSetting("RecaptchaSiteKey").Value,
+                RecaptchaSecretKey = _settingsKeeper.GetSetting("RecaptchaSecretKey").Value
             };
 
             return View("EmailSettings", model);
@@ -106,7 +103,7 @@ namespace NaniWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Email(EmailForm emailForm)
         {
-            var tasks = new Task[4];
+            var tasks = new Task[7];
 
             if (emailForm.EnableEmailRecovery)
             {
@@ -116,6 +113,9 @@ namespace NaniWeb.Controllers
                     tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer));
                     tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser));
                     tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword));
+                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", emailForm.SiteEmail));
+                    tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSiteKey", emailForm.RecaptchaSiteKey));
+                    tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSecretKey", emailForm.RecaptchaSecretKey));
 
                     TempData["Error"] = false;
 
