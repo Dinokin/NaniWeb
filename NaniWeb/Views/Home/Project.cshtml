@@ -56,7 +56,7 @@
                 @foreach (var chapter in series.Chapters)
                 {
                     <div class="row my-1">
-                        <div class="col-8 text-truncate">
+                        <div class="col-8 text-truncate d-inline-flex flex-nowrap">
                             <a class="fas fa-download float-left mr-1" href="@Url.Action("Download", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})"></a>
                             <a class="float-left" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})">@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}")</a>
                         </div>
