@@ -30,20 +30,20 @@
             }
             <form id="install_form" asp-controller="Others" asp-action="Install" novalidate>
                 <fieldset>
-                    <legend>Account setup</legend>
+                    <legend>Account Setup</legend>
                     <div class="form-group">
                         <label for="username">Username</label>
                         <input class="form-control" id="username" asp-for="Username" aria-describedby="username_help" placeholder="Username">
                         <small id="username_help" class="form-text text-muted">Minimum of 3 characters. Alphanumeric characters and symbols are allowed.</small>
                     </div>
                     <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input class="form-control" id="email" asp-for="Email" aria-describedby="email_help" placeholder="Email address">
+                        <label for="email">Email Address</label>
+                        <input class="form-control" id="email" asp-for="Email" aria-describedby="email_help" placeholder="Email Address">
                         <small id="email_help" class="form-text text-muted">Type the email address for your account.</small>
                     </div>
                     <div class="form-group">
-                        <label for="email_confirm">Confirm your email address</label>
-                        <input type="email" class="form-control" id="email_confirm" aria-describedby="email_confirm_help" placeholder="Email address">
+                        <label for="email_confirm">Email address (again)</label>
+                        <input type="email" class="form-control" id="email_confirm" aria-describedby="email_confirm_help" placeholder="Email Address">
                         <small id="email_confirm_help" class="form-text text-muted">Repeat your email address.</small>
                     </div>
                     <div class="form-group">
@@ -52,7 +52,7 @@
                         <small id="password_help" class="form-text text-muted">Minimum of 8 characters. Alphanumeric characters and symbols are allowed.</small>
                     </div>
                     <div class="form-group">
-                        <label for="password_confirm">Confirm your password</label>
+                        <label for="password_confirm">Password (again)</label>
                         <input type="password" class="form-control" id="password_confirm" aria-describedby="password_confirm_help" placeholder="Password">
                         <small id="password_confirm_help" class="form-text text-muted">Repeat your password.</small>
                     </div>
