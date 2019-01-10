@@ -64,7 +64,7 @@ namespace NaniWeb
             {
                 options.LoginPath = "/admin/";
                 options.LogoutPath = "/admin/signout";
-                options.AccessDeniedPath = "/admin/denied";
+                options.AccessDeniedPath = "/denied";
             });
 
             services.AddHttpClient("MangadexClient", client =>
