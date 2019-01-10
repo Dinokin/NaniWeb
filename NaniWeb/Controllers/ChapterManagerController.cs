@@ -150,7 +150,7 @@ namespace NaniWeb.Controllers
                 await Task.WhenAll(tasks);
                 temp.Delete(true);
 
-                return RedirectToAction("List", new {id = series.Id});
+                return RedirectToAction("List", "SeriesManager", new {id = series.Id});
             }
 
             TempData["Error"] = true;
