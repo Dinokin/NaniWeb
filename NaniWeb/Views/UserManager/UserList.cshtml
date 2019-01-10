@@ -7,21 +7,10 @@
 
 <partial name="_AdminNav"/>
 
-<div class="container mt-5">
+<div class="container mt-3">
     <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Users</h5>
         <div class="card-body">
-            <div class="row text-center mb-2">
-                <div class="col-4">
-                    <strong>User</strong>
-                </div>
-                <div class="col-4">
-                    <strong>Role</strong>
-                </div>
-                <div class="col-4">
-                    <strong>Actions</strong>
-                </div>
-            </div>
             @foreach (var (item1, item2) in users)
             {
                 <div class="row mb-1">
@@ -31,10 +20,15 @@
                     <div class="col-4 my-auto text-center text-truncate">
                         @item2
                     </div>
-                    <div class="col-4">
-                        <div class="btn-group-vertical btn-block" role="group" aria-label="Actions">
-                            <a class="btn btn-sm btn-warning change-role text-truncate" href="@Url.Action("EditRole", new {userId = item1.Id})">Change roles</a>
-                            <a class="btn btn-sm btn-danger delete-user text-truncate" href="@Url.Action("Delete", new {userId = item1.Id})">Delete</a>
+                    <div class="col-4 px-0 text-center">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
+                                <a class="dropdown-item change-role" href="@Url.Action("EditRole", new {userId = item1.Id})">Change roles</a>
+                                <a class="dropdown-item delete-user" href="@Url.Action("Delete", new {userId = item1.Id})">Delete</a>
+                            </div>
                         </div>
                     </div>
                 </div>

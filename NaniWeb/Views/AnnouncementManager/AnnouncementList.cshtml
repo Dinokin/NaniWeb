@@ -11,28 +11,21 @@
     <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Announcements</h5>
         <div class="card-body">
-            <div class="row text-center text-nowrap mb-2">
-                <div class="col-7">
-                    <p>
-                        <strong>Title</strong>
-                    </p>
-                </div>
-                <div class="col-5">
-                    <p>
-                        <strong>Actions</strong>
-                    </p>
-                </div>
-            </div>
             @foreach (var announcement in announcements)
             {
-                <div class="row text-center text-nowrap">
-                    <div class="col-7">
-                        <p class="mt-2">@announcement.Title</p>
+                <div class="row mb-1">
+                    <div class="col-8 my-auto text-center text-truncate">
+                        @announcement.Title
                     </div>
-                    <div class="col-5">
-                        <div class="btn-group btn-block" role="group" aria-label="Actions">
-                            <a class="btn btn-warning w-100" href="@Url.Action("Edit", new {id = announcement.Id})">Edit</a>
-                            <a class="btn btn-danger w-100 delete-announcement" href="@Url.Action("Delete", new {id = announcement.Id})">Delete</a>
+                    <div class="col-4 px-0 text-center">
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
+                                <a class="dropdown-item" href="@Url.Action("Edit", new {id = announcement.Id})">Edit</a>
+                                <a class="dropdown-item delete-announcement" href="@Url.Action("Delete", new {id = announcement.Id})">Delete</a>
+                            </div>
                         </div>
                     </div>
                 </div>
