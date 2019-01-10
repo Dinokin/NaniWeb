@@ -106,19 +106,20 @@ namespace NaniWeb.Controllers
             return View("Read");
         }
 
-        public async Task<FileResult> Download(string urlSlug, decimal chapterNumber)
+        public async Task<FileStreamResult> Download(string urlSlug, decimal chapterNumber)
         {
             var chapter = await _naniWebContext.Chapters.Include(chp => chp.Series).Include(chp => chp.Pages).SingleAsync(chp => chp.Series.UrlSlug == urlSlug && chp.ChapterNumber == chapterNumber);
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
             var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
             var pagesOrigin = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
-
+            var prepSiteName = $"[{_settingsKeeper.GetSetting("SiteName").Value.Replace(" ", "_")}]";
+            var prepSeriesName = chapter.Series.Name.Replace(" ", "_");
 
             if (System.IO.File.Exists(file))
             {
-                var bytes = await System.IO.File.ReadAllBytesAsync(file);
-                return File(bytes, "application/zip", $"{chapter.Series.Name}_{chapterNumber}.zip");
+                var bytes = System.IO.File.OpenRead(file);
+                return File(bytes, "application/zip", $"{prepSiteName}{prepSeriesName}_{chapterNumber}.zip");
             }
             else
             {
@@ -131,8 +132,8 @@ namespace NaniWeb.Controllers
 
                 temp.Delete(true);
 
-                var bytes = await System.IO.File.ReadAllBytesAsync(file);
-                return File(bytes, "application/zip", $"{chapter.Series.Name}_{chapterNumber}.zip");
+                var bytes = System.IO.File.OpenRead(file);
+                return File(bytes, "application/zip", $"{prepSiteName}{prepSeriesName}_{chapterNumber}.zip");
             }
         }
 
