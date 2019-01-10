@@ -33,7 +33,7 @@
                                     <a class="text-truncate" href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug, chapterNumber = release.ChapterNumber})">@(release.Volume > 0 ? $"Vol. {release.Volume} " : string.Empty)Ch. @(release.ChapterNumber)@(string.IsNullOrEmpty(release.Name) ? string.Empty : $" - {release.Name}")</a>
                                 </p>
                                 <p class="text-truncate text-muted py-0 mb-1">
-                                    @release.ReleaseDate.ToString("dd/MM/yyyy hh:mm")
+                                    @release.ReleaseDate.ToString("dd/MM/yyyy HH:mm")
                                 </p>
                             </div>
                         }
