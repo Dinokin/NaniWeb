@@ -9,11 +9,11 @@
     <title>@ViewData["Title"]@(ViewData["TitleSeparator"] ?? " - ")@SettingsKeeper.GetSetting("SiteName").Value</title>
     <link rel="icon" href="~/assets/icon.png">
     <link rel="stylesheet" href="~/libs/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/libs/css/site_v1.2.css"/>
+    <link rel="stylesheet" href="~/libs/css/site_v1.2.1.css"/>
     <link rel="manifest" href="/manifest.json">
     @await RenderSectionAsync("Header", false)
 </head>
-<body class="bg-primary text-white">
+<body class="bg-secondary">
 @RenderBody()
 <div style="height: 70px"></div>
 <partial name="_Footer"/>

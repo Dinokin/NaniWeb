@@ -28,7 +28,7 @@
 
 <partial name="_HomeNav"/>
 
-<div id="top" class="container my-2 border border-secondary rounded">
+<div id="top" class="container my-2 border border-light rounded">
     @if (readerMode == Series.SeriesType.Manga)
     {
         <div class="row">
@@ -110,14 +110,14 @@
         }
     }
 </div>
-<div id="bottom" class="container my-2 rounded border border-secondary">
+<div id="bottom" class="container my-2 rounded border border-light">
     <partial name="_DisqusDiv"/>
 </div>
 
 @if (readerMode == Series.SeriesType.Webtoon)
 {
     <div>
-        <a class="to-top btn btn-lg btn-dark fas fa-chevron-up" id="to_top"href="#"></a>
+        <a class="to-top btn btn-lg btn-dark text-white fas fa-chevron-up" id="to_top"href="#"></a>
     </div>
 }
 

@@ -14,14 +14,14 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-lg-8">
-            <div class="card bg-primary border-secondary mb-3">
-                <h5 class="card-header bg-primary">Projects</h5>
+            <div class="card bg-secondary border-light mb-3">
+                <h5 class="card-header bg-secondary">Projects</h5>
                 <div class="card-body">
                     <div class="row">
                         @foreach (var srs in series)
                         {
                             <div class="col-sm-4 mb-2">
-                                <div class="card bg-primary border-secondary mx-auto">
+                                <div class="card bg-secondary border-light mx-auto">
                                     <img class="card-img-top" src="~/images/covers/@($"{srs.Id}_small.png")" alt="Series cover">
                                     <div class="card-body text-center">
                                         <h6 class="card-title project-title">
