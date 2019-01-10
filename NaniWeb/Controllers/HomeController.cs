@@ -109,6 +109,7 @@ namespace NaniWeb.Controllers
         public async Task<FileStreamResult> Download(string urlSlug, decimal chapterNumber)
         {
             var chapter = await _naniWebContext.Chapters.Include(chp => chp.Series).Include(chp => chp.Pages).SingleAsync(chp => chp.Series.UrlSlug == urlSlug && chp.ChapterNumber == chapterNumber);
+            chapter.Pages = chapter.Pages.OrderBy(pg => pg.PageNumber).ToList();
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
             var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
