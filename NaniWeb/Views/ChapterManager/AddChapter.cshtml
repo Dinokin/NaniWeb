@@ -2,8 +2,9 @@
 @model ChapterAdd
 
 @{
-    ViewData["Title"] = "Add - Chapter";
+    var enableDiscord = bool.Parse(SettingsKeeper.GetSetting("EnableDiscordBot").Value);
     var enableMangadex = bool.Parse(SettingsKeeper.GetSetting("EnableMangadexAutoUpload").Value);
+    ViewData["Title"] = "Add - Chapter";
 }
 
 <partial name="_AdminNav"/>
@@ -37,6 +38,14 @@
                         <label for="chapter_name">Name</label>
                         <input class="form-control" id="chapter_name" asp-for="Name" aria-describedby="chapter_name_help" placeholder="Name">
                         <small id="chapter_name_help" class="form-text text-muted">The name of this chapter.</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" id="announce_on_discord" aria-describedby="announce_on_discord_help" asp-for="AnnounceOnDiscord" disabled="@(enableDiscord ? null : string.Empty)"/>Announce on Discord
+                            </label>
+                        </div>
+                        <small id="announce_on_discord_help" class="form-text text-muted">Announce this chapter on Discord. Remember to check if you have configured the Discord functionality properly.</small>
                     </div>
                     <div class="form-group">
                         <div class="form-check">

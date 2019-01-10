@@ -144,7 +144,8 @@ namespace NaniWeb.Controllers
                 });
                 tasks[2] = Task.Run(async () =>
                 {
-                    await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}{Environment.NewLine}Download it here: {chapterDownloadUrl}");
+                    if (chapterAdd.AnnounceOnDiscord)
+                        await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}{Environment.NewLine}Download it here: {chapterDownloadUrl}");
                 });
 
                 await Task.WhenAll(tasks);
