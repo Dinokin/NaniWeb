@@ -157,7 +157,7 @@ namespace NaniWeb.Others.Services
 
                 var parseResult = int.TryParse((await html.LoadFromWebAsync($"{MangadexSeriesPage}/{mangadexSeries.MangadexId}")).DocumentNode.Descendants("div")
                     .Where(element => element.Attributes.Contains("data-group") && element.GetAttributeValue("data-group", string.Empty) == _settingsKeeper.GetSetting("MangadexGroupId").Value)
-                    .Single(element => element.GetAttributeValue("data-chapter", string.Empty) == chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture))
+                    .SingleOrDefault(element => element.GetAttributeValue("data-chapter", string.Empty) == chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture))?
                     .GetAttributeValue("data-id", string.Empty), out var result);
 
                 mangadexId = parseResult ? result : (int?) null;
