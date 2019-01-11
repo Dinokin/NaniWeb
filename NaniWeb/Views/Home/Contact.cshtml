@@ -66,11 +66,9 @@
 {
     <script src="https://www.google.com/recaptcha/api.js?hl=en"></script>
     <script>
-        $(function() {
-            $("#contact").addClass("active");
-        });
+        $("#contact").addClass("active");
 
-        $('#contact_form').submit(function(e) {
+        $("#contact_form").submit(function(e) {
             const name = $("#contact_name");
             const email = $("#contact_email");
             const content = $("#contact_content");
