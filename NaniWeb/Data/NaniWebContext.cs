@@ -264,6 +264,31 @@ namespace NaniWeb.Data
                     Id = 29,
                     Name = "SiteAboutPage",
                     Value = string.Empty
+                }, new Setting
+                {
+                    Id = 30,
+                    Name = "EnableReddit",
+                    Value = false.ToString()
+                }, new Setting
+                {
+                    Id = 31,
+                    Name = "RedditUser",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 32,
+                    Name = "RedditPassword",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 33,
+                    Name = "RedditClientId",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 34,
+                    Name = "RedditClientSecret",
+                    Value = string.Empty
                 });
             });
 

@@ -22,16 +22,18 @@ namespace NaniWeb.Controllers
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly MangadexUploader _mangadexUploader;
         private readonly NaniWebContext _naniWebContext;
+        private readonly RedditPoster _redditPoster;
         private readonly SettingsKeeper _settingsKeeper;
 
         public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
-            SettingsKeeper settingsKeeper)
+            RedditPoster redditPoster, SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
             _firebaseCloudMessaging = firebaseCloudMessaging;
             _hostingEnvironment = hostingEnvironment;
             _mangadexUploader = mangadexUploader;
             _naniWebContext = naniWebContext;
+            _redditPoster = redditPoster;
             _settingsKeeper = settingsKeeper;
         }
 
@@ -113,7 +115,7 @@ namespace NaniWeb.Controllers
                 var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var chapterDownloadUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Download", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
-                var tasks = new Task[3];
+                var tasks = new Task[4];
 
                 tasks[0] = Task.Run(async () =>
                 {
@@ -146,6 +148,11 @@ namespace NaniWeb.Controllers
                 {
                     if (chapterAdd.AnnounceOnDiscord)
                         await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}{Environment.NewLine}Download it here: {chapterDownloadUrl}");
+                });
+                tasks[3] = Task.Run(async () =>
+                {
+                    if (chapterAdd.AnnounceOnReddit)
+                        await _redditPoster.PostLink("/r/manga", $"[DISC] {series.Name} - Chapter {chapter.ChapterNumber}", chapterUrl);
                 });
 
                 await Task.WhenAll(tasks);

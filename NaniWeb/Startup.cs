@@ -88,6 +88,7 @@ namespace NaniWeb
             services.AddTransient(typeof(DiscordBot));
             services.AddTransient(typeof(MangadexUploader));
             services.AddTransient(typeof(FirebaseCloudMessaging));
+            services.AddTransient(typeof(RedditPoster));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

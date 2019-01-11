@@ -4,6 +4,7 @@
 @{
     var enableDiscord = bool.Parse(SettingsKeeper.GetSetting("EnableDiscordBot").Value);
     var enableMangadex = bool.Parse(SettingsKeeper.GetSetting("EnableMangadexAutoUpload").Value);
+    var enableReddit = bool.Parse(SettingsKeeper.GetSetting("EnableReddit").Value);
     ViewData["Title"] = "Add - Chapter";
 }
 
@@ -50,6 +51,14 @@
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
+                                <input class="form-check-input" id="announce_on_reddit" aria-describedby="announce_on_reddit_help" asp-for="AnnounceOnDiscord" disabled="@(enableReddit ? null : string.Empty)"/>Announce on Reddit
+                            </label>
+                        </div>
+                        <small id="announce_on_reddit_help" class="form-text text-muted">Announce this chapter on Reddit. Remember to check if you have configured the Discord functionality properly. Be aware that if you are going to release multiple chapters of the same series, reddit rules only allows one post for all the chapters you released.</small>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
                                 <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)"/>Upload to Mangadex
                             </label>
                         </div>
@@ -76,9 +85,7 @@
 @section Body
 {
     <script>
-        $(function() {
-            $("#series").addClass("active");
-        });
+        $("#series").addClass("active");
 
         $("#chapter_pages").change(function(event) {
             const file = event.target.files[0].name;

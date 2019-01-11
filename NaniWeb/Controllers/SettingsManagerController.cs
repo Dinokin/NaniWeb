@@ -398,5 +398,60 @@ namespace NaniWeb.Controllers
 
             return RedirectToAction("Disqus");
         }
+
+        [HttpGet]
+        public IActionResult Reddit()
+        {
+            var model = new RedditForm
+            {
+                EnableReddit = bool.Parse(_settingsKeeper.GetSetting("EnableReddit").Value),
+                RedditUser = _settingsKeeper.GetSetting("RedditUser").Value,
+                RedditPassword = _settingsKeeper.GetSetting("RedditPassword").Value,
+                RedditClientId = _settingsKeeper.GetSetting("RedditClientId").Value,
+                RedditClientSecret = _settingsKeeper.GetSetting("RedditClientSecret").Value
+            };
+            
+            return View("RedditSettings", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Reddit(RedditForm redditForm)
+        {
+            var tasks = new Task[5];
+
+            if (redditForm.EnableReddit)
+            {
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableReddit", redditForm.EnableReddit.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditUser", redditForm.RedditUser));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditPassword", redditForm.RedditPassword));
+                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditClientId", redditForm.RedditClientId));
+                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditClientSecret", redditForm.RedditClientSecret));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
+                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableReddit", redditForm.EnableReddit.ToString()));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditUser", redditForm.RedditUser ?? string.Empty));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditPassword", redditForm.RedditPassword ?? string.Empty));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditClientId", redditForm.RedditClientId ?? string.Empty));
+                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("RedditClientSecret", redditForm.RedditClientSecret ?? string.Empty));
+
+                TempData["Error"] = false;
+
+                await Task.WhenAll(tasks);
+            }
+
+            return RedirectToAction("Reddit");
+        }
     }
 }
