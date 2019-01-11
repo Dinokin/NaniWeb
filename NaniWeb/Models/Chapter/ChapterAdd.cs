@@ -17,5 +17,7 @@ namespace NaniWeb.Models.Chapter
         [Required] public bool UploadToMangadex { get; set; }
         
         [Required] public bool AnnounceOnDiscord { get; set; }
+        
+        [Required] public bool AnnounceOnReddit { get; set; }
     }
 }

@@ -1,0 +1,72 @@
+@model RedditForm
+
+@{
+    ViewData["Title"] = "Reddit - Settings";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container mt-3">
+    <div class="card bg-primary border-secondary">
+        <h5 class="card-header bg-primary">Settings</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            else if (TempData["Error"] != null && !(bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Settings saved successfully.
+                </div>
+            }
+            <form id="reddit_settings_form" asp-controller="SettingsManager" asp-action="Reddit" novalidate>
+                <fieldset>
+                    <legend>Reddit Settings</legend>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" aria-describedby="enable_reddit_help" id="enable_reddit" asp-for="EnableReddit"/>Enable Reddit Announcements
+                            </label>
+                        </div>
+                        <small id="enable_reddit_help" class="form-text text-muted">Enable automatic reddit announcements.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reddit_user">Reddit User</label>
+                        <input class="form-control" id="reddit_user" asp-for="RedditUser" aria-describedby="reddit_user_help" placeholder="Reddit User">
+                        <small id="reddit_user_help" class="form-text text-muted">Your reddit's account username.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reddit_password">Password</label>
+                        <input class="form-control" id="reddit_password" asp-for="RedditPassword" aria-describedby="reddit_password_help" placeholder="Password">
+                        <small id="reddit_password_help" class="form-text text-muted">Your reddit's account password.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reddit_client_id">Reddit App Client ID</label>
+                        <input class="form-control" id="reddit_client_id" asp-for="RedditClientId" aria-describedby="reddit_client_id_help" placeholder="Client ID">
+                        <small id="reddit_client_id_help" class="form-text text-muted">The client ID of your reddit app.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="reddit_client_secret">Reddit App Client Secret</label>
+                        <input class="form-control" id="reddit_client_secret" asp-for="RedditClientSecret" aria-describedby="reddit_client_secret_help" placeholder="Client Secret">
+                        <small id="reddit_client_secret_help" class="form-text text-muted">The client secret of your reddit app.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $("#settings").addClass("active");
+    </script>
+}
