@@ -63,3 +63,8 @@
     padding-left: 12px;
     padding-top: 10px;
 }
+
+.disqus-container {
+    height: auto !important;
+    min-height: 307px;
+}

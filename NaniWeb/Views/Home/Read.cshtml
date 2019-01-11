@@ -110,7 +110,7 @@
         }
     }
 </div>
-<div id="bottom" class="container my-2 rounded border border-secondary">
+<div id="bottom" class="container my-2 rounded border border-secondary disqus-container">
     <partial name="_DisqusDiv"/>
 </div>
 
@@ -126,9 +126,7 @@
     <partial name="_DisqusScript"/>
 
     <script>
-        $(function() {
-            $("#projects").addClass("active");
-        });
+        $("#projects").addClass("active");
 
         $("#series_selector,#mode_selector,#chapter_selector").change(function() {
             window.location = this.value;
@@ -138,10 +136,7 @@
     @if (readerMode == Series.SeriesType.Manga)
     {
         <script>
-
-            $(function() {
-                $("#bottom").addClass("d-none");
-            });
+            $("#bottom").addClass("d-none");
 
             const nextAddress =
                 "@Html.Raw(chapter == chapters.First() ? Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty}) : Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter?.ChapterNumber}))";
@@ -154,13 +149,14 @@
                     @Html.Raw($"(new Image()).src = \"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
                 }
             ];
-
+            
             function previous() {
                 if (index > 0) {
                     index--;
                     page.attr("src", pages[index]);
                     blur();
                     $('#page_selector').val(index);
+                    scrollToTop();
                 }
             };
 
@@ -170,7 +166,8 @@
                     page.attr("src", pages[index]);
                     blur();
                     $('#page_selector').val(index);
-
+                    scrollToTop();
+                    
                     if (index == pages.length - 1) {
                         $("#bottom").removeClass("d-none");
                     }
@@ -189,6 +186,10 @@
                 const img = $("#manga_page");
 
                 img.removeClass("blur");
+            }
+            
+            function scrollToTop() {
+                window.scrollTo(0, 0);
             }
 
             $("#pages").click(function(e) {
