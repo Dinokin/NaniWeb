@@ -1,9 +1,4 @@
-﻿html {
-    position: relative;
-    min-height: 100%;
-}
-
-.project-title{
+﻿.project-title{
     height: 60px;
     max-height: 60px;
 }
@@ -42,4 +37,9 @@
     font-size: 16px;
     padding-left: 12px;
     padding-top: 10px;
+}
+
+.disqus-container {
+    height: auto !important;
+    min-height: 307px;
 }
