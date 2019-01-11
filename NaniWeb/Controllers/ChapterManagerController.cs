@@ -232,8 +232,7 @@ namespace NaniWeb.Controllers
 
                         pageList[i].CopyTo($"{destination}{page.Id}.png");
                         
-                        if (System.IO.File.Exists(downloadFile))
-                            System.IO.File.Delete(downloadFile);
+                        System.IO.File.Delete(downloadFile);
                     }
 
                     if (chapterEdit.UploadToMangadex && mangadexChapter.MangadexId > 0)
@@ -263,13 +262,16 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Delete(int id)
         {
-            var chapter = await _naniWebContext.Chapters.SingleAsync(chp => chp.Id == id);
+            var chapter = await _naniWebContext.Chapters.Include(chp => chp.Pages).SingleAsync(chp => chp.Id == id);
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == chapter.SeriesId);
-            var pages = _naniWebContext.Pages.Where(pg => pg.Chapter == chapter);
             var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+            var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
+            var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
 
-            foreach (var page in pages)
+            foreach (var page in chapter.Pages)
                 System.IO.File.Delete($"{destination}{page.Id}.png");
+            
+            System.IO.File.Delete(file);
 
             _naniWebContext.Chapters.Remove(chapter);
             await _naniWebContext.SaveChangesAsync();

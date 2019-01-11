@@ -154,12 +154,22 @@ namespace NaniWeb.Controllers
             var coversLocation = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}";
             var pagesLocation = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
-            var pages = _naniWebContext.Pages.Where(pg => pg.Chapter.SeriesId == series.Id);
+            var chapters = _naniWebContext.Chapters.Where(chp => chp.Series == series).Include(chp => chp.Pages);
+            var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
 
             System.IO.File.Delete($"{coversLocation}{series.Id}.png");
+            System.IO.File.Delete($"{coversLocation}{series.Id}_small.png");
+            System.IO.File.Delete($"{coversLocation}{series.Id}_smaller.png");
 
-            foreach (var page in pages)
-                System.IO.File.Delete($"{pagesLocation}{page.Id}.png");
+            foreach (var chapter in chapters)
+            {
+                var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
+                
+                foreach (var page in chapter.Pages)
+                    System.IO.File.Delete($"{pagesLocation}{page.Id}.png");
+                
+                System.IO.File.Delete(file);
+            }
 
             _naniWebContext.Series.Remove(series);
             await _naniWebContext.SaveChangesAsync();
