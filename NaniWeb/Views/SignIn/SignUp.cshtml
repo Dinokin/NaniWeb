@@ -55,31 +55,31 @@
 
             if (!validateGenericInput3Chars(username.val())) {
                 username.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
 
             if (!validateEmail(email.val())) {
                 email.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
 
             if (email.val() !== emailConfirm.val()) {
                 emailConfirm.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
 
             if (!validatePassword(password.val())) {
                 password.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
 
             if (password.val() !== passwordConfirm.val()) {
                 passwordConfirm.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
         });

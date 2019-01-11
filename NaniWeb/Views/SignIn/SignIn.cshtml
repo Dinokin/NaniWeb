@@ -83,13 +83,13 @@
 
             if (!validateGenericInput3Chars(username.val())) {
                 username.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
 
             if (!validatePassword(password.val())) {
                 password.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
         });

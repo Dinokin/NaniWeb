@@ -149,7 +149,7 @@
                     @Html.Raw($"(new Image()).src = \"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
                 }
             ];
-            
+
             function previous() {
                 if (index > 0) {
                     index--;
@@ -167,7 +167,7 @@
                     blur();
                     $('#page_selector').val(index);
                     scrollToTop();
-                    
+
                     if (index == pages.length - 1) {
                         $("#bottom").removeClass("d-none");
                     }
@@ -187,7 +187,7 @@
 
                 img.removeClass("blur");
             }
-            
+
             function scrollToTop() {
                 window.scrollTo(0, 0);
             }

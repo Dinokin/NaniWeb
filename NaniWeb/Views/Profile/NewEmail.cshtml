@@ -43,12 +43,12 @@
 @section Body
 {
     <script>
-        $("#install_form").submit(function(e) {
+        $("#new_email_form").submit(function(e) {
             const email = $("#email");
 
             if (!validateEmail(email.val())) {
                 email.addClass("is-invalid").focus();
-                e.preventDefault(e);
+                e.preventDefault();
                 return;
             }
         });
