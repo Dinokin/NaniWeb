@@ -36,7 +36,6 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Index()
         {
             var latestReleases = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(10).Include(chp => chp.Series).ToArrayAsync();
-
             ViewData["LatestReleases"] = latestReleases;
 
             return View("Home");
@@ -44,7 +43,10 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> Announcement(string urlSlug)
         {
-            var announcement = await _naniWebContext.Announcements.SingleAsync(ann => ann.UrlSlug == urlSlug);
+            var announcement = await _naniWebContext.Announcements.SingleOrDefaultAsync(ann => ann.UrlSlug == urlSlug);
+
+            if (announcement == null)
+                return RedirectToAction("Announcements");
 
             ViewData["Announcement"] = announcement;
 
@@ -54,7 +56,6 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Announcements()
         {
             var announcements = await _naniWebContext.Announcements.OrderByDescending(ann => ann.PostDate).ToArrayAsync();
-
             ViewData["Announcements"] = announcements;
 
             return View();
@@ -63,9 +64,12 @@ namespace NaniWeb.Controllers
         [Route("{action}/{urlSlug}")]
         public async Task<IActionResult> Project(string urlSlug)
         {
-            var series = await _naniWebContext.Series.Include(srs => srs.Chapters).SingleAsync(srs => srs.UrlSlug == urlSlug);
-            series.Chapters = series.Chapters.OrderByDescending(chp => chp.ChapterNumber).ToList();
+            var series = await _naniWebContext.Series.Include(srs => srs.Chapters).SingleOrDefaultAsync(srs => srs.UrlSlug == urlSlug);
 
+            if (series == null)
+                return RedirectToAction("Projects");
+            
+            series.Chapters = series.Chapters.OrderByDescending(chp => chp.ChapterNumber).ToList();
             ViewData["Series"] = series;
 
             return View("Project");
@@ -75,9 +79,17 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Project(string urlSlug, decimal chapterNumber, Series.SeriesType? mode)
         {
             var seriesList = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToArrayAsync();
-            var series = seriesList.Single(srs => srs.UrlSlug == urlSlug);
+            var series = seriesList.SingleOrDefault(srs => srs.UrlSlug == urlSlug);
+            
+            if (series == null)
+                return RedirectToAction("Projects");
+                        
             var chapters = await _naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber).ToArrayAsync();
-            var chapter = chapters.Single(chp => chp.ChapterNumber == chapterNumber);
+            var chapter = chapters.SingleOrDefault(chp => chp.ChapterNumber == chapterNumber);
+
+            if (chapter == null)
+                return RedirectToAction("Project", new {urlSlug, chapterNumber = string.Empty});
+            
             var pages = await _naniWebContext.Pages.Where(pg => pg.Chapter == chapter).OrderBy(pg => pg.PageNumber).ToArrayAsync();
             var nextChapter = chapters.LastOrDefault(chp => chp.ChapterNumber > chapter.ChapterNumber);
 
@@ -108,7 +120,14 @@ namespace NaniWeb.Controllers
 
         public async Task<FileStreamResult> Download(string urlSlug, decimal chapterNumber)
         {
-            var chapter = await _naniWebContext.Chapters.Include(chp => chp.Series).Include(chp => chp.Pages).SingleAsync(chp => chp.Series.UrlSlug == urlSlug && chp.ChapterNumber == chapterNumber);
+            var chapter = await _naniWebContext.Chapters.Include(chp => chp.Series).Include(chp => chp.Pages).SingleOrDefaultAsync(chp => chp.Series.UrlSlug == urlSlug && chp.ChapterNumber == chapterNumber);
+
+            if (chapter == null)
+            {
+                var bytes = System.IO.File.OpenRead($"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}assets{Path.DirectorySeparatorChar}facepalm.png");
+                return File(bytes, "image/png", $"error.png");
+            }
+            
             chapter.Pages = chapter.Pages.OrderBy(pg => pg.PageNumber).ToList();
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
