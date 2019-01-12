@@ -64,9 +64,9 @@
     padding-top: 10px;
 }
 
-.disqus-container {
+.disqus-container iframe {
     height: auto !important;
-    min-height: 307px;
+    min-height: 327px;
 }
 
 .clickable {
