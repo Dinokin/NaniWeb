@@ -52,7 +52,8 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Add(int id)
         {
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
-            
+
+            ViewData["SeriesName"] = series.Name;
             var model = new ChapterAdd
             {
                 SeriesId = series.Id

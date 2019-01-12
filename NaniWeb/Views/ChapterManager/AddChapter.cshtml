@@ -26,6 +26,10 @@
                     <legend>Add Chapter</legend>
                     <input type="hidden" asp-for="SeriesId"/>
                     <div class="form-group">
+                        <label for="series_name">Series</label>
+                        <input class="form-control" id="series_name" asp-for="@ViewData["SeriesName"]" disabled>
+                    </div>
+                    <div class="form-group">
                         <label for="chapter_volume">Volume</label>
                         <input class="form-control" id="chapter_volume" asp-for="Volume" aria-describedby="chapter_volume_help" placeholder="Volume">
                         <small id="chapter_volume_help" class="form-text text-muted">If this chapter is part of a volume add it here, otherwise keep it zero or empty.</small>
