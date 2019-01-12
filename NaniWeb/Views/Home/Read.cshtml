@@ -129,10 +129,6 @@
         $("#series_selector,#mode_selector,#chapter_selector").change(function() {
             window.location = this.value;
         });
-        
-        function scrollToTop() {
-            window.scrollTo(0, 0);
-        }
     </script>
 
     @if (readerMode == Series.SeriesType.Manga)
@@ -151,62 +147,6 @@
                     @Html.Raw($"\"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
                 }
             ];
-
-            function previous() {
-                if (index > 0) {
-                    index--;
-                    blur();
-                    page.attr("src", pages[index]);
-                    $('#page_selector').val(index);
-                    scrollToTop();
-                    previousPreload();
-                }
-            };
-
-            function next() {
-                if (index < pages.length - 1) {
-                    index++;
-                    blur();
-                    page.attr("src", pages[index]);
-                    $('#page_selector').val(index);
-                    scrollToTop();
-                    nextPreload();
-                    
-                    if (index === pages.length - 1) {
-                        $("#bottom").removeClass("d-none");
-                    }
-                } else {
-                    window.location = nextAddress;
-                }
-            };
-
-            function blur() {
-                const img = $("#manga_page");
-
-                img.addClass("blur");
-            };
-
-            function removeBlur() {
-                const img = $("#manga_page");
-
-                img.removeClass("blur");
-            };
-
-            function nextPreload() {
-                for (var i = 1; i <= 2; i++) {
-                    if (index + i < pages.length) {
-                        var image = new Image().src = pages[index + i];
-                    }
-                }
-            };
-
-            function previousPreload() {
-                for (let i = 1; i <= 2; i++) {
-                    if (index - i >= 0) {
-                        const image = new Image().src = pages[index - i];
-                    }
-                }
-            };
             
             $(function() {
                 nextPreload();
@@ -235,7 +175,7 @@
                 nextPreload();
                 previousPreload();
 
-                if (index === pages.length - 1) {
+                if (index == pages.length - 1) {
                     $("#bottom").removeClass("d-none");
                 }
             });
