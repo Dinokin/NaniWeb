@@ -152,15 +152,14 @@
                 }
             ];
 
-            var loadedPages = [(new Image()).src = pages[index]];
-
             function previous() {
                 if (index > 0) {
                     index--;
                     blur();
-                    page.attr("src", loadedPages[index]);
+                    page.attr("src", pages[index]);
                     $('#page_selector').val(index);
                     scrollToTop();
+                    previousPreload();
                 }
             };
 
@@ -168,10 +167,10 @@
                 if (index < pages.length - 1) {
                     index++;
                     blur();
-                    page.attr("src", loadedPages[index]);
+                    page.attr("src", pages[index]);
                     $('#page_selector').val(index);
                     scrollToTop();
-                    preload();
+                    nextPreload();
                     
                     if (index === pages.length - 1) {
                         $("#bottom").removeClass("d-none");
@@ -191,22 +190,26 @@
                 const img = $("#manga_page");
 
                 img.removeClass("blur");
-            }
+            };
 
-            function scrollToTop() {
-                window.scrollTo(0, 0);
-            }
-
-            function preload() {
-                for (var i = 0; i < 2; i++) {
-                    if (loadedPages.length + 1 <= pages.length) {
-                        loadedPages.push((new Image()).src = pages[loadedPages.length]);
+            function nextPreload() {
+                for (var i = 1; i <= 2; i++) {
+                    if (index + i < pages.length) {
+                        var image = new Image().src = pages[index + i];
                     }
                 }
-            }
+            };
 
+            function previousPreload() {
+                for (let i = 1; i <= 2; i++) {
+                    if (index - i >= 0) {
+                        const image = new Image().src = pages[index - i];
+                    }
+                }
+            };
+            
             $(function() {
-                preload();
+                nextPreload();
             });
 
             $("#pages").click(function(e) {
@@ -225,8 +228,12 @@
                 });
 
             $("#page_selector").change(function() {
+                blur();
                 index = this.value;
+                
                 page.attr("src", pages[index]);
+                nextPreload();
+                previousPreload();
 
                 if (index === pages.length - 1) {
                     $("#bottom").removeClass("d-none");
