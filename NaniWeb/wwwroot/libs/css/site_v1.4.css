@@ -68,3 +68,7 @@
     height: auto !important;
     min-height: 307px;
 }
+
+.clickable {
+    cursor: pointer;
+}
