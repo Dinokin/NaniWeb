@@ -92,6 +92,15 @@ namespace NaniWeb.Controllers
                 ZipFile.ExtractToDirectory(pagesZip, tempPages.FullName);
                 var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name).ToList();
 
+                if (pageList.Count == 0)
+                {
+                    temp.Delete(true);
+                    
+                    TempData["Error"] = true;
+
+                    return RedirectToAction("Add");
+                }
+
                 for (var i = 0; i < pageList.Count; i++)
                 {
                     var page = new Page
