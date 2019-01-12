@@ -115,7 +115,7 @@
 @if (readerMode == Series.SeriesType.Webtoon)
 {
     <div>
-        <a class="to-top btn btn-lg btn-dark text-white fas fa-chevron-up" id="to_top"href="#"></a>
+        <a class="to-top btn btn-lg btn-dark text-white fas fa-chevron-up" id="to_top"></a>
     </div>
 }
 
@@ -129,6 +129,10 @@
         $("#series_selector,#mode_selector,#chapter_selector").change(function() {
             window.location = this.value;
         });
+        
+        function scrollToTop() {
+            window.scrollTo(0, 0);
+        }
     </script>
 
     @if (readerMode == Series.SeriesType.Manga)
@@ -227,6 +231,14 @@
                 if (index === pages.length - 1) {
                     $("#bottom").removeClass("d-none");
                 }
+            });
+        </script>
+    }
+    else
+    {
+        <script>
+            $("#to_top").click(function() {
+                scrollToTop();
             });
         </script>
     }
