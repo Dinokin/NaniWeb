@@ -168,6 +168,10 @@
                     $('#page_selector').val(index);
                     scrollToTop();
                     preload();
+                    
+                    if (index === pages.length - 1) {
+                        $("#bottom").removeClass("d-none");
+                    }
                 } else {
                     window.location = nextAddress;
                 }
@@ -214,9 +218,6 @@
             $("#manga_page").on("load",
                 function() {
                     removeBlur();
-                    if (index === pages.length - 1) {
-                        $("#bottom").removeClass("d-none");
-                    }
                 });
 
             $("#page_selector").change(function() {
