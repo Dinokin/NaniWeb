@@ -98,9 +98,7 @@
 
     @if (readerMode == Series.SeriesType.Manga)
     {
-        <a href="#">
-            <img id="manga_page" class="img-fluid mx-auto d-block" src="~/images/pages/@($"{pages[0].Id}.png")" alt="">
-        </a>
+        <img id="manga_page" class="img-fluid mx-auto d-block clickable" src="~/images/pages/@($"{pages[0].Id}.png")" alt="">
     }
     else
     {
@@ -146,15 +144,17 @@
             const pages = [
                 @foreach (var chPage in pages)
                 {
-                    @Html.Raw($"(new Image()).src = \"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
+                    @Html.Raw($"\"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
                 }
             ];
+
+            var loadedPages = [(new Image()).src = pages[index]];
 
             function previous() {
                 if (index > 0) {
                     index--;
-                    page.attr("src", pages[index]);
                     blur();
+                    page.attr("src", loadedPages[index]);
                     $('#page_selector').val(index);
                     scrollToTop();
                 }
@@ -163,14 +163,11 @@
             function next() {
                 if (index < pages.length - 1) {
                     index++;
-                    page.attr("src", pages[index]);
                     blur();
+                    page.attr("src", loadedPages[index]);
                     $('#page_selector').val(index);
                     scrollToTop();
-
-                    if (index == pages.length - 1) {
-                        $("#bottom").removeClass("d-none");
-                    }
+                    preload();
                 } else {
                     window.location = nextAddress;
                 }
@@ -192,6 +189,18 @@
                 window.scrollTo(0, 0);
             }
 
+            function preload() {
+                for (var i = 0; i < 2; i++) {
+                    if (loadedPages.length + 1 <= pages.length) {
+                        loadedPages.push((new Image()).src = pages[loadedPages.length]);
+                    }
+                }
+            }
+
+            $(function() {
+                preload();
+            });
+
             $("#pages").click(function(e) {
                 const pWidth = $(this).innerWidth();
                 const pOffset = $(this).offset();
@@ -205,13 +214,16 @@
             $("#manga_page").on("load",
                 function() {
                     removeBlur();
+                    if (index === pages.length - 1) {
+                        $("#bottom").removeClass("d-none");
+                    }
                 });
 
             $("#page_selector").change(function() {
                 index = this.value;
                 page.attr("src", pages[index]);
 
-                if (index == pages.length - 1) {
+                if (index === pages.length - 1) {
                     $("#bottom").removeClass("d-none");
                 }
             });
