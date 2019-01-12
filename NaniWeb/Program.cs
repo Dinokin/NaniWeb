@@ -15,8 +15,10 @@ namespace NaniWeb
         {
             return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().ConfigureKestrel((context, options) =>
             {
-                options.Listen(IPAddress.Any, 5580);
                 options.Limits.MaxRequestBodySize = 100000000;
+
+                if (context.HostingEnvironment.IsProduction())
+                    options.Listen(IPAddress.Any, 5580);
             });
         }
     }
