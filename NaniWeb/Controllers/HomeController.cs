@@ -131,8 +131,6 @@ namespace NaniWeb.Controllers
             chapter.Pages = chapter.Pages.OrderBy(pg => pg.PageNumber).ToList();
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
-            var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
-            var pagesOrigin = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
             var prepSiteName = $"[{_settingsKeeper.GetSetting("SiteName").Value.Replace(" ", "_")}]";
             var prepSeriesName = chapter.Series.Name.Replace(" ", "_");
 
@@ -143,6 +141,9 @@ namespace NaniWeb.Controllers
             }
             else
             {
+                var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
+                var pagesOrigin = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+                
                 for (var i = 0; i < chapter.Pages.Count ; i++)
                 {
                     System.IO.File.Copy($"{pagesOrigin}{chapter.Pages[i].Id}.png", $"{temp.FullName}{Path.DirectorySeparatorChar}{i}.png");
