@@ -26,17 +26,17 @@ namespace NaniWeb.Others.Services
         {
             _settingsKeeper = settingsKeeper;
             
-            if (bool.Parse(_settingsKeeper.GetSetting("EnableDiscordBot").Value))
+            if (bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value))
                 _client = httpClientFactory.CreateClient("MangadexClient");
         }
 
         public async Task<MangadexChapter> UploadChapter(Series series, Chapter chapter, MangadexSeries mangadexSeries, Stream stream)
         {
-            if (!bool.Parse(_settingsKeeper.GetSetting("EnableDiscordBot").Value))
+            if (!bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value))
                 return new MangadexChapter
                 {
                     ChapterId = chapter.Id,
-                    MangadexId = -1,
+                    MangadexId = 0,
                     Chapter = chapter
                 };
 
@@ -48,7 +48,7 @@ namespace NaniWeb.Others.Services
             var groupId = new StringContent(_settingsKeeper.GetSetting("MangadexGroupId").Value);
             var groupId2 = new StringContent(string.Empty);
             var groupId3 = new StringContent(string.Empty);
-            var langId = new StringContent("1");
+            var langId = new StringContent(1.ToString());
             var fileStream = new StreamContent(stream);
 
             mangaId.Headers.ContentType = null;
@@ -81,7 +81,7 @@ namespace NaniWeb.Others.Services
 
         public async Task UpdateChapter(Chapter chapter, MangadexSeries mangadexSeries, MangadexChapter mangadexChapter, Stream stream)
         {
-            if (bool.Parse(_settingsKeeper.GetSetting("EnableDiscordBot").Value))
+            if (bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value))
             {
                 var request = new MultipartFormDataContent();
                 var mangaId = new StringContent(mangadexSeries.MangadexId.ToString());
@@ -89,9 +89,10 @@ namespace NaniWeb.Others.Services
                 var volumeNumber = new StringContent(chapter.Volume > 0 ? chapter.Volume.ToString() : string.Empty);
                 var chapterNumber = new StringContent(chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture));
                 var groupId = new StringContent(_settingsKeeper.GetSetting("MangadexGroupId").Value);
-                var groupId2 = new StringContent(string.Empty);
-                var groupId3 = new StringContent(string.Empty);
-                var langId = new StringContent("1");
+                var groupId2 = new StringContent(0.ToString());
+                var groupId3 = new StringContent(0.ToString());
+                var langId = new StringContent(1.ToString());
+                var oldFile = new StringContent("file.zip");
                 var fileStream = new StreamContent(stream);
 
                 mangaId.Headers.ContentType = null;
@@ -102,6 +103,7 @@ namespace NaniWeb.Others.Services
                 groupId2.Headers.ContentType = null;
                 groupId3.Headers.ContentType = null;
                 langId.Headers.ContentType = null;
+                oldFile.Headers.ContentType = null;
                 fileStream.Headers.ContentDisposition = ContentDispositionHeaderValue.Parse("form-data; name=\"file\"; filename=\"file.zip\"");
                 fileStream.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
 
@@ -113,6 +115,7 @@ namespace NaniWeb.Others.Services
                 request.Add(groupId2, "\"group_id_2\"");
                 request.Add(groupId3, "\"group_id_3\"");
                 request.Add(langId, "\"lang_id\"");
+                request.Add(oldFile, "\"old_file\"");
                 request.Add(fileStream);
 
                 await Login();

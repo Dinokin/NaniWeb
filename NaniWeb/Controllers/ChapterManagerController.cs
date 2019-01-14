@@ -200,13 +200,11 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var chapter = await _naniWebContext.Chapters.SingleAsync(chp => chp.Id == chapterEdit.ChapterId);
-                var mangadexChapter = await _naniWebContext.MangadexChapters.SingleAsync(chp => chp.Chapter == chapter);
+                var chapter = await _naniWebContext.Chapters.Include(chp => chp.MangadexInfo).SingleAsync(chp => chp.Id == chapterEdit.ChapterId);
                 chapter.Volume = chapterEdit.Volume ?? 0;
                 chapter.ChapterNumber = chapterEdit.ChapterNumber;
                 chapter.Name = chapterEdit.Name ?? string.Empty;
-                mangadexChapter.MangadexId = chapterEdit.MangadexId ?? 0;
-                chapter.MangadexInfo = mangadexChapter;
+                chapter.MangadexInfo.MangadexId = chapterEdit.MangadexId ?? 0;
 
                 if (chapterEdit.Pages != null)
                 {
@@ -252,13 +250,13 @@ namespace NaniWeb.Controllers
                         System.IO.File.Delete(downloadFile);
                     }
 
-                    if (chapterEdit.UploadToMangadex && mangadexChapter.MangadexId > 0)
+                    if (chapterEdit.UploadToMangadex && chapter.MangadexInfo.MangadexId > 0)
                     {
-                        var mangadexSeries = await _naniWebContext.MangadexSeries.SingleAsync(mgdx => mgdx.SeriesId == mangadexChapter.Chapter.SeriesId);
+                        var mangadexSeries = await _naniWebContext.MangadexSeries.SingleAsync(mgdx => mgdx.SeriesId == chapter.SeriesId);
 
                         using (var stream = System.IO.File.OpenRead(pagesZip))
                         {
-                            await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, mangadexChapter, stream);
+                            await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, chapter.MangadexInfo, stream);
                         }
                     }
 
