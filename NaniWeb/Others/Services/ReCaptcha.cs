@@ -20,7 +20,6 @@ namespace NaniWeb.Others.Services
             using (var client = _clientFactory.CreateClient())
             {
                 var response = await client.GetStringAsync($"https://www.google.com/recaptcha/api/siteverify?secret={_settingsKeeper.GetSetting("RecaptchaSecretKey").Value}&response={recaptchaResponse}");
-
                 dynamic jObject = JObject.Parse(response);
 
                 return jObject.success == "true";
