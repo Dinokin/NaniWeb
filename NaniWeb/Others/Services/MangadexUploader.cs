@@ -25,6 +25,7 @@ namespace NaniWeb.Others.Services
         public MangadexUploader(SettingsKeeper settingsKeeper, IHttpClientFactory httpClientFactory)
         {
             _settingsKeeper = settingsKeeper;
+            
             if (bool.Parse(_settingsKeeper.GetSetting("EnableDiscordBot").Value))
                 _client = httpClientFactory.CreateClient("MangadexClient");
         }
