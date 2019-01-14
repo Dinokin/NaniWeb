@@ -74,7 +74,7 @@ function removeBlur() {
 function nextPreload() {
     for (var i = 1; i <= 2; i++) {
         if (index + i < pages.length) {
-            var image = new Image().src = pages[index + i];
+            const image = new Image().src = pages[index + i];
         }
     }
 }
