@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -35,28 +36,24 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var latestReleases = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(10).Include(chp => chp.Series).ToArrayAsync();
-            ViewData["LatestReleases"] = latestReleases;
+            ViewData["LatestReleases"] = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(10).Include(chp => chp.Series).ToArrayAsync();
 
             return View("Home");
         }
 
         public async Task<IActionResult> Announcement(string urlSlug)
         {
-            var announcement = await _naniWebContext.Announcements.SingleOrDefaultAsync(ann => ann.UrlSlug == urlSlug);
+            ViewData["Announcement"] = await _naniWebContext.Announcements.SingleOrDefaultAsync(ann => ann.UrlSlug == urlSlug);
 
-            if (announcement == null)
+            if (ViewData["Announcement"] == null)
                 return RedirectToAction("Announcements");
-
-            ViewData["Announcement"] = announcement;
 
             return View();
         }
 
         public async Task<IActionResult> Announcements()
         {
-            var announcements = await _naniWebContext.Announcements.OrderByDescending(ann => ann.PostDate).ToArrayAsync();
-            ViewData["Announcements"] = announcements;
+            ViewData["Announcements"] = await _naniWebContext.Announcements.OrderByDescending(ann => ann.PostDate).ToArrayAsync();
 
             return View();
         }
@@ -84,21 +81,19 @@ namespace NaniWeb.Controllers
             if (series == null)
                 return RedirectToAction("Projects");
                         
-            var chapters = await _naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber).ToArrayAsync();
+            var chapters = new LinkedList<Chapter>(_naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber));
             var chapter = chapters.SingleOrDefault(chp => chp.ChapterNumber == chapterNumber);
 
             if (chapter == null)
                 return RedirectToAction("Project", new {urlSlug, chapterNumber = string.Empty});
             
-            var pages = await _naniWebContext.Pages.Where(pg => pg.Chapter == chapter).OrderBy(pg => pg.PageNumber).ToArrayAsync();
-            var nextChapter = chapters.LastOrDefault(chp => chp.ChapterNumber > chapter.ChapterNumber);
-
             ViewData["SeriesList"] = seriesList;
             ViewData["Series"] = series;
             ViewData["Chapters"] = chapters;
             ViewData["Chapter"] = chapter;
-            ViewData["Pages"] = pages;
-            ViewData["NextChapter"] = nextChapter;
+            ViewData["Pages"] = await _naniWebContext.Pages.Where(pg => pg.Chapter == chapter).OrderBy(pg => pg.PageNumber).ToArrayAsync();
+            ViewData["PrevChapter"] = chapters.Find(chapter)?.Next?.Value;
+            ViewData["NextChapter"] = chapters.Find(chapter)?.Previous?.Value;
 
             if (mode == null && Request.Cookies["ReaderMode"] != null)
             {
@@ -160,9 +155,7 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> Projects()
         {
-            var series = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToArrayAsync();
-
-            ViewData["Series"] = series;
+            ViewData["Series"] = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToArrayAsync();
 
             return View();
         }
