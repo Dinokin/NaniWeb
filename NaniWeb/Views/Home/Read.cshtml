@@ -112,7 +112,7 @@
 </div>
 <div class="container my-2 border border-secondary rounded">
     <div class="row">
-        <div class="col-2 my-1 pl-1 text-center">
+        <div class="col-2 my-1 px-1 text-center">
             @if (prevChapter != null)
             {
                 <a class="btn btn-sm btn-success" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = prevChapter.ChapterNumber})">Prev</a>
@@ -125,7 +125,7 @@
         <div class="col-8 my-auto text-center text-truncate">
             <a class="my-auto" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty})">@series.Name</a>
         </div>
-        <div class="col-2 my-1 pl-1 text-center">
+        <div class="col-2 my-1 px-1 text-center">
             @if (nextChapter != null)
             {
                 <a class="btn btn-sm btn-success" href="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter.ChapterNumber})">Next</a>
