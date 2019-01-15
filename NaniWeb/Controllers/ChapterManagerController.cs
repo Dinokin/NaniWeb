@@ -253,7 +253,10 @@ namespace NaniWeb.Controllers
 
                     if (chapterEdit.UploadToMangadex && chapter.MangadexInfo.MangadexId > 0)
                     {
-                        await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, chapter.MangadexInfo, System.IO.File.OpenRead(pagesZip));
+                        using (var stream = System.IO.File.OpenRead(pagesZip))
+                        {
+                            await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, chapter.MangadexInfo, stream);
+                        }
                     }
 
                     temp.Delete(true);
