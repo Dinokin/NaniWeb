@@ -1,0 +1,8 @@
+@inject SettingsKeeper SettingsKeeper
+
+@if (bool.Parse(SettingsKeeper.GetSetting("EnableAds").Value) && SettingsKeeper.GetSetting("AdsContainerCode").Value != string.Empty)
+{
+    <div class="container my-2 border border-light rounded">
+        @Html.Raw(SettingsKeeper.GetSetting("AdsContainerCode").Value)
+    </div>
+}

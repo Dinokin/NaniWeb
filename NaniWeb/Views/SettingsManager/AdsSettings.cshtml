@@ -1,0 +1,67 @@
+@model AdsForm
+
+@{
+    ViewData["Title"] = "Ads - Settings";
+}
+
+<partial name="_AdminNav"/>
+
+<div class="container mt-3">
+    <div class="card bg-secondary border-light">
+        <h5 class="card-header bg-secondary">Settings</h5>
+        <div class="card-body">
+            @if (TempData["Error"] != null && (bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Something went wrong. Please check your data and try again.
+                </div>
+            }
+            else if (TempData["Error"] != null && !(bool) TempData["Error"])
+            {
+                <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Settings saved successfully.
+                </div>
+            }
+            <form id="ads_settings_form" asp-controller="SettingsManager" asp-action="Ads" novalidate>
+                <fieldset>
+                    <legend>Ads Settings</legend>
+                    <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" aria-describedby="enable_ads_help" id="enable_ads" asp-for="EnableAds"/>Enable Ads
+                            </label>
+                        </div>
+                        <small id="enable_ads_help" class="form-text text-muted">Enable ads in your site.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ads_header_code">Ads Header Code</label>
+                        <textarea class="form-control" id="ads_header_code" asp-for="AdsHeadScripts" aria-describedby="ads_header_code_help" placeholder="Ads Header Code" rows="10"></textarea>
+                        <small id="ads_header_code_help" class="form-text text-muted">Scripts in the page's header that may or may not be necessary to run the ads. This must be written in HTML.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ads_body_code">Ads Body Code</label>
+                        <textarea class="form-control" id="ads_body_code" asp-for="AdsBodyScripts" aria-describedby="ads_body_code_help" placeholder="Ads Body Code" rows="10"></textarea>
+                        <small id="ads_body_code_help" class="form-text text-muted">Scripts in the page's body that may or may not be necessary to run the ads. This must be written in HTML.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="ads_container_code">Ads Container Code</label>
+                        <textarea class="form-control" id="ads_container_code" asp-for="AdsContainerCode" aria-describedby="ads_container_code_help" placeholder="Ads Container Code" rows="10"></textarea>
+                        <small id="ads_container_code_help" class="form-text text-muted">Code necessary to display ads in the requested area.</small>
+                    </div>
+                </fieldset>
+                <div>
+                    <button class="btn btn-success float-right mt-3" id="submit" type="submit">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Body
+{
+    <script>
+        $("#settings").addClass("active");
+    </script>
+}

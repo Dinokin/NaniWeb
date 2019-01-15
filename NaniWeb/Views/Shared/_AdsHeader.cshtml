@@ -1,0 +1,6 @@
+@inject SettingsKeeper SettingsKeeper
+
+@if (bool.Parse(SettingsKeeper.GetSetting("EnableAds").Value) && SettingsKeeper.GetSetting("AdsHeadScripts").Value != string.Empty)
+{
+    @Html.Raw(SettingsKeeper.GetSetting("AdsHeadScripts").Value)
+}

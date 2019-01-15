@@ -289,6 +289,26 @@ namespace NaniWeb.Data
                     Id = 34,
                     Name = "RedditClientSecret",
                     Value = string.Empty
+                }, new Setting
+                {
+                    Id = 35,
+                    Name = "EnableAds",
+                    Value = false.ToString()
+                }, new Setting
+                {
+                    Id = 36,
+                    Name = "AdsHeadScripts",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 37,
+                    Name = "AdsBodyScripts",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 38,
+                    Name = "AdsContainerCode",
+                    Value = string.Empty
                 });
             });
 

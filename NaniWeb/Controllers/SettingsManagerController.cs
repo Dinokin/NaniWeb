@@ -453,5 +453,43 @@ namespace NaniWeb.Controllers
 
             return RedirectToAction("Reddit");
         }
+
+        [HttpGet]
+        public IActionResult Ads()
+        {
+            var model = new AdsForm()
+            {
+                EnableAds = bool.Parse(_settingsKeeper.GetSetting("EnableAds").Value),
+                AdsHeadScripts = _settingsKeeper.GetSetting("AdsHeadScripts").Value,
+                AdsBodyScripts = _settingsKeeper.GetSetting("AdsBodyScripts").Value,
+                AdsContainerCode = _settingsKeeper.GetSetting("AdsContainerCode").Value,
+            };
+            
+            return View("AdsSettings", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Ads(AdsForm adsForm)
+        {
+            var tasks = new Task[4];
+
+            if (ModelState.IsValid)
+            {
+                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeadScripts", adsForm.AdsHeadScripts ?? string.Empty));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsBodyScripts", adsForm.AdsBodyScripts ?? string.Empty));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsContainerCode", adsForm.AdsContainerCode ?? string.Empty));
+
+                TempData["Error"] = false;
+
+                await Task.WhenAll(tasks);
+            }
+            else
+            {
+                TempData["Error"] = true;
+            }
+
+            return RedirectToAction("Ads");
+        }
     }
 }
