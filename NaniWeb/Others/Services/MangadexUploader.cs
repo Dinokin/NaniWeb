@@ -43,7 +43,7 @@ namespace NaniWeb.Others.Services
             var request = new MultipartFormDataContent();
             var mangaId = new StringContent(mangadexSeries.MangadexId.ToString());
             var chapterName = new StringContent(chapter.Name);
-            var volumeNumber = new StringContent(chapter.Volume.ToString());
+            var volumeNumber = new StringContent(chapter.Volume > 0 ? chapter.Volume.ToString() : string.Empty);
             var chapterNumber = new StringContent(chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture));
             var groupId = new StringContent(_settingsKeeper.GetSetting("MangadexGroupId").Value);
             var groupId2 = new StringContent(string.Empty);
@@ -86,7 +86,7 @@ namespace NaniWeb.Others.Services
                 var request = new MultipartFormDataContent();
                 var mangaId = new StringContent(mangadexSeries.MangadexId.ToString());
                 var chapterName = new StringContent(chapter.Name);
-                var volumeNumber = new StringContent(chapter.Volume.ToString());
+                var volumeNumber = new StringContent(chapter.Volume > 0 ? chapter.Volume.ToString() : string.Empty);
                 var chapterNumber = new StringContent(chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture));
                 var groupId = new StringContent(_settingsKeeper.GetSetting("MangadexGroupId").Value);
                 var groupId2 = new StringContent(0.ToString());
@@ -133,7 +133,7 @@ namespace NaniWeb.Others.Services
                     var request = new MultipartFormDataContent();
                     var mangaId = new StringContent(mangadexSeries.MangadexId.ToString());
                     var chapterName = new StringContent(chapter.Name);
-                    var volumeNumber = new StringContent(chapter.Volume.ToString());
+                    var volumeNumber = new StringContent(chapter.Volume > 0 ? chapter.Volume.ToString() : string.Empty);
                     var chapterNumber = new StringContent(chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture));
                     var groupId = new StringContent(_settingsKeeper.GetSetting("MangadexGroupId").Value);
                     var groupId2 = new StringContent(0.ToString());
