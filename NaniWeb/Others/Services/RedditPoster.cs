@@ -25,12 +25,14 @@ namespace NaniWeb.Others.Services
             }
         }
 
-        public async Task PostLink(string reddit, string title, string link)
+        public async Task PostLink(string reddit, string title, string link, bool nsfw)
         {
             if (bool.Parse(_settingsKeeper.GetSetting("EnableReddit").Value))
             {
                 var subReddit = await _reddit.GetSubredditAsync(reddit);
-                await subReddit.SubmitPostAsync(title, link);
+                var post = await subReddit.SubmitPostAsync(title, link);
+                if (nsfw)
+                    await post.MarkNSFWAsync();
             }
         }
     }
