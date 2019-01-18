@@ -19,5 +19,7 @@ namespace NaniWeb.Models.Chapter
         [Required] public bool AnnounceOnDiscord { get; set; }
         
         [Required] public bool AnnounceOnReddit { get; set; }
+        
+        [Required] public bool RedditNsfw { get; set; }
     }
 }

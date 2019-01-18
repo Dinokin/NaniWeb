@@ -162,7 +162,7 @@ namespace NaniWeb.Controllers
                 tasks[3] = Task.Run(async () =>
                 {
                     if (chapterAdd.AnnounceOnReddit)
-                        await _redditPoster.PostLink("/r/manga", $"[DISC] {series.Name} - Chapter {chapter.ChapterNumber}", chapterUrl);
+                        await _redditPoster.PostLink("/r/manga", $"[DISC] {series.Name} - Chapter {chapter.ChapterNumber}", chapterUrl, chapterAdd.RedditNsfw);
                 });
 
                 await Task.WhenAll(tasks);
