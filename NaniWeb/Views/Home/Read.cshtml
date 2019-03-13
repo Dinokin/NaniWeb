@@ -2,6 +2,7 @@
 @inject SettingsKeeper SettingsKeeper
 
 @{
+    var siteUrl = SettingsKeeper.GetSetting("SiteUrl").Value;
     var series = (Series) ViewData["Series"];
     var seriesList = (Series[]) ViewData["SeriesList"];
     var chapters = (LinkedList<Chapter>) ViewData["Chapters"];
@@ -20,6 +21,12 @@
 
 @section Header
 {
+    <meta property="og:site_name" content="@ViewData["SiteName"]" />
+    <meta property="og:title" content="@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}") - @series.Name - @ViewData["SiteName"]" />
+    <meta property="og:image" content="@($"{siteUrl}/images/covers/{series.Id}_small.png")" />
+    <meta property="og:url" content="@($"{siteUrl}{Url.Action("Project", new {urlSlugs = series.UrlSlug})}")" />
+    <meta property="og:description" content="@series.Synopsis" />
+    <meta property="og:type" content="website" />
     <partial name="_GoogleAnalytics"/>
     
     @if (readerMode == Series.SeriesType.Webtoon)

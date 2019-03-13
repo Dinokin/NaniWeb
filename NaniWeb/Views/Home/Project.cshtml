@@ -4,6 +4,7 @@
 @{
     var series = (Series) ViewData["Series"];
     var disqusEnable = bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value);
+    var siteUrl = SettingsKeeper.GetSetting("SiteUrl").Value;
     ViewData["Title"] = $"{series.Name}";
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
@@ -13,6 +14,12 @@
 
 @section Header
 {
+    <meta property="og:site_name" content="@ViewData["SiteName"]" />
+    <meta property="og:title" content="@series.Name - @ViewData["SiteName"]" />
+    <meta property="og:image" content="@($"{siteUrl}/images/covers/{series.Id}_small.png")" />
+    <meta property="og:url" content="@($"{siteUrl}{Url.Action("Project", new {urlSlugs = series.UrlSlug})}")" />
+    <meta property="og:description" content="@series.Synopsis" />
+    <meta property="og:type" content="website" />
     <partial name="_GoogleAnalytics"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 }
