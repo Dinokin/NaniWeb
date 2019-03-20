@@ -49,6 +49,14 @@
                         <small id="series_mangadex_id_help" class="form-text text-muted">The Mangadex ID of this series. Used for automatic uploading.</small>
                     </div>
                     <div class="form-group">
+                        <div class="form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" aria-describedby="display_mangadex_link_help" id="display_mangadex_link" asp-for="DisplayMangadexLink" @(enableMangadex ? string.Empty : "disabled")/>Display Mangadex Link
+                            </label>
+                        </div>
+                        <small id="display_mangadex_link_help" class="form-text text-muted">Display link to mangadex at the end of the chapter list. Useful if you didn't pick up the series from the beginning and cant have all chapters in the reader.</small>
+                    </div>
+                    <div class="form-group">
                         <label for="series_type">Series Type</label>
                         <select class="form-control" id="series_type" asp-for="Type" asp-items="Html.GetEnumSelectList<Series.SeriesType>()" aria-describedby="series_type_help">
                         </select>

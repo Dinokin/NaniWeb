@@ -14,6 +14,8 @@ namespace NaniWeb.Models.Series
         [Required] public string Synopsis { get; set; }
 
         public int? MangadexId { get; set; }
+        
+        [Required] public bool DisplayMangadexLink { get; set; }
 
         [Required] public Data.Series.SeriesType Type { get; set; }
 

@@ -56,7 +56,8 @@ namespace NaniWeb.Controllers
                     UrlSlug = Utils.GenerateSlug(addSeries.Name),
                     MangadexInfo = new MangadexSeries
                     {
-                        MangadexId = addSeries.MangadexId ?? 0
+                        MangadexId = addSeries.MangadexId ?? 0,
+                        DisplayLink = addSeries.DisplayMangadexLink
                     }
                 };
 
@@ -99,7 +100,8 @@ namespace NaniWeb.Controllers
                 Synopsis = series.Synopsis,
                 Type = series.Type,
                 Status = series.Status,
-                MangadexId = series.MangadexInfo.MangadexId
+                MangadexId = series.MangadexInfo.MangadexId,
+                DisplayMangadexLink = series.MangadexInfo.DisplayLink
             };
 
             return View("EditSeries", model);
@@ -120,6 +122,7 @@ namespace NaniWeb.Controllers
                 series.Status = editSeries.Status;
                 series.UrlSlug = Utils.GenerateSlug(editSeries.Name);
                 series.MangadexInfo.MangadexId = editSeries.MangadexId ?? 0;
+                series.MangadexInfo.DisplayLink = editSeries.DisplayMangadexLink;
 
                 _naniWebContext.Series.Update(series);
                 await _naniWebContext.SaveChangesAsync();

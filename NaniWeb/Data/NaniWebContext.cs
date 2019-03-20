@@ -297,6 +297,7 @@ namespace NaniWeb.Data
                 entity.Property(info => info.SeriesId).IsRequired();
                 entity.HasIndex(info => info.SeriesId).IsUnique();
                 entity.Property(info => info.MangadexId).IsRequired();
+                entity.Property(info => info.DisplayLink).IsRequired().HasDefaultValue(false);
             });
 
             builder.Entity<MangadexChapter>(entity =>
