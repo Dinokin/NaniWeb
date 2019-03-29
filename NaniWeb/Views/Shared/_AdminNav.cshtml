@@ -32,12 +32,14 @@
                 <div class="dropdown-menu" aria-labelledby="settings_label">
                     <a class="dropdown-item" href="@Url.Action("General", "SettingsManager")">General</a>
                     <a class="dropdown-item" href="@Url.Action("Email", "SettingsManager")">Email</a>
-                    <a class="dropdown-item" href="@Url.Action("Discord", "SettingsManager")">Discord</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="@Url.Action("Mangadex", "SettingsManager")">Mangadex</a>
-                    <a class="dropdown-item" href="@Url.Action("GoogleAnalytics", "SettingsManager")">Google Analytics</a>
                     <a class="dropdown-item" href="@Url.Action("Fcm", "SettingsManager")">Firebase Cloud Messaging</a>
-                    <a class="dropdown-item" href="@Url.Action("Disqus", "SettingsManager")">Disqus</a>
+                    <a class="dropdown-item" href="@Url.Action("Discord", "SettingsManager")">Discord</a>
                     <a class="dropdown-item" href="@Url.Action("Reddit", "SettingsManager")">Reddit</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="@Url.Action("Disqus", "SettingsManager")">Disqus</a>
+                    <a class="dropdown-item" href="@Url.Action("GoogleAnalytics", "SettingsManager")">Google Analytics</a>
                 </div>
             </li>
         </ul>
