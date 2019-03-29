@@ -36,7 +36,8 @@ namespace NaniWeb.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewData["LatestReleases"] = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(10).Include(chp => chp.Series).ToArrayAsync();
+            var updateCount = int.Parse(_settingsKeeper.GetSetting("NumberOfUpdatesToShow").Value);
+            ViewData["LatestReleases"] = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(updateCount).Include(chp => chp.Series).ToArrayAsync();
 
             return View("Home");
         }

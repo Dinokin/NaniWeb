@@ -289,6 +289,11 @@ namespace NaniWeb.Data
                     Id = 34,
                     Name = "RedditClientSecret",
                     Value = string.Empty
+                }, new Setting
+                {
+                    Id = 35,
+                    Name = "NumberOfUpdatesToShow",
+                    Value = 10.ToString()
                 });
             });
 

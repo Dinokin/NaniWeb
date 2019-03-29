@@ -30,6 +30,7 @@ namespace NaniWeb.Controllers
                 SiteDescription = _settingsKeeper.GetSetting("SiteDescription").Value,
                 SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value,
                 EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value),
+                NumberOfUpdatesToShow = byte.Parse(_settingsKeeper.GetSetting("NumberOfUpdatesToShow").Value),
                 SiteFooter = _settingsKeeper.GetSetting("SiteFooterCode").Value,
                 SiteSideBar = _settingsKeeper.GetSetting("SiteSideBar").Value,
                 SiteAboutPage = _settingsKeeper.GetSetting("SiteAboutPage").Value
@@ -43,7 +44,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[8];
+                var tasks = new Task[9];
                 var manifest = new ManifestBuilder
                 {
                     ShortName = generalForm.SiteName,
@@ -66,10 +67,11 @@ namespace NaniWeb.Controllers
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteDescription", generalForm.SiteDescription));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteUrl", generalForm.SiteUrl));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
-                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
-                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
-                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
-                tasks[7] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
+                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("NumberOfUpdatesToShow", generalForm.NumberOfUpdatesToShow.ToString()));
+                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter));
+                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar));
+                tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage));
+                tasks[8] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
 
                 TempData["Error"] = false;
 
