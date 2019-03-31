@@ -32,7 +32,7 @@ namespace NaniWeb
 
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(options =>
             {
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(1);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromHours(3);
                 options.Lockout.MaxFailedAccessAttempts = 3;
                 options.Password.RequiredLength = 8;
                 options.Password.RequireDigit = false;
