@@ -7,44 +7,44 @@ namespace NaniWeb.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
-                table: "Settings",
-                columns: new[] { "Id", "Name", "Value" },
-                values: new object[,]
+                "Settings",
+                new[] {"Id", "Name", "Value"},
+                new object[,]
                 {
-                    { 30, "EnableReddit", "False" },
-                    { 31, "RedditUser", "" },
-                    { 32, "RedditPassword", "" },
-                    { 33, "RedditClientId", "" },
-                    { 34, "RedditClientSecret", "" }
+                    {30, "EnableReddit", "False"},
+                    {31, "RedditUser", ""},
+                    {32, "RedditPassword", ""},
+                    {33, "RedditClientId", ""},
+                    {34, "RedditClientSecret", ""}
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 30);
+                "Settings",
+                "Id",
+                30);
 
             migrationBuilder.DeleteData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 31);
+                "Settings",
+                "Id",
+                31);
 
             migrationBuilder.DeleteData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 32);
+                "Settings",
+                "Id",
+                32);
 
             migrationBuilder.DeleteData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 33);
+                "Settings",
+                "Id",
+                33);
 
             migrationBuilder.DeleteData(
-                table: "Settings",
-                keyColumn: "Id",
-                keyValue: 34);
+                "Settings",
+                "Id",
+                34);
         }
     }
 }

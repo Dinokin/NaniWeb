@@ -1,5 +1,4 @@
 @using NaniWeb.Data
-
 @{
     ViewData["Title"] = "Series";
     var series = (Series[]) ViewData["Series"];
@@ -58,7 +57,7 @@
 {
     <script>
         var address = null;
-        
+
         $("#series").addClass("active");
 
         $(".delete-series").click(function(event) {

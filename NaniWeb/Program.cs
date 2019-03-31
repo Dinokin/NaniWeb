@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace NaniWeb
@@ -11,15 +10,9 @@ namespace NaniWeb
             CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().ConfigureKestrel((context, options) =>
-            {
-                options.Limits.MaxRequestBodySize = 200000000;
-
-                if (context.HostingEnvironment.IsProduction())
-                    options.Listen(IPAddress.Any, 5580);
-            });
+            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().ConfigureKestrel((context, options) => { options.Limits.MaxRequestBodySize = 200000000; });
         }
     }
 }

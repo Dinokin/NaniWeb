@@ -13,7 +13,7 @@ namespace NaniWeb.Others.Services
         public EmailSender(SettingsKeeper settingsKeeper)
         {
             _settingsKeeper = settingsKeeper;
-            
+
             if (bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
                 _smtpClient = new SmtpClient(_settingsKeeper.GetSetting("SmtpServer").Value)
                 {

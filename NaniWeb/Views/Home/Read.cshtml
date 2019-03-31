@@ -12,7 +12,7 @@
     var prevChapter = ViewData["PrevChapter"] as Chapter;
     var nextChapter = ViewData["NextChapter"] as Chapter;
     var readerMode = (Series.SeriesType) ViewData["ReaderMode"];
-    
+
     ViewData["Title"] = $"Chapter {chapter.ChapterNumber} - {series.Name}";
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}_chapter_{chapter.ChapterNumber}";
@@ -21,14 +21,14 @@
 
 @section Header
 {
-    <meta property="og:site_name" content="@ViewData["SiteName"]" />
-    <meta property="og:title" content="@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}") - @series.Name - @ViewData["SiteName"]" />
-    <meta property="og:image" content="@($"{siteUrl}/images/covers/{series.Id}_small.png")" />
-    <meta property="og:url" content="@($"{siteUrl}{Url.Action("Project", new {urlSlugs = series.UrlSlug})}")" />
-    <meta property="og:description" content="@series.Synopsis" />
-    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="@ViewData["SiteName"]"/>
+    <meta property="og:title" content="@(chapter.Volume > 0 ? $"Vol. {chapter.Volume} " : string.Empty)Ch. @(chapter.ChapterNumber)@(string.IsNullOrEmpty(chapter.Name) ? string.Empty : $" - {chapter.Name}") - @series.Name - @ViewData["SiteName"]"/>
+    <meta property="og:image" content="@($"{siteUrl}/images/covers/{series.Id}_small.png")"/>
+    <meta property="og:url" content="@($"{siteUrl}{Url.Action("Project", new {urlSlugs = series.UrlSlug})}")"/>
+    <meta property="og:description" content="@series.Synopsis"/>
+    <meta property="og:type" content="website"/>
     <partial name="_GoogleAnalytics"/>
-    
+
     @if (readerMode == Series.SeriesType.Webtoon)
     {
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
@@ -183,7 +183,7 @@
                     @Html.Raw($"\"/images/pages/{chPage.Id}.png\"{(chPage == lastPage ? string.Empty : ",")}")
                 }
             ];
-            
+
             $(function() {
                 nextPreload();
             });
@@ -206,7 +206,7 @@
             $("#page_selector").change(function() {
                 blur();
                 index = this.value;
-                
+
                 page.attr("src", pages[index]);
                 nextPreload();
                 previousPreload();

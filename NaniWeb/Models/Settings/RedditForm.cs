@@ -5,10 +5,12 @@ namespace NaniWeb.Models.Settings
     public class RedditForm
     {
         [Required] public bool EnableReddit { get; set; }
-        
+
         [Required] public string RedditUser { get; set; }
-        
-        [Required] [DataType(DataType.Password)] public string RedditPassword { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        public string RedditPassword { get; set; }
 
         [Required] public string RedditClientId { get; set; }
 

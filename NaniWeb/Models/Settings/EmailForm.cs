@@ -9,7 +9,7 @@ namespace NaniWeb.Models.Settings
         [Required] public string SmtpServer { get; set; }
 
         [Required] public string SmtpUser { get; set; }
-        
+
         [Required] [EmailAddress] public string SiteEmail { get; set; }
 
         [Required] public string RecaptchaSiteKey { get; set; }

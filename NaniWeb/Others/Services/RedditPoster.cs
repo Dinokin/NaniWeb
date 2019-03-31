@@ -5,8 +5,8 @@ namespace NaniWeb.Others.Services
 {
     public class RedditPoster
     {
-        private readonly SettingsKeeper _settingsKeeper;
         private readonly Reddit _reddit;
+        private readonly SettingsKeeper _settingsKeeper;
 
         public RedditPoster(SettingsKeeper settingsKeeper)
         {

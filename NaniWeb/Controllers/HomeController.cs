@@ -19,8 +19,8 @@ namespace NaniWeb.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IEmailSender _emailSender;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly ReCaptcha _reCaptcha;
         private readonly SettingsKeeper _settingsKeeper;
@@ -66,7 +66,7 @@ namespace NaniWeb.Controllers
 
             if (series == null)
                 return RedirectToAction("Projects");
-            
+
             series.Chapters = series.Chapters.OrderByDescending(chp => chp.ChapterNumber).ToList();
             ViewData["Series"] = series;
 
@@ -78,16 +78,16 @@ namespace NaniWeb.Controllers
         {
             var seriesList = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToArrayAsync();
             var series = seriesList.SingleOrDefault(srs => srs.UrlSlug == urlSlug);
-            
+
             if (series == null)
                 return RedirectToAction("Projects");
-                        
+
             var chapters = new LinkedList<Chapter>(_naniWebContext.Chapters.Where(chp => chp.Series == series).OrderByDescending(chp => chp.ChapterNumber));
             var chapter = chapters.SingleOrDefault(chp => chp.ChapterNumber == chapterNumber);
 
             if (chapter == null)
                 return RedirectToAction("Project", new {urlSlug, chapterNumber = string.Empty});
-            
+
             ViewData["SeriesList"] = seriesList;
             ViewData["Series"] = series;
             ViewData["Chapters"] = chapters;
@@ -121,9 +121,9 @@ namespace NaniWeb.Controllers
             if (chapter == null)
             {
                 var bytes = System.IO.File.OpenRead($"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}assets{Path.DirectorySeparatorChar}facepalm.png");
-                return File(bytes, "image/png", $"error.png");
+                return File(bytes, "image/png", "error.png");
             }
-            
+
             chapter.Pages = chapter.Pages.OrderBy(pg => pg.PageNumber).ToList();
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
@@ -139,11 +139,8 @@ namespace NaniWeb.Controllers
             {
                 var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
                 var pagesOrigin = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
-                
-                for (var i = 0; i < chapter.Pages.Count ; i++)
-                {
-                    System.IO.File.Copy($"{pagesOrigin}{chapter.Pages[i].Id}.png", $"{temp.FullName}{Path.DirectorySeparatorChar}{i}.png");
-                }
+
+                for (var i = 0; i < chapter.Pages.Count; i++) System.IO.File.Copy($"{pagesOrigin}{chapter.Pages[i].Id}.png", $"{temp.FullName}{Path.DirectorySeparatorChar}{i}.png");
 
                 ZipFile.CreateFromDirectory(temp.FullName, file, CompressionLevel.Optimal, false);
 

@@ -238,7 +238,7 @@ namespace NaniWeb.Controllers
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser ?? string.Empty));
                 tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword ?? string.Empty));
                 tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
-                
+
                 TempData["Error"] = false;
 
                 await Task.WhenAll(tasks);
@@ -412,7 +412,7 @@ namespace NaniWeb.Controllers
                 RedditClientId = _settingsKeeper.GetSetting("RedditClientId").Value,
                 RedditClientSecret = _settingsKeeper.GetSetting("RedditClientSecret").Value
             };
-            
+
             return View("RedditSettings", model);
         }
 

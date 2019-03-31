@@ -95,7 +95,7 @@ namespace NaniWeb.Controllers
                 if (pageList.Count == 0)
                 {
                     temp.Delete(true);
-                    
+
                     TempData["Error"] = true;
 
                     return RedirectToAction("Add");
@@ -252,12 +252,10 @@ namespace NaniWeb.Controllers
                     }
 
                     if (chapterEdit.UploadToMangadex && chapter.MangadexInfo.MangadexId > 0)
-                    {
                         using (var stream = System.IO.File.OpenRead(pagesZip))
                         {
                             await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, chapter.MangadexInfo, stream);
                         }
-                    }
 
                     temp.Delete(true);
                 }
@@ -288,7 +286,7 @@ namespace NaniWeb.Controllers
 
             foreach (var page in chapter.Pages)
                 System.IO.File.Delete($"{destination}{page.Id}.png");
-            
+
             System.IO.File.Delete(file);
 
             _naniWebContext.Chapters.Remove(chapter);

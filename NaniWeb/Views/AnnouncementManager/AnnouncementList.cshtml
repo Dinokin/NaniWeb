@@ -1,5 +1,4 @@
 @using NaniWeb.Data
-
 @{
     var announcements = (Announcement[]) ViewData["Announcements"];
     ViewData["Title"] = "Announcements";
@@ -57,7 +56,7 @@
 {
     <script>
         var address = null;
-        
+
         $("#announcements").addClass("active");
 
         $(".delete-announcement").click(function(event) {

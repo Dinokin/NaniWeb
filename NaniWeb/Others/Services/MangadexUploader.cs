@@ -25,7 +25,7 @@ namespace NaniWeb.Others.Services
         public MangadexUploader(SettingsKeeper settingsKeeper, IHttpClientFactory httpClientFactory)
         {
             _settingsKeeper = settingsKeeper;
-            
+
             if (bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value))
                 _client = httpClientFactory.CreateClient("MangadexClient");
         }
@@ -127,7 +127,6 @@ namespace NaniWeb.Others.Services
         public async Task UpdateChapterInfo(Chapter chapter, MangadexSeries mangadexSeries, MangadexChapter mangadexChapter)
         {
             if (bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value))
-            {
                 using (var stream = new MemoryStream())
                 {
                     var request = new MultipartFormDataContent();
@@ -169,7 +168,6 @@ namespace NaniWeb.Others.Services
                     await _client.PostAsync($"{MangadexChapterEditAddress}&id={mangadexChapter.MangadexId}", request);
                     await Logout();
                 }
-            }
         }
 
         private async Task Login()

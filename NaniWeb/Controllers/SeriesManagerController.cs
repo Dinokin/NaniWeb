@@ -167,10 +167,10 @@ namespace NaniWeb.Controllers
             foreach (var chapter in chapters)
             {
                 var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
-                
+
                 foreach (var page in chapter.Pages)
                     System.IO.File.Delete($"{pagesLocation}{page.Id}.png");
-                
+
                 System.IO.File.Delete(file);
             }
 

@@ -1,5 +1,4 @@
 @using Microsoft.AspNetCore.Identity
-
 @{
     var users = (Tuple<IdentityUser<int>, string>[]) ViewData["Users"];
     ViewData["Title"] = "Users";
@@ -84,7 +83,7 @@
 {
     <script>
         var address = null;
-        
+
         $("#users").addClass("active");
 
         $(".change-role").click(function(event) {

@@ -7,8 +7,8 @@ namespace NaniWeb.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<bool>(
-                name: "DisplayLink",
-                table: "MangadexSeries",
+                "DisplayLink",
+                "MangadexSeries",
                 nullable: false,
                 defaultValue: false);
         }
@@ -16,8 +16,8 @@ namespace NaniWeb.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "DisplayLink",
-                table: "MangadexSeries");
+                "DisplayLink",
+                "MangadexSeries");
         }
     }
 }
