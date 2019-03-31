@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -83,6 +83,7 @@ namespace NaniWeb.Controllers
                 var tempPages = temp.CreateSubdirectory("Pages");
                 var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
                 var pagesZip = $"{temp.FullName}{Path.DirectorySeparatorChar}pages.zip";
+                Directory.CreateDirectory(destination);
 
                 using (var stream = System.IO.File.Create(pagesZip))
                 {

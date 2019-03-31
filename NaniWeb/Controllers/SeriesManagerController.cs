@@ -65,6 +65,7 @@ namespace NaniWeb.Controllers
                 await _naniWebContext.SaveChangesAsync();
 
                 var path = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}{series.Id}.png";
+                Directory.CreateDirectory(path.Replace($"{Path.DirectorySeparatorChar}{series.Id}.png", string.Empty));
 
                 using (var file = System.IO.File.Create(path))
                 {
