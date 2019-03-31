@@ -137,7 +137,7 @@ namespace NaniWeb.Controllers
                     if (chapterAdd.UploadToMangadex && mangadexSeries.MangadexId > 0)
                         using (var stream = System.IO.File.OpenRead(pagesZip))
                         {
-                            mangadexChapter = await _mangadexUploader.UploadChapter(series, chapter, mangadexSeries, stream);
+                            mangadexChapter = await _mangadexUploader.UploadChapter(chapter, mangadexSeries, stream);
                         }
 
                     if (mangadexChapter == null)

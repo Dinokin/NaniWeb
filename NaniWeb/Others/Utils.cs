@@ -45,8 +45,8 @@ namespace NaniWeb.Others
         public static async Task BuildServiceWorker(string firebaseApiKey, string firebaseProjectId, string firebaseSenderId, IHostingEnvironment environment)
         {
             var serviceWorker = new StringBuilder();
-            serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.7.2/firebase-app.js');");
-            serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.7.2/firebase-messaging.js');");
+            serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js');");
+            serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.9.2/firebase-messaging.js');");
             serviceWorker.AppendLine("var config = {");
             serviceWorker.AppendLine($"apiKey: '{firebaseApiKey}',");
             serviceWorker.AppendLine($"projectId: '{firebaseProjectId}',");

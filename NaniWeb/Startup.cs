@@ -28,7 +28,7 @@ namespace NaniWeb
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddEntityFrameworkNpgsql().AddDbContext<NaniWebContext>().BuildServiceProvider();
+            services.AddEntityFrameworkNpgsql().AddDbContext<NaniWebContext>();
 
             services.AddIdentity<IdentityUser<int>, IdentityRole<int>>(options =>
             {
@@ -44,10 +44,6 @@ namespace NaniWeb
             }).AddEntityFrameworkStores<NaniWebContext>().AddDefaultTokenProviders();
 
             services.AddRouting(options => options.LowercaseUrls = true);
-
-            services.AddResponseCompression();
-            services.Configure<BrotliCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
-            services.Configure<GzipCompressionProviderOptions>(options => { options.Level = CompressionLevel.Optimal; });
 
             services.AddMvc(options => options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())))
                 .AddViewOptions(options => options.HtmlHelperOptions.ClientValidationEnabled = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
@@ -102,7 +98,6 @@ namespace NaniWeb
                 options.SupportedUICultures = new List<CultureInfo>(new[] {CultureInfo.InvariantCulture});
             });
 
-            app.UseResponseCompression();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc(routes =>

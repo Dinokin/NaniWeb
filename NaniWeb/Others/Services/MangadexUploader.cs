@@ -30,7 +30,7 @@ namespace NaniWeb.Others.Services
                 _client = httpClientFactory.CreateClient("MangadexClient");
         }
 
-        public async Task<MangadexChapter> UploadChapter(Series series, Chapter chapter, MangadexSeries mangadexSeries, Stream stream)
+        public async Task<MangadexChapter> UploadChapter(Chapter chapter, MangadexSeries mangadexSeries, Stream stream)
         {
             if (!bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value))
                 return new MangadexChapter
