@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
@@ -91,7 +91,7 @@ namespace NaniWeb.Controllers
                 }
 
                 ZipFile.ExtractToDirectory(pagesZip, tempPages.FullName);
-                var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name).ToList();
+                var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name.Length).ThenBy(fl => fl.Name).ToList();
 
                 if (pageList.Count == 0)
                 {
