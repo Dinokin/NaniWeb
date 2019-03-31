@@ -107,6 +107,11 @@
 
     @if (readerMode == Series.SeriesType.Manga)
     {
+        <div id="load_spinner" class="d-none justify-content-center">
+            <div class="spinner spinner-border text-success" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
         <img id="manga_page" class="img-fluid mx-auto d-block clickable" src="~/images/pages/@($"{pages[0].Id}.png")" alt="">
     }
     else

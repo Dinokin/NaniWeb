@@ -61,14 +61,20 @@ function next() {
 
 function blur() {
     const img = $("#manga_page");
+    const spinner = $("#load_spinner");
 
     img.addClass("blur");
+    spinner.removeClass("d-none");
+    spinner.addClass("d-flex");
 }
 
 function removeBlur() {
     const img = $("#manga_page");
+    const spinner = $("#load_spinner");
 
     img.removeClass("blur");
+    spinner.removeClass("d-flex");
+    spinner.addClass("d-none");
 }
 
 function nextPreload() {
