@@ -9,6 +9,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    @if (ViewData["AllowIndexing"] == null || !(bool) ViewData["AllowIndexing"])
+    {
+        <meta name="robots" content="noindex, nofollow">
+    }
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="@ViewData["SiteDescription"]">
     <title>@ViewData["Title"]@(ViewData["TitleSeparator"] ?? " - ")@ViewData["SiteName"]</title>
