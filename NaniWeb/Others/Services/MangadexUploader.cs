@@ -199,21 +199,24 @@ namespace NaniWeb.Others.Services
         private async Task<MangadexChapter> GetChapterId(Chapter chapter, MangadexSeries mangadexSeries)
         {
             var html = new HtmlWeb {UserAgent = "NaniWeb/1.0"};
-            int? mangadexId;
+            var mangadexId = 0;
 
-            do
+            for (var i = 0; i < 3; i++)
             {
-                await Task.Delay(TimeSpan.FromSeconds(1));
-
-                var parseResult = int.TryParse((await html.LoadFromWebAsync($"{MangadexSeriesPage}/{mangadexSeries.MangadexId}")).DocumentNode.Descendants("div")
+                int.TryParse((await html.LoadFromWebAsync($"{MangadexSeriesPage}/{mangadexSeries.MangadexId}")).DocumentNode.Descendants("div")
                     .Where(element => element.Attributes.Contains("data-group") && element.GetAttributeValue("data-group", string.Empty) == _settingsKeeper.GetSetting("MangadexGroupId").Value)
                     .SingleOrDefault(element => element.GetAttributeValue("data-chapter", string.Empty) == chapter.ChapterNumber.ToString(CultureInfo.InvariantCulture))?
                     .GetAttributeValue("data-id", string.Empty), out var result);
 
-                mangadexId = parseResult ? result : (int?) null;
-            } while (mangadexId == null);
+                mangadexId = result;
 
-            return new MangadexChapter {Chapter = chapter, ChapterId = chapter.Id, MangadexId = mangadexId.Value};
+                if (mangadexId > 0)
+                    break;
+                
+                await Task.Delay(TimeSpan.FromSeconds(2));
+            }
+            
+            return new MangadexChapter {Chapter = chapter, ChapterId = chapter.Id, MangadexId = mangadexId};
         }
     }
 }
