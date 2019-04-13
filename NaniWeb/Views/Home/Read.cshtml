@@ -175,8 +175,6 @@
     @if (readerMode == Series.SeriesType.Manga)
     {
         <script>
-            $("#bottom").addClass("d-none");
-
             const nextAddress =
                 "@Html.Raw(chapter == chapters.First() ? Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = string.Empty}) : Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = nextChapter?.ChapterNumber}))";
             const page = $("#manga_page");
@@ -215,10 +213,6 @@
                 page.attr("src", pages[index]);
                 nextPreload();
                 previousPreload();
-
-                if (index == pages.length - 1) {
-                    $("#bottom").removeClass("d-none");
-                }
             });
         </script>
     }
