@@ -152,9 +152,13 @@
         </div>
     </div>
 </div>
-<div id="bottom" class="container my-2 rounded border border-secondary disqus-container">
-    <partial name="_DisqusDiv"/>
-</div>
+
+@if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+{
+    <div id="bottom" class="container my-2 rounded border border-secondary disqus-container">
+        <partial name="_DisqusDiv"/>
+    </div>
+}
 
 @if (readerMode == Series.SeriesType.Webtoon)
 {
