@@ -151,11 +151,36 @@ namespace NaniWeb.Controllers
             }
         }
 
+        [HttpGet]
         public async Task<IActionResult> Projects()
         {
-            ViewData["Series"] = await _naniWebContext.Series.OrderBy(srs => srs.Name).ToArrayAsync();
+            var model = new ProjectSearch
+            {
+                Name = string.Empty,
+                Status = Series.SeriesStatus.Ongoing
+            };
+            
+            ViewData["Series"] = await _naniWebContext.Series.OrderBy(srs => srs.Status).ThenBy(srs => srs.Name).ToArrayAsync();
 
-            return View();
+            return View(model);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> Projects(ProjectSearch projectSearch)
+        {
+            if (ModelState.IsValid)
+            {
+                if (string.IsNullOrWhiteSpace(projectSearch.Name))
+                    ViewData["Series"] = await _naniWebContext.Series.Where(srs => srs.Status == projectSearch.Status).OrderBy(srs => srs.Name).ToArrayAsync();
+                else
+                    ViewData["Series"] = await _naniWebContext.Series.Where(srs => srs.Name.ToLowerInvariant().Contains(projectSearch.Name.ToLowerInvariant()) && srs.Status == projectSearch.Status)
+                        .OrderBy(srs => srs.Name).ToArrayAsync();
+            }
+            else
+                ViewData["Series"] = await _naniWebContext.Series.OrderBy(srs => srs.Status).ThenBy(srs => srs.Name).ToArrayAsync();
+
+
+            return View(projectSearch);
         }
 
         public IActionResult About()
