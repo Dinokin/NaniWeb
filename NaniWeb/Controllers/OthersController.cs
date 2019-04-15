@@ -71,7 +71,7 @@ namespace NaniWeb.Controllers
                     await _userManager.CreateAsync(user, signUpForm.Password);
                     await _userManager.AddToRoleAsync(user, "Administrator");
                 }));
-                tasks.Add(Task.Run(async () => await System.IO.File.WriteAllTextAsync($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}installed.txt", "DO NOT DELETE!!!!")));
+                tasks.Add(Task.Run(async () => await System.IO.File.WriteAllTextAsync($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}installed.txt", Utils.InstallationId)));
                 tasks.Add(Task.Run(async () =>
                 {
                     var manifest = new ManifestBuilder

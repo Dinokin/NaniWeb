@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO.Compression;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NaniWeb.Data;
@@ -55,6 +55,10 @@ namespace NaniWeb
                 options.AccessDeniedPath = "/denied";
             });
 
+            services.AddDataProtection().PersistKeysToFileSystem(Directory.CreateDirectory($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}Keys"))
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(30))
+                .ProtectKeysWithCertificate(Utils.GetCertificate("keycert.pfx"));
+            
             services.AddHttpClient("MangadexClient", client =>
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("NaniWeb/1.0");
