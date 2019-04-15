@@ -67,7 +67,7 @@
                 <select id="mode_selector" class="custom-select mw-50 w-100">
                     @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
                     {
-                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single Page" : "Long Strip")</option>
+                        <option value="@mode" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single page" : "Long strip")</option>
                     }
                 </select>
             </div>
@@ -96,12 +96,15 @@
                 <select id="mode_selector" class="custom-select w-100">
                     @foreach (var mode in Enum.GetNames(typeof(Series.SeriesType)))
                     {
-                        <option value="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber, mode})" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single page" : "Long strip")</option>
+                        <option value="@mode" selected="@(mode == readerMode.ToString() ? "selected" : null)">@(mode == Series.SeriesType.Manga.ToString() ? "Single page" : "Long strip")</option>
                     }
                 </select>
             </div>
         </div>
     }
+    <form id="form_mode" class="d-none" action="@Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})" method="post">
+        <input type="hidden" id="mode_input" name="mode" value=""/>
+    </form>
 </div>
 <div id="pages" class="container my-2 p-0 mw-100" style="position: relative;">
 
@@ -167,8 +170,13 @@
     <script>
         $("#projects").addClass("active");
 
-        $("#series_selector,#mode_selector,#chapter_selector").change(function() {
+        $("#series_selector, #chapter_selector").change(function() {
             window.location = this.value;
+        });
+        
+        $("#mode_selector").change(function() {
+            $("#mode_input").val(this.value)
+            $("#form_mode").submit();
         });
     </script>
 
