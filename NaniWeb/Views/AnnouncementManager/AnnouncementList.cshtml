@@ -10,23 +10,32 @@
     <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Announcements</h5>
         <div class="card-body">
-            @foreach (var announcement in announcements)
+            @if (announcements.Length > 0)
             {
-                <div class="row mb-1">
-                    <div class="col-8 my-auto text-center text-truncate">
-                        @announcement.Title
-                    </div>
-                    <div class="col-4 px-0 text-center">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
-                                <a class="dropdown-item" href="@Url.Action("Edit", new {id = announcement.Id})">Edit</a>
-                                <a class="dropdown-item delete-announcement" href="@Url.Action("Delete", new {id = announcement.Id})">Delete</a>
+                foreach (var announcement in announcements)
+                {
+                    <div class="row mb-1">
+                        <div class="col-8 my-auto text-center text-truncate">
+                            @announcement.Title
+                        </div>
+                        <div class="col-4 px-0 text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
+                                    <a class="dropdown-item" href="@Url.Action("Edit", new {id = announcement.Id})">Edit</a>
+                                    <a class="dropdown-item delete-announcement" href="@Url.Action("Delete", new {id = announcement.Id})">Delete</a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="text-center">
+                    <h3>No announcements found.</h3>
                 </div>
             }
         </div>

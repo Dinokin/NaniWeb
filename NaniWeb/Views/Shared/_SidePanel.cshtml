@@ -1,5 +1,17 @@
 @inject SettingsKeeper SettingsKeeper
 
 <div>
-    @Html.Raw(SettingsKeeper.GetSetting("SiteSideBar").Value)
+    @if (!string.IsNullOrWhiteSpace(SettingsKeeper.GetSetting("SiteSideBar").Value))
+    {
+        @Html.Raw(SettingsKeeper.GetSetting("SiteSideBar").Value)
+    }
+    else
+    {
+        <div class="card mb-3 bg-primary border-secondary text-center">
+            <h5 class="card-header bg-primary">Example</h5>
+            <div class="card-body">
+                Example side bar.<br/> You can edit this inside the admin panel.
+            </div>
+        </div>
+    }
 </div>

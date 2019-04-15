@@ -10,26 +10,35 @@
     <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Users</h5>
         <div class="card-body">
-            @foreach (var (item1, item2) in users)
+            @if (users.Length > 0)
             {
-                <div class="row mb-1">
-                    <div class="col-4 my-auto text-center text-truncate">
-                        @item1.UserName
-                    </div>
-                    <div class="col-4 my-auto text-center text-truncate">
-                        @item2
-                    </div>
-                    <div class="col-4 px-0 text-center">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
-                                <a class="dropdown-item change-role" href="@Url.Action("EditRole", new {userId = item1.Id})">Change roles</a>
-                                <a class="dropdown-item delete-user" href="@Url.Action("Delete", new {userId = item1.Id})">Delete</a>
+                foreach (var (item1, item2) in users)
+                {
+                    <div class="row mb-1">
+                        <div class="col-4 my-auto text-center text-truncate">
+                            @item1.UserName
+                        </div>
+                        <div class="col-4 my-auto text-center text-truncate">
+                            @item2
+                        </div>
+                        <div class="col-4 px-0 text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
+                                    <a class="dropdown-item change-role" href="@Url.Action("EditRole", new {userId = item1.Id})">Change roles</a>
+                                    <a class="dropdown-item delete-user" href="@Url.Action("Delete", new {userId = item1.Id})">Delete</a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="text-center">
+                    <h3>No users found.</h3>
                 </div>
             }
         </div>

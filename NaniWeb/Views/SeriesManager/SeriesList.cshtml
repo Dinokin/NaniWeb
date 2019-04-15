@@ -10,24 +10,33 @@
     <div class="card bg-primary border-secondary">
         <h5 class="card-header bg-primary">Series</h5>
         <div class="card-body">
-            @foreach (var seriesItem in series)
+            @if (series.Length > 0)
             {
-                <div class="row mb-1">
-                    <div class="col-8 my-auto text-center text-truncate">
-                        <a href="@Url.Action("List", "ChapterManager", new {id = seriesItem.Id})">@seriesItem.Name</a>
-                    </div>
-                    <div class="col-4 px-0 text-center">
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
-                                <a class="dropdown-item" href="@Url.Action("Add", "ChapterManager", new {id = seriesItem.Id})">Add chapter</a>
-                                <a class="dropdown-item" href="@Url.Action("Edit", new {id = seriesItem.Id})">Edit</a>
-                                <a class="dropdown-item delete-series" href="@Url.Action("Delete", new {id = seriesItem.Id})">Delete</a>
+                foreach (var seriesItem in series)
+                {
+                    <div class="row mb-1">
+                        <div class="col-8 my-auto text-center text-truncate">
+                            <a href="@Url.Action("List", "ChapterManager", new {id = seriesItem.Id})">@seriesItem.Name</a>
+                        </div>
+                        <div class="col-4 px-0 text-center">
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-info dropdown-toggle" type="button" id="actions_drop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actions_drop">
+                                    <a class="dropdown-item" href="@Url.Action("Add", "ChapterManager", new {id = seriesItem.Id})">Add chapter</a>
+                                    <a class="dropdown-item" href="@Url.Action("Edit", new {id = seriesItem.Id})">Edit</a>
+                                    <a class="dropdown-item delete-series" href="@Url.Action("Delete", new {id = seriesItem.Id})">Delete</a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="text-center">
+                    <h3>No series found.</h3>
                 </div>
             }
         </div>

@@ -17,23 +17,32 @@
             <div class="card bg-primary border-secondary mb-3">
                 <h5 class="card-header bg-primary">Announcements</h5>
                 <div class="card-body">
-                    <div class="row mb-2">
-                        <div class="col-8 my-auto text-center text-truncate">
-                            <strong>Title</strong>
-                        </div>
-                        <div class="col-4 my-auto text-center text-truncate">
-                            <strong>Date</strong>
-                        </div>
-                    </div>
-                    @foreach (var announcement in announcements)
+                    @if (announcements.Length > 0)
                     {
-                        <div class="row my-1">
-                            <div class="col-8 my-auto text-truncate text-center">
-                                <a href="@Url.Action("Announcement", new {urlSlug = announcement.UrlSlug})">@announcement.Title</a>
+                        <div class="row mb-2">
+                            <div class="col-8 my-auto text-center text-truncate">
+                                <strong>Title</strong>
                             </div>
-                            <div class="col-4 my-auto text-truncate text-center">
-                                @announcement.PostDate.ToString("dd/MM/yyyy")
+                            <div class="col-4 my-auto text-center text-truncate">
+                                <strong>Date</strong>
                             </div>
+                        </div>
+                        foreach (var announcement in announcements)
+                        {
+                            <div class="row my-1">
+                                <div class="col-8 my-auto text-truncate text-center">
+                                    <a href="@Url.Action("Announcement", new {urlSlug = announcement.UrlSlug})">@announcement.Title</a>
+                                </div>
+                                <div class="col-4 my-auto text-truncate text-center">
+                                    @announcement.PostDate.ToString("dd/MM/yyyy")
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <h3>No announcements found.</h3>
                         </div>
                     }
                 </div>
