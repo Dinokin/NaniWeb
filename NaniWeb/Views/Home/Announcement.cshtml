@@ -1,7 +1,11 @@
 @using NaniWeb.Data
+@inject SettingsKeeper SettingsKeeper
 @{
     var announcement = (Announcement) ViewData["Announcement"];
     ViewData["Title"] = $"{announcement.Title} - Announcements";
+    ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Announcement", new {urlSlug = announcement.UrlSlug})}";
+    ViewData["DisqusIdentifier"] = $"announcement_{announcement.UrlSlug}";
+    ViewData["DisqusTitle"] = $"{announcement.Title}";
 }
 
 @section Header
@@ -19,6 +23,12 @@
                 <div class="card-body">
                     @Html.Raw(announcement.Content)
                 </div>
+                @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+                {
+                    <div class="card-footer bg-primary disqus-container">
+                        <partial name="_DisqusDiv"/>
+                    </div>
+                }
             </div>
         </div>
         <div class="col-lg-4">
@@ -29,6 +39,7 @@
 
 @section Body
 {
+    <partial name="_DisqusScript"/>
     <script>
         $("#announcements").addClass("active");
     </script>
