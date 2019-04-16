@@ -58,7 +58,7 @@ namespace NaniWeb
             services.AddDataProtection().PersistKeysToFileSystem(Directory.CreateDirectory($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}Keys"))
                 .SetDefaultKeyLifetime(TimeSpan.FromDays(30))
                 .ProtectKeysWithCertificate(Utils.GetCertificate("keycert.pfx"));
-            
+
             services.AddHttpClient("MangadexClient", client =>
             {
                 client.DefaultRequestHeaders.UserAgent.ParseAdd("NaniWeb/1.0");

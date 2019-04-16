@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Contact";
+    ViewData["EnableAdsHere"] = true;
     var recaptchaKey = SettingsKeeper.GetSetting("RecaptchaSiteKey").Value;
 }
 
@@ -12,7 +13,7 @@
 }
 
 <partial name="_HomeNav"/>
-
+<partial name="_AdsTopSlot"/>
 <div class="container mt-3">
     <div class="row">
         <div class="col-lg-8">
@@ -61,6 +62,7 @@
         </div>
     </div>
 </div>
+<partial name="_AdsBottomSlot"/>
 
 @section Body
 {

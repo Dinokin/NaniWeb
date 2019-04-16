@@ -294,6 +294,31 @@ namespace NaniWeb.Data
                     Id = 35,
                     Name = "NumberOfUpdatesToShow",
                     Value = 10.ToString()
+                }, new Setting
+                {
+                    Id = 36,
+                    Name = "EnableAds",
+                    Value = false.ToString()
+                }, new Setting
+                {
+                    Id = 37,
+                    Name = "AdsHeaderCode",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 38,
+                    Name = "AdsLocationTop",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 39,
+                    Name = "AdsLocationMiddle",
+                    Value = string.Empty
+                }, new Setting
+                {
+                    Id = 40,
+                    Name = "AdsLocationBottom",
+                    Value = string.Empty
                 });
             });
 

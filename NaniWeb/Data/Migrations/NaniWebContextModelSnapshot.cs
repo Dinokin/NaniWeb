@@ -17,7 +17,7 @@ namespace NaniWeb.Data.Migrations
                 .HasAnnotation("Npgsql:Enum:SeriesStatus", "Ongoing,Hiatus,Dropped,Completed")
                 .HasAnnotation("Npgsql:Enum:SeriesType", "Manga,Webtoon")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "2.2.2-servicing-10034")
+                .HasAnnotation("ProductVersion", "2.2.3-servicing-35854")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
@@ -569,6 +569,36 @@ namespace NaniWeb.Data.Migrations
                         Id = 35,
                         Name = "NumberOfUpdatesToShow",
                         Value = "10"
+                    },
+                    new
+                    {
+                        Id = 36,
+                        Name = "EnableAds",
+                        Value = "False"
+                    },
+                    new
+                    {
+                        Id = 37,
+                        Name = "AdsHeaderCode",
+                        Value = ""
+                    },
+                    new
+                    {
+                        Id = 38,
+                        Name = "AdsLocationTop",
+                        Value = ""
+                    },
+                    new
+                    {
+                        Id = 39,
+                        Name = "AdsLocationMiddle",
+                        Value = ""
+                    },
+                    new
+                    {
+                        Id = 40,
+                        Name = "AdsLocationBottom",
+                        Value = ""
                     });
             });
 

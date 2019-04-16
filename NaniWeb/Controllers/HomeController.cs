@@ -159,12 +159,12 @@ namespace NaniWeb.Controllers
                 Name = string.Empty,
                 Status = Series.SeriesStatus.Ongoing
             };
-            
+
             ViewData["Series"] = await _naniWebContext.Series.OrderBy(srs => srs.Status).ThenBy(srs => srs.Name).ToArrayAsync();
 
             return View(model);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Projects(ProjectSearch projectSearch)
         {
@@ -177,7 +177,9 @@ namespace NaniWeb.Controllers
                         .OrderBy(srs => srs.Name).ToArrayAsync();
             }
             else
+            {
                 ViewData["Series"] = await _naniWebContext.Series.OrderBy(srs => srs.Status).ThenBy(srs => srs.Name).ToArrayAsync();
+            }
 
 
             return View(projectSearch);

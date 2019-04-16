@@ -14,13 +14,13 @@ namespace NaniWeb.Others
 {
     public static class Utils
     {
-        public static string InstallationId { get; }
-
         static Utils()
         {
             InstallationId = IsInstalled() ? File.ReadAllText($"{CurrentDirectory.FullName}{Path.DirectorySeparatorChar}installed.txt") : new Guid().ToString();
         }
-        
+
+        public static string InstallationId { get; }
+
         public static DirectoryInfo CurrentDirectory
         {
             get
@@ -83,21 +83,21 @@ namespace NaniWeb.Others
         public static X509Certificate2 GetCertificate(string certName)
         {
             var certKey = InstallationId;
-            
+
             if (File.Exists($"{Path.DirectorySeparatorChar}etc{Path.DirectorySeparatorChar}machine-id"))
                 certKey = File.ReadAllText($"{Path.DirectorySeparatorChar}etc{Path.DirectorySeparatorChar}machine-id");
-            
+
             if (!File.Exists($"{CurrentDirectory.FullName}{Path.DirectorySeparatorChar}{certName}"))
             {
                 var keyPair = RSA.Create(1024);
                 var certRequest = new CertificateRequest("cn=NaniWeb", keyPair, HashAlgorithmName.SHA512, RSASignaturePadding.Pkcs1);
                 var certificate = certRequest.CreateSelfSigned(DateTimeOffset.Now, DateTimeOffset.MaxValue);
-                
+
                 File.WriteAllBytes($"{CurrentDirectory.FullName}{Path.DirectorySeparatorChar}{certName}", certificate.Export(X509ContentType.Pfx, certKey));
 
                 return certificate;
             }
-            
+
             return new X509Certificate2($"{CurrentDirectory.FullName}{Path.DirectorySeparatorChar}{certName}", certKey);
         }
     }

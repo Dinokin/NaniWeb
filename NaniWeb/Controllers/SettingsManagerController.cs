@@ -455,5 +455,60 @@ namespace NaniWeb.Controllers
 
             return RedirectToAction("Reddit");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Ads()
+        {
+            var model = new AdsForm
+            {
+                EnableAds = bool.Parse(_settingsKeeper.GetSetting("EnableAds").Value),
+                AdsHeaderCode = _settingsKeeper.GetSetting("AdsHeaderCode").Value,
+                AdsLocationTop = _settingsKeeper.GetSetting("AdsLocationTop").Value,
+                AdsLocationMiddle = _settingsKeeper.GetSetting("AdsLocationMiddle").Value,
+                AdsLocationBottom = _settingsKeeper.GetSetting("AdsLocationBottom").Value
+            };
+
+            return View("AdsSettings", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Ads(AdsForm adsForm)
+        {
+            var tasks = new Task[5];
+
+            if (adsForm.EnableAds)
+            {
+                if (ModelState.IsValid)
+                {
+                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationTop", adsForm.AdsLocationTop));
+                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle));
+                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom));
+
+                    TempData["Error"] = false;
+
+                    await Task.WhenAll(tasks);
+                }
+                else
+                {
+                    TempData["Error"] = true;
+                }
+            }
+            else
+            {
+                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
+                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode ?? string.Empty));
+                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationTop", adsForm.AdsLocationTop ?? string.Empty));
+                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle ?? string.Empty));
+                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom ?? string.Empty));
+
+                TempData["Error"] = false;
+
+                await Task.WhenAll(tasks);
+            }
+
+            return RedirectToAction("Ads");
+        }
     }
 }

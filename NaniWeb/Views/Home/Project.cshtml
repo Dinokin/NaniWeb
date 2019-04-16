@@ -10,6 +10,7 @@
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
     ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
     ViewData["FcmTopic"] = $"\"series_{series.Id}\"";
+    ViewData["EnableAdsHere"] = true;
 }
 
 @section Header
@@ -25,7 +26,7 @@
 }
 
 <partial name="_HomeNav"/>
-
+<partial name="_AdsTopSlot"/>
 <div class="container mt-3">
     <div class="mb-3">
         <img id="manga_page" class="img-fluid img-thumbnail mx-auto d-block rounded" src="~/images/covers/@($"{series.Id}.png")" alt=""/>
@@ -49,6 +50,7 @@
             }
         </div>
     </div>
+    <partial name="_AdsMiddleSlot"/>
     <div class="my-3 rounded border border-secondary">
         <ul class="nav nav-tabs border-secondary pt-1 pl-1">
             <li class="nav-item pr-1">
@@ -96,6 +98,7 @@
         </div>
     </div>
 </div>
+<partial name="_AdsBottomSlot"/>
 
 @section Body
 {

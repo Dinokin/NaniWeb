@@ -212,10 +212,10 @@ namespace NaniWeb.Others.Services
 
                 if (mangadexId > 0)
                     break;
-                
+
                 await Task.Delay(TimeSpan.FromSeconds(2));
             }
-            
+
             return new MangadexChapter {Chapter = chapter, ChapterId = chapter.Id, MangadexId = mangadexId};
         }
     }

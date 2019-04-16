@@ -17,6 +17,7 @@
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}_chapter_{chapter.ChapterNumber}";
     ViewData["DisqusTitle"] = $"Chapter {chapter.ChapterNumber} - {series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
+    ViewData["EnableAdsHere"] = true;
 }
 
 @section Header
@@ -36,7 +37,7 @@
 }
 
 <partial name="_HomeNav"/>
-
+<partial name="_AdsTopSlot"/>
 <div id="top" class="container my-2 border border-secondary rounded">
     @if (readerMode == Series.SeriesType.Manga)
     {
@@ -152,7 +153,7 @@
         </div>
     </div>
 </div>
-
+<partial name="_AdsMiddleSlot"/>
 @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
 {
     <div id="bottom" class="container my-2 rounded border border-secondary disqus-container">
@@ -177,9 +178,9 @@
         $("#series_selector, #chapter_selector").change(function() {
             window.location = this.value;
         });
-        
+
         $("#mode_selector").change(function() {
-            $("#mode_input").val(this.value)
+            $("#mode_input").val(this.value);
             $("#form_mode").submit();
         });
     </script>
