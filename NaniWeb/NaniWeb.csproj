@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\covers" />
-    <Folder Include="wwwroot\images\pages" />
+    <Content Remove="wwwroot\images\**" />
   </ItemGroup>
 </Project>

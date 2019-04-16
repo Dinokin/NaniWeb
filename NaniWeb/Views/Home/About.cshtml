@@ -18,7 +18,16 @@
             <div class="card bg-primary border-secondary mb-3">
                 <h5 class="card-header bg-primary">About Us</h5>
                 <div class="card-body">
-                    @Html.Raw(SettingsKeeper.GetSetting("SiteAboutPage").Value)
+                    @if (!string.IsNullOrWhiteSpace(SettingsKeeper.GetSetting("SiteAboutPage").Value))
+                    {
+                        @Html.Raw(SettingsKeeper.GetSetting("SiteAboutPage").Value)
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <h3>Edit this page inside the admin panel.</h3>
+                        </div>
+                    }
                 </div>
             </div>
         </div>
