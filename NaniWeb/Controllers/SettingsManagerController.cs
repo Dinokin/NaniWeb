@@ -457,7 +457,7 @@ namespace NaniWeb.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Ads()
+        public IActionResult Ads()
         {
             var model = new AdsForm
             {
