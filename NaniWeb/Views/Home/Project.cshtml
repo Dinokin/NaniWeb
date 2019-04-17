@@ -3,7 +3,7 @@
 
 @{
     var series = (Series) ViewData["Series"];
-    var disqusEnable = bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value);
+    var enableDisqus = bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value);
     var siteUrl = SettingsKeeper.GetSetting("SiteUrl").Value;
     ViewData["Title"] = $"{series.Name}";
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
@@ -56,7 +56,7 @@
             <li class="nav-item pr-1">
                 <a class="nav-link active show" data-toggle="tab" href="#chapter_list">Chapters</a>
             </li>
-            @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+            @if (enableDisqus)
             {
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
@@ -95,7 +95,7 @@
                     </div>
                 }
             </div>
-            @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+            @if (enableDisqus)
             {
                 <div class="tab-pane fade mx-3 my-3 disqus-container" id="comments">
                     <partial name="_DisqusDiv"/>
