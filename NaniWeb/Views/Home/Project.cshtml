@@ -56,9 +56,12 @@
             <li class="nav-item pr-1">
                 <a class="nav-link active show" data-toggle="tab" href="#chapter_list">Chapters</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link @(disqusEnable ? "show" : "disabled")" data-toggle="tab" href="#comments">Comments</a>
-            </li>
+            @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
+                </li>
+            }
         </ul>
         <div class="tab-content">
             <div class="tab-pane fade active show mx-3 my-3" id="chapter_list">
@@ -92,9 +95,12 @@
                     </div>
                 }
             </div>
-            <div class="tab-pane fade mx-3 my-3 disqus-container" id="comments">
-                <partial name="_DisqusDiv"/>
-            </div>
+            @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+            {
+                <div class="tab-pane fade mx-3 my-3 disqus-container" id="comments">
+                    <partial name="_DisqusDiv"/>
+                </div>
+            }
         </div>
     </div>
 </div>
