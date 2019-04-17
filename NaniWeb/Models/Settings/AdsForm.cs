@@ -6,12 +6,12 @@ namespace NaniWeb.Models.Settings
     {
         [Required] public bool EnableAds { get; set; }
 
-        [Required] public string AdsHeaderCode { get; set; }
+        public string AdsHeaderCode { get; set; }
 
-        [Required] public string AdsLocationTop { get; set; }
+        public string AdsLocationTop { get; set; }
 
-        [Required] public string AdsLocationMiddle { get; set; }
+        public string AdsLocationMiddle { get; set; }
 
-        [Required] public string AdsLocationBottom { get; set; }
+        public string AdsLocationBottom { get; set; }
     }
 }
