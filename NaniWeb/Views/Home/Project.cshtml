@@ -3,6 +3,7 @@
 
 @{
     var series = (Series) ViewData["Series"];
+    var disqusEnable = bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value);
     var siteUrl = SettingsKeeper.GetSetting("SiteUrl").Value;
     ViewData["Title"] = $"{series.Name}";
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
