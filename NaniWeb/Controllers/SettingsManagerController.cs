@@ -481,10 +481,10 @@ namespace NaniWeb.Controllers
                 if (ModelState.IsValid)
                 {
                     tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode));
-                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationTop", adsForm.AdsLocationTop));
-                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle));
-                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom));
+                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode ?? string.Empty));
+                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationTop", adsForm.AdsLocationTop ?? string.Empty));
+                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle ?? string.Empty));
+                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom ?? string.Empty));
 
                     TempData["Error"] = false;
 
