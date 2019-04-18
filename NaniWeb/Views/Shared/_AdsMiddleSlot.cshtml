@@ -6,13 +6,13 @@
     {
         if (ViewData["DisableAdsContainer"] != null && (bool) ViewData["DisableAdsContainer"])
         {
-            <div class="container">
-                @Html.Raw(SettingsKeeper.GetSetting("AdsLocationMiddle").Value)
-            </div>
+            @Html.Raw(SettingsKeeper.GetSetting("AdsLocationMiddle").Value)
         }
         else
         {
-            @Html.Raw(SettingsKeeper.GetSetting("AdsLocationMiddle").Value)
+            <div class="container">
+                @Html.Raw(SettingsKeeper.GetSetting("AdsLocationMiddle").Value)
+            </div>
         }
     }
 }
