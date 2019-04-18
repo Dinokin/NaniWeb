@@ -13,10 +13,10 @@ namespace NaniWeb.Models.Settings
 
         [Required] [Range(10, byte.MaxValue)] public byte NumberOfUpdatesToShow { get; set; }
 
-        [Required] public string SiteFooter { get; set; }
+        public string SiteFooter { get; set; }
 
-        [Required] public string SiteSideBar { get; set; }
+        public string SiteSideBar { get; set; }
 
-        [Required] public string SiteAboutPage { get; set; }
+        public string SiteAboutPage { get; set; }
     }
 }
