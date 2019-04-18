@@ -11,6 +11,7 @@
     ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
     ViewData["FcmTopic"] = $"\"series_{series.Id}\"";
     ViewData["EnableAdsHere"] = true;
+    ViewData["DisableAdsContainer"] = true;
 }
 
 @section Header

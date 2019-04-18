@@ -4,6 +4,8 @@
 {
     if (bool.Parse(SettingsKeeper.GetSetting("EnableAds").Value))
     {
-        @Html.Raw(SettingsKeeper.GetSetting("AdsLocationBottom").Value)
+        <div class="container">
+            @Html.Raw(SettingsKeeper.GetSetting("AdsLocationBottom").Value)
+        </div>
     }
 }
