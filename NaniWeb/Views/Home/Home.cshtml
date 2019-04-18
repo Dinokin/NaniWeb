@@ -29,17 +29,29 @@
                                         <img class="rounded w-100" src="~/images/covers/@($"{release.Series.Id}_smaller.png")" alt="">
                                     </div>
                                     <div class="pt-0 pb-1 mb-1 border-bottom border-secondary d-flex align-items-center flex-nowrap">
-                                        <i class="fas fa-book fa-item text-success"></i>
-                                        <a class="text-truncate" href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug})">
-                                            <strong>@release.Series.Name</strong>
+                                        <div>
+                                            <span class="fas fa-book fa-item text-success"></span>
+                                        </div>
+                                        <a class="text-truncate font-weight-bold" href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug})">
+                                            @release.Series.Name
                                         </a>
                                     </div>
-                                    <p class="py-0 mb-1 row no-gutters align-items-center flex-nowrap">
-                                        <i class="far fa-file fa-item text-success"></i><a class="text-truncate" href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug, chapterNumber = release.ChapterNumber})">@(release.Volume > 0 ? $"Vol. {release.Volume} " : string.Empty)Ch. @(release.ChapterNumber)@(string.IsNullOrEmpty(release.Name) ? string.Empty : $" - {release.Name}")</a>
-                                    </p>
-                                    <p class="text-truncate py-0 mb-1">
-                                        <i class="far fa-clock fa-item text-success"></i><span class="text-muted">@release.ReleaseDate.ToString("dd/MM/yyyy")</span>
-                                    </p>
+                                    <div class="py-0 mb-1 row no-gutters align-items-center flex-nowrap">
+                                        <div>
+                                            <span class="far fa-file fa-item text-success"></span>
+                                        </div>
+                                        <a class="text-truncate" href="@Url.Action("Project", new {urlSlug = release.Series.UrlSlug, chapterNumber = release.ChapterNumber})">
+                                            @(release.Volume > 0 ? $"Vol. {release.Volume} " : string.Empty)Ch. @(release.ChapterNumber)@(string.IsNullOrEmpty(release.Name) ? string.Empty : $" - {release.Name}")
+                                        </a>
+                                    </div>
+                                    <div class="py-0 mb-1 row no-gutters align-items-center flex-nowrap py-0 mb-1">
+                                        <div>
+                                            <span class="far fa-clock fa-item text-success"></span>
+                                        </div>
+                                        <span class="text-muted text-truncate">
+                                            @release.ReleaseDate.ToString("dd/MM/yyyy")
+                                        </span>
+                                    </div>
                                 </div>
                             }
                         </div>
