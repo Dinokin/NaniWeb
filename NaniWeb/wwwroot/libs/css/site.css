@@ -81,3 +81,8 @@
     position: absolute;
     z-index: 1;
 }
+
+.fa-item {
+    text-align: center;
+    width: 1.25em;
+}
