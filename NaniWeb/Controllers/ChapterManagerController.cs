@@ -229,7 +229,7 @@ namespace NaniWeb.Controllers
                     }
 
                     ZipFile.ExtractToDirectory(pagesZip, tempPages.FullName);
-                    var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name).ToList();
+                    var pageList = tempPages.EnumerateFiles().Where(fl => fl.Extension == ".png").OrderBy(fl => fl.Name.Length).ThenBy(fl => fl.Name).ToList();
                     chapter.Pages = new List<Page>();
 
 
