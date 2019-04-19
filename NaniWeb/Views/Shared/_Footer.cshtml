@@ -1,9 +1,22 @@
 @inject SettingsKeeper SettingsKeeper
 
-<footer class="footer bg-secondary">
-    <div class="container">
-        <div class="text-center">
-            @Html.Raw(SettingsKeeper.GetSetting("SiteFooterCode").Value)
+@if (!string.IsNullOrWhiteSpace(SettingsKeeper.GetSetting("SiteSideBar").Value))
+{
+    <footer class="footer bg-secondary">
+        <div class="container">
+            <div class="text-center">
+                @Html.Raw(SettingsKeeper.GetSetting("SiteFooterCode").Value)
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
+}
+else
+{
+    <footer class="footer bg-secondary">
+        <div class="container">
+            <div class="text-center">
+                A wild footer appeared. Change it in the admin panel.
+            </div>
+        </div>
+    </footer>
+}
