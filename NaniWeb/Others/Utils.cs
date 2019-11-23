@@ -51,7 +51,7 @@ namespace NaniWeb.Others
             return Regex.Replace(output, @"[\s]", "-").ToLower();
         }
 
-        public static async Task BuildServiceWorker(string firebaseApiKey, string firebaseProjectId, string firebaseSenderId, IHostingEnvironment environment)
+        public static async Task BuildServiceWorker(string firebaseApiKey, string firebaseProjectId, string firebaseSenderId, IWebHostEnvironment environment)
         {
             var serviceWorker = new StringBuilder();
             serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js');");

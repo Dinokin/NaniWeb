@@ -19,14 +19,14 @@ namespace NaniWeb.Controllers
     public class HomeController : Controller
     {
         private readonly EmailSender _emailSender;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly ReCaptcha _reCaptcha;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, EmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
+        public HomeController(IWebHostEnvironment webHostEnvironment, EmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
             _emailSender = emailSender;
             _naniWebContext = naniWebContext;
             _reCaptcha = reCaptcha;
@@ -119,7 +119,7 @@ namespace NaniWeb.Controllers
 
             if (chapter == null)
             {
-                var bytes = System.IO.File.OpenRead($"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}assets{Path.DirectorySeparatorChar}facepalm.png");
+                var bytes = System.IO.File.OpenRead($"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}assets{Path.DirectorySeparatorChar}facepalm.png");
                 return File(bytes, "image/png", "error.png");
             }
 
@@ -137,7 +137,7 @@ namespace NaniWeb.Controllers
             else
             {
                 var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
-                var pagesOrigin = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+                var pagesOrigin = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
 
                 for (var i = 0; i < chapter.Pages.Count; i++) System.IO.File.Copy($"{pagesOrigin}{chapter.Pages[i].Id}.png", $"{temp.FullName}{Path.DirectorySeparatorChar}{i}.png");
 

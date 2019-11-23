@@ -19,18 +19,18 @@ namespace NaniWeb.Controllers
     {
         private readonly DiscordBot _discordBot;
         private readonly FirebaseCloudMessaging _firebaseCloudMessaging;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly MangadexUploader _mangadexUploader;
         private readonly NaniWebContext _naniWebContext;
         private readonly RedditPoster _redditPoster;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
+        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IWebHostEnvironment webHostEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
             RedditPoster redditPoster, SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
             _firebaseCloudMessaging = firebaseCloudMessaging;
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
             _mangadexUploader = mangadexUploader;
             _naniWebContext = naniWebContext;
             _redditPoster = redditPoster;
@@ -82,7 +82,7 @@ namespace NaniWeb.Controllers
 
                 var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
                 var tempPages = temp.CreateSubdirectory("Pages");
-                var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+                var destination = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
                 var pagesZip = $"{temp.FullName}{Path.DirectorySeparatorChar}pages.zip";
                 Directory.CreateDirectory(destination);
 
@@ -214,7 +214,7 @@ namespace NaniWeb.Controllers
                 {
                     var temp = Utils.CurrentDirectory.CreateSubdirectory($"Temp{Path.DirectorySeparatorChar}{Guid.NewGuid()}");
                     var tempPages = temp.CreateSubdirectory("Pages");
-                    var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+                    var destination = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
                     var pagesZip = $"{temp.FullName}{Path.DirectorySeparatorChar}pages.zip";
                     var pages = _naniWebContext.Pages.Where(pg => pg.Chapter == chapter);
                     var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
@@ -283,7 +283,7 @@ namespace NaniWeb.Controllers
         {
             var chapter = await _naniWebContext.Chapters.Include(chp => chp.Pages).SingleAsync(chp => chp.Id == id);
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == chapter.SeriesId);
-            var destination = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+            var destination = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
 

@@ -19,7 +19,7 @@ namespace NaniWeb.Others
 
         [JsonProperty("gcm_sender_id")] public string GcmSenderId { get; set; }
 
-        public async Task BuildManifest(IHostingEnvironment environment)
+        public async Task BuildManifest(IWebHostEnvironment environment)
         {
             var newManifest = JsonConvert.SerializeObject(this, Formatting.Indented);
             await File.WriteAllTextAsync($"{environment.WebRootPath}/manifest.json", newManifest);

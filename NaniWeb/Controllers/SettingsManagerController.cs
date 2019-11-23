@@ -12,12 +12,12 @@ namespace NaniWeb.Controllers
     [Authorize(Roles = "Administrator")]
     public class SettingsManagerController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public SettingsManagerController(IHostingEnvironment hostingEnvironment, SettingsKeeper settingsKeeper)
+        public SettingsManagerController(IWebHostEnvironment webHostEnvironment, SettingsKeeper settingsKeeper)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
             _settingsKeeper = settingsKeeper;
         }
 
@@ -71,7 +71,7 @@ namespace NaniWeb.Controllers
                 tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter ?? string.Empty));
                 tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar ?? string.Empty));
                 tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage ?? string.Empty));
-                tasks[8] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
+                tasks[8] = Task.Run(async () => await manifest.BuildManifest(_webHostEnvironment));
 
                 TempData["Error"] = false;
 
@@ -327,7 +327,7 @@ namespace NaniWeb.Controllers
                             await fcmForm.FcmKeyFile.CopyToAsync(stream);
                         }
                     });
-                    tasks[5] = Task.Run(async () => await Utils.BuildServiceWorker(fcmForm.FcmApiKey, fcmForm.FcmProjectId, fcmForm.FcmSenderId.ToString(), _hostingEnvironment));
+                    tasks[5] = Task.Run(async () => await Utils.BuildServiceWorker(fcmForm.FcmApiKey, fcmForm.FcmProjectId, fcmForm.FcmSenderId.ToString(), _webHostEnvironment));
 
                     TempData["Error"] = false;
 

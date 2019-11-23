@@ -13,12 +13,12 @@ namespace NaniWeb.Controllers
 {
     public class SeriesManagerController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly NaniWebContext _naniWebContext;
 
-        public SeriesManagerController(IHostingEnvironment hostingEnvironment, NaniWebContext naniWebContext)
+        public SeriesManagerController(IWebHostEnvironment webHostEnvironment, NaniWebContext naniWebContext)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
             _naniWebContext = naniWebContext;
         }
 
@@ -64,7 +64,7 @@ namespace NaniWeb.Controllers
                 await _naniWebContext.Series.AddAsync(series);
                 await _naniWebContext.SaveChangesAsync();
 
-                var path = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}{series.Id}.png";
+                var path = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}{series.Id}.png";
                 Directory.CreateDirectory(path.Replace($"{Path.DirectorySeparatorChar}{series.Id}.png", string.Empty));
 
                 using (var file = System.IO.File.Create(path))
@@ -130,7 +130,7 @@ namespace NaniWeb.Controllers
 
                 if (editSeries.Cover != null)
                 {
-                    var path = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}{series.Id}.png";
+                    var path = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}{series.Id}.png";
 
                     using (var file = System.IO.File.Create(path))
                     {
@@ -155,8 +155,8 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Delete(int id)
         {
-            var coversLocation = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}";
-            var pagesLocation = $"{_hostingEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
+            var coversLocation = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}covers{Path.DirectorySeparatorChar}";
+            var pagesLocation = $"{_webHostEnvironment.WebRootPath}{Path.DirectorySeparatorChar}images{Path.DirectorySeparatorChar}pages{Path.DirectorySeparatorChar}";
             var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
             var chapters = _naniWebContext.Chapters.Where(chp => chp.Series == series).Include(chp => chp.Pages);
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");

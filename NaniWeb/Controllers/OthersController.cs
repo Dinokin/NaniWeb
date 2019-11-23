@@ -17,15 +17,15 @@ namespace NaniWeb.Controllers
     [AllowAnonymous]
     public class OthersController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly SettingsKeeper _settingsKeeper;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public OthersController(IHostingEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public OthersController(IWebHostEnvironment webHostEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
-            _hostingEnvironment = hostingEnvironment;
+            _webHostEnvironment = webHostEnvironment;
             _naniWebContext = naniWebContext;
             _settingsKeeper = settingsKeeper;
             _signInManager = signInManager;
@@ -92,7 +92,7 @@ namespace NaniWeb.Controllers
                         GcmSenderId = "103953800507"
                     };
 
-                    await manifest.BuildManifest(_hostingEnvironment);
+                    await manifest.BuildManifest(_webHostEnvironment);
                 }));
                 await Task.WhenAll(tasks);
                 await _signInManager.PasswordSignInAsync(user, signUpForm.Password, false, false);
