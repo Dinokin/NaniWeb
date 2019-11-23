@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using NaniWeb.Models.Profile;
 using NaniWeb.Others.Services;
@@ -9,12 +8,12 @@ namespace NaniWeb.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly IEmailSender _emailSender;
+        private readonly EmailSender _emailSender;
         private readonly SettingsKeeper _settingsKeeper;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public ProfileController(IEmailSender emailSender, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public ProfileController(EmailSender emailSender, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
             _emailSender = emailSender;
             _settingsKeeper = settingsKeeper;

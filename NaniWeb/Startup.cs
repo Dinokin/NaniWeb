@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -76,7 +75,7 @@ namespace NaniWeb
 
             services.AddSingleton(typeof(SettingsKeeper));
             services.AddTransient(typeof(ReCaptcha));
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient(typeof(EmailSender));
             services.AddTransient(typeof(DiscordBot));
             services.AddTransient(typeof(MangadexUploader));
             services.AddTransient(typeof(FirebaseCloudMessaging));
