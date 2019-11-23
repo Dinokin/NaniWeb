@@ -64,6 +64,7 @@ namespace NaniWeb.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, Moderator, Uploader")]
+        [RequestSizeLimit(100000000)]
         public async Task<IActionResult> Add(ChapterAdd chapterAdd)
         {
             if (ModelState.IsValid)
@@ -197,6 +198,7 @@ namespace NaniWeb.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Administrator, Moderator")]
+        [RequestSizeLimit(100000000)]
         public async Task<IActionResult> Edit(ChapterEdit chapterEdit)
         {
             if (ModelState.IsValid)

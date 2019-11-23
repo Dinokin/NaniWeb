@@ -12,7 +12,7 @@ namespace NaniWeb
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>().ConfigureKestrel((context, options) => { options.Limits.MaxRequestBodySize = 100000000; });
+            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
         }
     }
 }
