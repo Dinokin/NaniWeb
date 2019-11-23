@@ -1,18 +1,13 @@
-﻿using Microsoft.AspNetCore;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
 namespace NaniWeb
 {
     public static class Program
     {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
-
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
-            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
-        }
+        public static async Task Main(string[] args) => await Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(builder => { builder.UseStartup<Startup>(); })
+            .Build().RunAsync();
     }
 }
