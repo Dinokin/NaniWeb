@@ -46,13 +46,13 @@
                     </div>
                     <div class="form-group">
                         <label for="series_mangadex_id">Mangadex ID</label>
-                        <input class="form-control" id="series_mangadex_id" asp-for="MangadexId" aria-describedby="series_mangadex_id_help" placeholder="Mangadex ID" @(enableMangadex ? string.Empty : "disabled")>
+                        <input class="form-control" id="series_mangadex_id" asp-for="MangadexId" aria-describedby="series_mangadex_id_help" placeholder="Mangadex ID" disabled="@(enableMangadex ? null : string.Empty)"/>
                         <small id="series_mangadex_id_help" class="form-text text-muted">The mangadex id of this series. Used for automatic uploading.</small>
                     </div>
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" aria-describedby="display_mangadex_link_help" id="display_mangadex_link" asp-for="DisplayMangadexLink" @(enableMangadex ? string.Empty : "disabled")/>Display Mangadex Link
+                                <input class="form-check-input" aria-describedby="display_mangadex_link_help" id="display_mangadex_link" asp-for="DisplayMangadexLink" disabled="@(enableMangadex ? null : string.Empty)"/>Display Mangadex Link
                             </label>
                         </div>
                         <small id="display_mangadex_link_help" class="form-text text-muted">Display link to mangadex at the end of the chapter list. Useful if you didn't pick up the series from the beginning and cant have all chapters in the reader.</small>
