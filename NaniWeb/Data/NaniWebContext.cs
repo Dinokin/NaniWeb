@@ -27,8 +27,6 @@ namespace NaniWeb.Data
         public DbSet<Chapter> Chapters { get; set; }
         public DbSet<Page> Pages { get; set; }
         public DbSet<Setting> Settings { get; set; }
-        public DbSet<MangadexSeries> MangadexSeries { get; set; }
-        public DbSet<MangadexChapter> MangadexChapters { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -94,7 +92,6 @@ namespace NaniWeb.Data
                 entity.Property(series => series.UrlSlug).IsRequired();
                 entity.HasIndex(series => series.UrlSlug).IsUnique();
                 entity.HasMany(series => series.Chapters).WithOne(chapter => chapter.Series).HasForeignKey(chapter => chapter.SeriesId);
-                entity.HasOne(series => series.MangadexInfo).WithOne(info => info.Series).HasForeignKey<MangadexSeries>(info => info.SeriesId);
             });
 
             builder.Entity<Chapter>(entity =>
@@ -103,7 +100,6 @@ namespace NaniWeb.Data
                 entity.Property(chapter => chapter.SeriesId).IsRequired();
                 entity.HasIndex(chapter => new {chapter.ChapterNumber, chapter.SeriesId}).IsUnique();
                 entity.HasMany(chapter => chapter.Pages).WithOne(page => page.Chapter).HasForeignKey(page => page.ChapterId);
-                entity.HasOne(chapter => chapter.MangadexInfo).WithOne(info => info.Chapter).HasForeignKey<MangadexChapter>(info => info.ChapterId);
             });
 
             builder.Entity<Page>(entity =>
@@ -172,26 +168,6 @@ namespace NaniWeb.Data
                 {
                     Id = 11,
                     Name = "DiscordChannelId",
-                    Value = 0.ToString()
-                }, new Setting
-                {
-                    Id = 12,
-                    Name = "EnableMangadexAutoUpload",
-                    Value = false.ToString()
-                }, new Setting
-                {
-                    Id = 13,
-                    Name = "MangadexUser",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 14,
-                    Name = "MangadexPassword",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 15,
-                    Name = "MangadexGroupId",
                     Value = 0.ToString()
                 }, new Setting
                 {
@@ -319,21 +295,6 @@ namespace NaniWeb.Data
                     Name = "AdsLocationBottom",
                     Value = string.Empty
                 });
-            });
-
-            builder.Entity<MangadexSeries>(entity =>
-            {
-                entity.Property(info => info.SeriesId).IsRequired();
-                entity.HasIndex(info => info.SeriesId).IsUnique();
-                entity.Property(info => info.MangadexId).IsRequired();
-                entity.Property(info => info.DisplayLink).IsRequired().HasDefaultValue(false);
-            });
-
-            builder.Entity<MangadexChapter>(entity =>
-            {
-                entity.Property(info => info.ChapterId).IsRequired();
-                entity.HasIndex(info => info.ChapterId).IsUnique();
-                entity.Property(info => info.MangadexId).IsRequired();
             });
         }
     }

@@ -53,12 +53,7 @@ namespace NaniWeb.Controllers
                     Synopsis = addSeries.Synopsis,
                     Type = addSeries.Type,
                     Status = addSeries.Status,
-                    UrlSlug = Utils.GenerateSlug(addSeries.Name),
-                    MangadexInfo = new MangadexSeries
-                    {
-                        MangadexId = addSeries.MangadexId ?? 0,
-                        DisplayLink = addSeries.DisplayMangadexLink
-                    }
+                    UrlSlug = Utils.GenerateSlug(addSeries.Name)
                 };
 
                 await _naniWebContext.Series.AddAsync(series);
@@ -90,7 +85,7 @@ namespace NaniWeb.Controllers
         [Authorize(Roles = "Administrator, Moderator")]
         public async Task<IActionResult> Edit(int id)
         {
-            var series = await _naniWebContext.Series.Include(srs => srs.MangadexInfo).SingleAsync(srs => srs.Id == id);
+            var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == id);
 
             var model = new EditSeries
             {
@@ -100,9 +95,7 @@ namespace NaniWeb.Controllers
                 Artist = series.Artist,
                 Synopsis = series.Synopsis,
                 Type = series.Type,
-                Status = series.Status,
-                MangadexId = series.MangadexInfo.MangadexId,
-                DisplayMangadexLink = series.MangadexInfo.DisplayLink
+                Status = series.Status
             };
 
             return View("EditSeries", model);
@@ -113,7 +106,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var series = await _naniWebContext.Series.Include(srs => srs.MangadexInfo).SingleAsync(srs => srs.Id == editSeries.SeriesId);
+                var series = await _naniWebContext.Series.SingleAsync(srs => srs.Id == editSeries.SeriesId);
 
                 series.Name = editSeries.Name;
                 series.Author = editSeries.Author;
@@ -122,8 +115,6 @@ namespace NaniWeb.Controllers
                 series.Type = editSeries.Type;
                 series.Status = editSeries.Status;
                 series.UrlSlug = Utils.GenerateSlug(editSeries.Name);
-                series.MangadexInfo.MangadexId = editSeries.MangadexId ?? 0;
-                series.MangadexInfo.DisplayLink = editSeries.DisplayMangadexLink;
 
                 _naniWebContext.Series.Update(series);
                 await _naniWebContext.SaveChangesAsync();

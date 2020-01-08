@@ -61,7 +61,7 @@ namespace NaniWeb.Controllers
         [Route("{action}/{urlSlug}")]
         public async Task<IActionResult> Project(string urlSlug)
         {
-            var series = await _naniWebContext.Series.Include(srs => srs.Chapters).Include(srs => srs.MangadexInfo).SingleOrDefaultAsync(srs => srs.UrlSlug == urlSlug);
+            var series = await _naniWebContext.Series.Include(srs => srs.Chapters).SingleOrDefaultAsync(srs => srs.UrlSlug == urlSlug);
 
             if (series == null)
                 return RedirectToAction("Projects");

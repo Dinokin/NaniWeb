@@ -20,18 +20,16 @@ namespace NaniWeb.Controllers
         private readonly DiscordBot _discordBot;
         private readonly FirebaseCloudMessaging _firebaseCloudMessaging;
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly MangadexUploader _mangadexUploader;
         private readonly NaniWebContext _naniWebContext;
         private readonly RedditPoster _redditPoster;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IWebHostEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
+        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext,
             RedditPoster redditPoster, SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
             _firebaseCloudMessaging = firebaseCloudMessaging;
             _hostingEnvironment = hostingEnvironment;
-            _mangadexUploader = mangadexUploader;
             _naniWebContext = naniWebContext;
             _redditPoster = redditPoster;
             _settingsKeeper = settingsKeeper;
@@ -126,41 +124,18 @@ namespace NaniWeb.Controllers
                 var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var chapterDownloadUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Download", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
-                var tasks = new Task[4];
-
+                var tasks = new Task[3];
+                
                 tasks[0] = Task.Run(async () =>
-                {
-                    var mangadexSeries = await _naniWebContext.MangadexSeries.SingleOrDefaultAsync(srs => srs.SeriesId == series.Id);
-
-                    MangadexChapter mangadexChapter = null;
-
-                    if (chapterAdd.UploadToMangadex && mangadexSeries.MangadexId > 0)
-                        using (var stream = System.IO.File.OpenRead(pagesZip))
-                        {
-                            mangadexChapter = await _mangadexUploader.UploadChapter(chapter, mangadexSeries, stream);
-                        }
-
-                    if (mangadexChapter == null)
-                        mangadexChapter = new MangadexChapter
-                        {
-                            Chapter = chapter,
-                            ChapterId = chapter.Id,
-                            MangadexId = 0
-                        };
-
-                    await _naniWebContext.MangadexChapters.AddAsync(mangadexChapter);
-                    await _naniWebContext.SaveChangesAsync();
-                });
-                tasks[1] = Task.Run(async () =>
                 {
                     await _firebaseCloudMessaging.SendNotification($"A new release is available at {siteName}!", $"New chapter of {series.Name} is available at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
                 });
-                tasks[2] = Task.Run(async () =>
+                tasks[1] = Task.Run(async () =>
                 {
                     if (chapterAdd.AnnounceOnDiscord)
                         await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}{Environment.NewLine}Download it here: {chapterDownloadUrl}");
                 });
-                tasks[3] = Task.Run(async () =>
+                tasks[2] = Task.Run(async () =>
                 {
                     if (chapterAdd.AnnounceOnReddit)
                         await _redditPoster.PostLink("/r/manga", $"[DISC] {series.Name} - Chapter {chapter.ChapterNumber}", chapterUrl, chapterAdd.RedditNsfw);
@@ -182,14 +157,12 @@ namespace NaniWeb.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var chapter = await _naniWebContext.Chapters.SingleAsync(chp => chp.Id == id);
-            var mangadex = await _naniWebContext.MangadexChapters.SingleOrDefaultAsync(chp => chp.Chapter == chapter);
             var model = new ChapterEdit
             {
                 ChapterId = chapter.Id,
                 Volume = chapter.Volume,
                 ChapterNumber = chapter.ChapterNumber,
                 Name = chapter.Name,
-                MangadexId = mangadex.MangadexId
             };
 
             return View("EditChapter", model);
@@ -201,12 +174,10 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var chapter = await _naniWebContext.Chapters.Include(chp => chp.MangadexInfo).SingleAsync(chp => chp.Id == chapterEdit.ChapterId);
-                var mangadexSeries = await _naniWebContext.MangadexSeries.SingleAsync(mgdx => mgdx.SeriesId == chapter.SeriesId);
+                var chapter = await _naniWebContext.Chapters.SingleAsync(chp => chp.Id == chapterEdit.ChapterId);
                 chapter.Volume = chapterEdit.Volume ?? 0;
                 chapter.ChapterNumber = chapterEdit.ChapterNumber;
                 chapter.Name = chapterEdit.Name ?? string.Empty;
-                chapter.MangadexInfo.MangadexId = chapterEdit.MangadexId ?? 0;
 
                 if (chapterEdit.Pages != null)
                 {
@@ -252,17 +223,7 @@ namespace NaniWeb.Controllers
                         System.IO.File.Delete(downloadFile);
                     }
 
-                    if (chapterEdit.UploadToMangadex && chapter.MangadexInfo.MangadexId > 0)
-                        using (var stream = System.IO.File.OpenRead(pagesZip))
-                        {
-                            await _mangadexUploader.UpdateChapter(chapter, mangadexSeries, chapter.MangadexInfo, stream);
-                        }
-
                     temp.Delete(true);
-                }
-                else if (chapterEdit.UploadToMangadex)
-                {
-                    await _mangadexUploader.UpdateChapterInfo(chapter, mangadexSeries, chapter.MangadexInfo);
                 }
 
                 _naniWebContext.Chapters.Update(chapter);

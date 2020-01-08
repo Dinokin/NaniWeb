@@ -69,14 +69,6 @@
                         <small id="announce_on_reddit_nsfw_help" class="form-text text-muted">Whether you consider this chapter to be NSFW.</small>
                     </div>
                     <div class="form-group">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)"/>Upload to Mangadex
-                            </label>
-                        </div>
-                        <small id="upload_to_mangadex_help" class="form-text text-muted">Whether you want to upload this chapter to Mangadex or not. Remember to check if you have a proper Mangadex ID for this series.</small>
-                    </div>
-                    <div class="form-group">
                         <div class="input-group" aria-describedby="chapter_pages_help">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="chapter_pages" accept=".zip" asp-for="Pages">

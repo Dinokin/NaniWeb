@@ -13,9 +13,7 @@ namespace NaniWeb.Models.Chapter
         public string Name { get; set; }
 
         [Required] public IFormFile Pages { get; set; }
-
-        [Required] public bool UploadToMangadex { get; set; }
-
+        
         [Required] public bool AnnounceOnDiscord { get; set; }
 
         [Required] public bool AnnounceOnReddit { get; set; }

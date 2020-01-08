@@ -14,6 +14,5 @@ namespace NaniWeb.Data
 
         public Series Series { get; set; }
         public List<Page> Pages { get; set; }
-        public MangadexChapter MangadexInfo { get; set; }
     }
 }

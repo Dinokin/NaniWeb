@@ -14,9 +14,5 @@ namespace NaniWeb.Models.Chapter
         public string Name { get; set; }
 
         public IFormFile Pages { get; set; }
-
-        public int? MangadexId { get; set; }
-
-        [Required] public bool UploadToMangadex { get; set; }
     }
 }

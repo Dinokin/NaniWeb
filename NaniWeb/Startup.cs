@@ -59,26 +59,10 @@ namespace NaniWeb
                 .SetDefaultKeyLifetime(TimeSpan.FromDays(30))
                 .ProtectKeysWithCertificate(Utils.GetCertificate("keycert.pfx"));
 
-            services.AddHttpClient("MangadexClient", client =>
-            {
-                client.DefaultRequestHeaders.UserAgent.ParseAdd("NaniWeb/1.0");
-                client.DefaultRequestHeaders.Add("X-Requested-With", "XMLHttpRequest");
-                client.BaseAddress = new Uri(MangadexUploader.MangadexAddress);
-                client.DefaultRequestHeaders.Host = "mangadex.org";
-                client.DefaultRequestHeaders.Referrer = new Uri(MangadexUploader.MangadexAddress);
-            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
-            {
-                ClientCertificateOptions = ClientCertificateOption.Manual,
-                SslProtocols = SslProtocols.Tls12,
-                UseCookies = true,
-                CookieContainer = new CookieContainer()
-            });
-
             services.AddSingleton(typeof(SettingsKeeper));
             services.AddTransient(typeof(ReCaptcha));
             services.AddTransient<EmailSender>();
             services.AddTransient(typeof(DiscordBot));
-            services.AddTransient(typeof(MangadexUploader));
             services.AddTransient(typeof(FirebaseCloudMessaging));
             services.AddTransient(typeof(RedditPoster));
         }

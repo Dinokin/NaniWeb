@@ -39,19 +39,6 @@
                         <small id="chapter_name_help" class="form-text text-muted">The name of this chapter.</small>
                     </div>
                     <div class="form-group">
-                        <div class="form-check">
-                            <label class="form-check-label">
-                                <input class="form-check-input" id="upload_to_mangadex" aria-describedby="upload_to_mangadex_help" asp-for="UploadToMangadex" disabled="@(enableMangadex ? null : string.Empty)"/>Upload to Mangadex
-                            </label>
-                        </div>
-                        <small id="upload_to_mangadex_help" class="form-text text-muted">If this chapter was uploaded to mangadex, this will update it with your changes. Remember to check if you have a proper Mangadex ID for this chapter and series.</small>
-                    </div>
-                    <div class="form-group">
-                        <label for="chapter_mangadex_id">Mangadex ID</label>
-                        <input class="form-control" id="chapter_mangadex_id" asp-for="MangadexId" aria-describedby="chapter_mangadex_id_help" placeholder="Mangadex ID" disabled="@(enableMangadex ? null : string.Empty)">
-                        <small id="chapter_mangadex_id_help" class="form-text text-muted">The Mangadex ID of this chapter. Used for automatic uploading.</small>
-                    </div>
-                    <div class="form-group">
                         <div class="input-group" aria-describedby="chapter_pages_help">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="chapter_pages" accept=".zip" asp-for="Pages">

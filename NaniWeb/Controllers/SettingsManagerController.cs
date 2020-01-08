@@ -196,58 +196,6 @@ namespace NaniWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Mangadex()
-        {
-            var model = new MangadexForm
-            {
-                EnableMangadexAutoUpload = bool.Parse(_settingsKeeper.GetSetting("EnableMangadexAutoUpload").Value),
-                MangadexUser = _settingsKeeper.GetSetting("MangadexUser").Value,
-                MangadexPassword = _settingsKeeper.GetSetting("MangadexPassword").Value,
-                MangadexGroupId = int.Parse(_settingsKeeper.GetSetting("MangadexGroupId").Value)
-            };
-
-            return View("MangadexSettings", model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Mangadex(MangadexForm mangadexForm)
-        {
-            var tasks = new Task[4];
-
-            if (mangadexForm.EnableMangadexAutoUpload)
-            {
-                if (ModelState.IsValid)
-                {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableMangadexAutoUpload", mangadexForm.EnableMangadexAutoUpload.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser));
-                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword));
-                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
-
-                    TempData["Error"] = false;
-
-                    await Task.WhenAll(tasks);
-                }
-                else
-                {
-                    TempData["Error"] = true;
-                }
-            }
-            else
-            {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableMangadexAutoUpload", mangadexForm.EnableMangadexAutoUpload.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexUser", mangadexForm.MangadexUser ?? string.Empty));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexPassword", mangadexForm.MangadexPassword ?? string.Empty));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("MangadexGroupId", mangadexForm.MangadexGroupId.ToString()));
-
-                TempData["Error"] = false;
-
-                await Task.WhenAll(tasks);
-            }
-
-            return RedirectToAction("Mangadex");
-        }
-
-        [HttpGet]
         public IActionResult GoogleAnalytics()
         {
             var model = new GoogleAnalyticsForm

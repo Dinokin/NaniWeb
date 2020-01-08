@@ -28,6 +28,5 @@ namespace NaniWeb.Data
         public string UrlSlug { get; set; }
 
         public List<Chapter> Chapters { get; set; }
-        public MangadexSeries MangadexInfo { get; set; }
     }
 }
