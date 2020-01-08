@@ -51,35 +51,6 @@ namespace NaniWeb.Others
             return Regex.Replace(output, @"[\s]", "-").ToLower();
         }
 
-        public static async Task BuildServiceWorker(string firebaseApiKey, string firebaseProjectId, string firebaseSenderId, IWebHostEnvironment environment)
-        {
-            var serviceWorker = new StringBuilder();
-            serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.9.2/firebase-app.js');");
-            serviceWorker.AppendLine("importScripts('https://www.gstatic.com/firebasejs/5.9.2/firebase-messaging.js');");
-            serviceWorker.AppendLine("var config = {");
-            serviceWorker.AppendLine($"apiKey: '{firebaseApiKey}',");
-            serviceWorker.AppendLine($"projectId: '{firebaseProjectId}',");
-            serviceWorker.AppendLine($"messagingSenderId: '{firebaseSenderId}',");
-            serviceWorker.AppendLine("};");
-            serviceWorker.AppendLine("firebase.initializeApp(config);");
-            serviceWorker.AppendLine("const messaging = firebase.messaging();");
-            serviceWorker.AppendLine("messaging.setBackgroundMessageHandler(function(payload) {");
-            serviceWorker.AppendLine("var title = payload.notification.title;");
-            serviceWorker.AppendLine("var options = {");
-            serviceWorker.AppendLine("body: payload.notification.body,");
-            serviceWorker.AppendLine("icon: payload.data.icon,");
-            serviceWorker.AppendLine("click: payload.fcmOptions.click");
-            serviceWorker.AppendLine("}");
-            serviceWorker.AppendLine("return self.registration.showNotification(title, options);");
-            serviceWorker.AppendLine("});");
-            serviceWorker.AppendLine("self.addEventListener('notificationclick', function(event) {");
-            serviceWorker.AppendLine("event.notification.close();");
-            serviceWorker.AppendLine("event.waitUntil(clients.openWindow(event.notification.click));");
-            serviceWorker.AppendLine("});");
-
-            await File.WriteAllTextAsync($"{environment.WebRootPath}{Path.DirectorySeparatorChar}firebase-messaging-sw.js", serviceWorker.ToString());
-        }
-
         public static X509Certificate2 GetCertificate(string certName)
         {
             var certKey = InstallationId;

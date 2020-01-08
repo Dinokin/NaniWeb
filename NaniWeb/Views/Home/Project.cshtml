@@ -9,7 +9,6 @@
     ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
     ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
-    ViewData["FcmTopic"] = $"\"series_{series.Id}\"";
     ViewData["EnableAdsHere"] = true;
     ViewData["DisableAdsContainer"] = true;
 }

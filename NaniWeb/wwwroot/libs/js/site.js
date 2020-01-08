@@ -12,25 +12,6 @@ function validateEmail(email) {
     return regex.test(email);
 }
 
-async function subscribe() {
-    await messaging.requestPermission();
-    const token = await messaging.getToken();
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", subscribeUrl + "/" + fcmTopic + "/" + token, true);
-    xhr.send();
-    window.localStorage.setItem(fcmTopic,"Subscribed");
-}
-
-async function unsubscribe() {
-    const token = await messaging.getToken();
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", unsubscribeUrl + "/" + fcmTopic + "/" + token, true);
-    xhr.send();
-    window.localStorage.setItem(fcmTopic,"Not subscribed");
-}
-
 function previous() {
     if (index > 0) {
         index--;
