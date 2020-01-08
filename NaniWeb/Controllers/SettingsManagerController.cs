@@ -11,12 +11,12 @@ namespace NaniWeb.Controllers
     public class SettingsManagerController : Controller
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
-        private readonly SettingsKeeper _settingsKeeper;
+        private readonly SettingsManager _settingsManager;
 
-        public SettingsManagerController(IWebHostEnvironment hostingEnvironment, SettingsKeeper settingsKeeper)
+        public SettingsManagerController(IWebHostEnvironment hostingEnvironment, SettingsManager settingsManager)
         {
             _hostingEnvironment = hostingEnvironment;
-            _settingsKeeper = settingsKeeper;
+            _settingsManager = settingsManager;
         }
 
         [HttpGet]
@@ -24,14 +24,14 @@ namespace NaniWeb.Controllers
         {
             var model = new GeneralForm
             {
-                SiteName = _settingsKeeper.GetSetting("SiteName").Value,
-                SiteDescription = _settingsKeeper.GetSetting("SiteDescription").Value,
-                SiteUrl = _settingsKeeper.GetSetting("SiteUrl").Value,
-                EnableRegistration = bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value),
-                NumberOfUpdatesToShow = byte.Parse(_settingsKeeper.GetSetting("NumberOfUpdatesToShow").Value),
-                SiteFooter = _settingsKeeper.GetSetting("SiteFooterCode").Value,
-                SiteSideBar = _settingsKeeper.GetSetting("SiteSideBar").Value,
-                SiteAboutPage = _settingsKeeper.GetSetting("SiteAboutPage").Value
+                SiteName = _settingsManager.GetSetting("SiteName").Value,
+                SiteDescription = _settingsManager.GetSetting("SiteDescription").Value,
+                SiteUrl = _settingsManager.GetSetting("SiteUrl").Value,
+                EnableRegistration = bool.Parse(_settingsManager.GetSetting("EnableRegistration").Value),
+                NumberOfUpdatesToShow = byte.Parse(_settingsManager.GetSetting("NumberOfUpdatesToShow").Value),
+                SiteFooter = _settingsManager.GetSetting("SiteFooterCode").Value,
+                SiteSideBar = _settingsManager.GetSetting("SiteSideBar").Value,
+                SiteAboutPage = _settingsManager.GetSetting("SiteAboutPage").Value
             };
 
             return View("GeneralSettings", model);
@@ -44,14 +44,14 @@ namespace NaniWeb.Controllers
             {
                 var tasks = new Task[8];
 
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteName", generalForm.SiteName));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteDescription", generalForm.SiteDescription));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteUrl", generalForm.SiteUrl));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
-                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("NumberOfUpdatesToShow", generalForm.NumberOfUpdatesToShow.ToString()));
-                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter ?? string.Empty));
-                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar ?? string.Empty));
-                tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage ?? string.Empty));
+                tasks[0] = Task.Run(() => _settingsManager.AddSettings("SiteName", generalForm.SiteName));
+                tasks[1] = Task.Run(() => _settingsManager.AddSettings("SiteDescription", generalForm.SiteDescription));
+                tasks[2] = Task.Run(() => _settingsManager.AddSettings("SiteUrl", generalForm.SiteUrl));
+                tasks[3] = Task.Run(() => _settingsManager.AddSettings("EnableRegistration", generalForm.EnableRegistration.ToString()));
+                tasks[4] = Task.Run(() => _settingsManager.AddSettings("NumberOfUpdatesToShow", generalForm.NumberOfUpdatesToShow.ToString()));
+                tasks[5] = Task.Run(() => _settingsManager.AddSettings("SiteFooterCode", generalForm.SiteFooter ?? string.Empty));
+                tasks[6] = Task.Run(() => _settingsManager.AddSettings("SiteSideBar", generalForm.SiteSideBar ?? string.Empty));
+                tasks[7] = Task.Run(() => _settingsManager.AddSettings("SiteAboutPage", generalForm.SiteAboutPage ?? string.Empty));
 
                 TempData["Error"] = false;
 
@@ -70,13 +70,13 @@ namespace NaniWeb.Controllers
         {
             var model = new EmailForm
             {
-                EnableEmailRecovery = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value),
-                SmtpServer = _settingsKeeper.GetSetting("SmtpServer").Value,
-                SmtpUser = _settingsKeeper.GetSetting("SmtpUser").Value,
-                SmtpPassword = _settingsKeeper.GetSetting("SmtpPassword").Value,
-                SiteEmail = _settingsKeeper.GetSetting("GroupsEmailAddress").Value,
-                RecaptchaSiteKey = _settingsKeeper.GetSetting("RecaptchaSiteKey").Value,
-                RecaptchaSecretKey = _settingsKeeper.GetSetting("RecaptchaSecretKey").Value
+                EnableEmailRecovery = bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value),
+                SmtpServer = _settingsManager.GetSetting("SmtpServer").Value,
+                SmtpUser = _settingsManager.GetSetting("SmtpUser").Value,
+                SmtpPassword = _settingsManager.GetSetting("SmtpPassword").Value,
+                SiteEmail = _settingsManager.GetSetting("GroupsEmailAddress").Value,
+                RecaptchaSiteKey = _settingsManager.GetSetting("RecaptchaSiteKey").Value,
+                RecaptchaSecretKey = _settingsManager.GetSetting("RecaptchaSecretKey").Value
             };
 
             return View("EmailSettings", model);
@@ -91,13 +91,13 @@ namespace NaniWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer));
-                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser));
-                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword));
-                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", emailForm.SiteEmail));
-                    tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSiteKey", emailForm.RecaptchaSiteKey));
-                    tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSecretKey", emailForm.RecaptchaSecretKey));
+                    tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
+                    tasks[1] = Task.Run(() => _settingsManager.AddSettings("SmtpServer", emailForm.SmtpServer));
+                    tasks[2] = Task.Run(() => _settingsManager.AddSettings("SmtpUser", emailForm.SmtpUser));
+                    tasks[3] = Task.Run(() => _settingsManager.AddSettings("SmtpPassword", emailForm.SmtpPassword));
+                    tasks[4] = Task.Run(() => _settingsManager.AddSettings("GroupsEmailAddress", emailForm.SiteEmail));
+                    tasks[5] = Task.Run(() => _settingsManager.AddSettings("RecaptchaSiteKey", emailForm.RecaptchaSiteKey));
+                    tasks[6] = Task.Run(() => _settingsManager.AddSettings("RecaptchaSecretKey", emailForm.RecaptchaSecretKey));
 
                     TempData["Error"] = false;
 
@@ -110,13 +110,13 @@ namespace NaniWeb.Controllers
             }
             else
             {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpServer", emailForm.SmtpServer ?? string.Empty));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpUser", emailForm.SmtpUser ?? string.Empty));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("SmtpPassword", emailForm.SmtpPassword ?? string.Empty));
-                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("GroupsEmailAddress", emailForm.SiteEmail));
-                tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSiteKey", emailForm.RecaptchaSiteKey));
-                tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("RecaptchaSecretKey", emailForm.RecaptchaSecretKey));
+                tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableEmailRecovery", emailForm.EnableEmailRecovery.ToString()));
+                tasks[1] = Task.Run(() => _settingsManager.AddSettings("SmtpServer", emailForm.SmtpServer ?? string.Empty));
+                tasks[2] = Task.Run(() => _settingsManager.AddSettings("SmtpUser", emailForm.SmtpUser ?? string.Empty));
+                tasks[3] = Task.Run(() => _settingsManager.AddSettings("SmtpPassword", emailForm.SmtpPassword ?? string.Empty));
+                tasks[4] = Task.Run(() => _settingsManager.AddSettings("GroupsEmailAddress", emailForm.SiteEmail));
+                tasks[5] = Task.Run(() => _settingsManager.AddSettings("RecaptchaSiteKey", emailForm.RecaptchaSiteKey));
+                tasks[6] = Task.Run(() => _settingsManager.AddSettings("RecaptchaSecretKey", emailForm.RecaptchaSecretKey));
 
                 TempData["Error"] = false;
 
@@ -131,8 +131,8 @@ namespace NaniWeb.Controllers
         {
             var model = new GoogleAnalyticsForm
             {
-                EnableGoogleAnalytics = bool.Parse(_settingsKeeper.GetSetting("EnableGoogleAnalytics").Value),
-                GoogleAnalyticsTrackingCode = _settingsKeeper.GetSetting("GoogleAnalyticsTrackingCode").Value
+                EnableGoogleAnalytics = bool.Parse(_settingsManager.GetSetting("EnableGoogleAnalytics").Value),
+                GoogleAnalyticsTrackingCode = _settingsManager.GetSetting("GoogleAnalyticsTrackingCode").Value
             };
 
             return View("GoogleAnalyticsSettings", model);
@@ -147,8 +147,8 @@ namespace NaniWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableGoogleAnalytics", googleAnalyticsForm.EnableGoogleAnalytics.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode));
+                    tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableGoogleAnalytics", googleAnalyticsForm.EnableGoogleAnalytics.ToString()));
+                    tasks[1] = Task.Run(() => _settingsManager.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode));
 
                     TempData["Error"] = false;
 
@@ -161,8 +161,8 @@ namespace NaniWeb.Controllers
             }
             else
             {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableGoogleAnalytics", googleAnalyticsForm.EnableGoogleAnalytics.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode ?? string.Empty));
+                tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableGoogleAnalytics", googleAnalyticsForm.EnableGoogleAnalytics.ToString()));
+                tasks[1] = Task.Run(() => _settingsManager.AddSettings("GoogleAnalyticsTrackingCode", googleAnalyticsForm.GoogleAnalyticsTrackingCode ?? string.Empty));
 
                 TempData["Error"] = false;
 
@@ -177,8 +177,8 @@ namespace NaniWeb.Controllers
         {
             var model = new DisqusForm
             {
-                EnableDisqus = bool.Parse(_settingsKeeper.GetSetting("EnableDisqus").Value),
-                DisqusShortname = _settingsKeeper.GetSetting("DisqusShortname").Value
+                EnableDisqus = bool.Parse(_settingsManager.GetSetting("EnableDisqus").Value),
+                DisqusShortname = _settingsManager.GetSetting("DisqusShortname").Value
             };
 
             return View("DisqusSettings", model);
@@ -193,8 +193,8 @@ namespace NaniWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDisqus", disqusForm.EnableDisqus.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DisqusShortname", disqusForm.DisqusShortname));
+                    tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableDisqus", disqusForm.EnableDisqus.ToString()));
+                    tasks[1] = Task.Run(() => _settingsManager.AddSettings("DisqusShortname", disqusForm.DisqusShortname));
 
                     TempData["Error"] = false;
 
@@ -207,8 +207,8 @@ namespace NaniWeb.Controllers
             }
             else
             {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDisqus", disqusForm.EnableDisqus.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DisqusShortname", disqusForm.DisqusShortname ?? string.Empty));
+                tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableDisqus", disqusForm.EnableDisqus.ToString()));
+                tasks[1] = Task.Run(() => _settingsManager.AddSettings("DisqusShortname", disqusForm.DisqusShortname ?? string.Empty));
 
                 TempData["Error"] = false;
 
@@ -223,11 +223,11 @@ namespace NaniWeb.Controllers
         {
             var model = new AdsForm
             {
-                EnableAds = bool.Parse(_settingsKeeper.GetSetting("EnableAds").Value),
-                AdsHeaderCode = _settingsKeeper.GetSetting("AdsHeaderCode").Value,
-                AdsLocationTop = _settingsKeeper.GetSetting("AdsLocationTop").Value,
-                AdsLocationMiddle = _settingsKeeper.GetSetting("AdsLocationMiddle").Value,
-                AdsLocationBottom = _settingsKeeper.GetSetting("AdsLocationBottom").Value
+                EnableAds = bool.Parse(_settingsManager.GetSetting("EnableAds").Value),
+                AdsHeaderCode = _settingsManager.GetSetting("AdsHeaderCode").Value,
+                AdsLocationTop = _settingsManager.GetSetting("AdsLocationTop").Value,
+                AdsLocationMiddle = _settingsManager.GetSetting("AdsLocationMiddle").Value,
+                AdsLocationBottom = _settingsManager.GetSetting("AdsLocationBottom").Value
             };
 
             return View("AdsSettings", model);
@@ -242,11 +242,11 @@ namespace NaniWeb.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode ?? string.Empty));
-                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationTop", adsForm.AdsLocationTop ?? string.Empty));
-                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle ?? string.Empty));
-                    tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom ?? string.Empty));
+                    tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
+                    tasks[1] = Task.Run(() => _settingsManager.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode ?? string.Empty));
+                    tasks[2] = Task.Run(() => _settingsManager.AddSettings("AdsLocationTop", adsForm.AdsLocationTop ?? string.Empty));
+                    tasks[3] = Task.Run(() => _settingsManager.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle ?? string.Empty));
+                    tasks[4] = Task.Run(() => _settingsManager.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom ?? string.Empty));
 
                     TempData["Error"] = false;
 
@@ -259,11 +259,11 @@ namespace NaniWeb.Controllers
             }
             else
             {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode ?? string.Empty));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationTop", adsForm.AdsLocationTop ?? string.Empty));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle ?? string.Empty));
-                tasks[4] = Task.Run(async () => await _settingsKeeper.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom ?? string.Empty));
+                tasks[0] = Task.Run(() => _settingsManager.AddSettings("EnableAds", adsForm.EnableAds.ToString()));
+                tasks[1] = Task.Run(() => _settingsManager.AddSettings("AdsHeaderCode", adsForm.AdsHeaderCode ?? string.Empty));
+                tasks[2] = Task.Run(() => _settingsManager.AddSettings("AdsLocationTop", adsForm.AdsLocationTop ?? string.Empty));
+                tasks[3] = Task.Run(() => _settingsManager.AddSettings("AdsLocationMiddle", adsForm.AdsLocationMiddle ?? string.Empty));
+                tasks[4] = Task.Run(() => _settingsManager.AddSettings("AdsLocationBottom", adsForm.AdsLocationBottom ?? string.Empty));
 
                 TempData["Error"] = false;
 

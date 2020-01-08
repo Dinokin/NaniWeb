@@ -1,17 +1,17 @@
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
 @if (ViewData["EnableAdsHere"] != null && (bool) ViewData["EnableAdsHere"])
 {
-    if (bool.Parse(SettingsKeeper.GetSetting("EnableAds").Value))
+    if (bool.Parse(SettingsManager.GetSetting("EnableAds").Value))
     {
         if (ViewData["DisableAdsContainer"] != null && (bool) ViewData["DisableAdsContainer"])
         {
-            @Html.Raw(SettingsKeeper.GetSetting("AdsLocationMiddle").Value)
+            @Html.Raw(SettingsManager.GetSetting("AdsLocationMiddle").Value)
         }
         else
         {
             <div class="container">
-                @Html.Raw(SettingsKeeper.GetSetting("AdsLocationMiddle").Value)
+                @Html.Raw(SettingsManager.GetSetting("AdsLocationMiddle").Value)
             </div>
         }
     }

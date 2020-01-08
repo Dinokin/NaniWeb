@@ -1,14 +1,14 @@
 @using NaniWeb.Data
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
 @{
     var series = (Series) ViewData["Series"];
-    var enableDisqus = bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value);
-    var siteUrl = SettingsKeeper.GetSetting("SiteUrl").Value;
+    var enableDisqus = bool.Parse(SettingsManager.GetSetting("EnableDisqus").Value);
+    var siteUrl = SettingsManager.GetSetting("SiteUrl").Value;
     ViewData["Title"] = $"{series.Name}";
-    ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
+    ViewData["DisqusUrl"] = $"{SettingsManager.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}";
-    ViewData["DisqusTitle"] = $"{series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
+    ViewData["DisqusTitle"] = $"{series.Name} - {SettingsManager.GetSetting("SiteName").Value}";
     ViewData["EnableAdsHere"] = true;
     ViewData["DisableAdsContainer"] = true;
 }

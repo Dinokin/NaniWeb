@@ -9,14 +9,14 @@ namespace NaniWeb.Controllers
     public class ProfileController : Controller
     {
         private readonly EmailSender _emailSender;
-        private readonly SettingsKeeper _settingsKeeper;
+        private readonly SettingsManager _settingsManager;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public ProfileController(EmailSender emailSender, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public ProfileController(EmailSender emailSender, SettingsManager settingsManager, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
             _emailSender = emailSender;
-            _settingsKeeper = settingsKeeper;
+            _settingsManager = settingsManager;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -39,13 +39,13 @@ namespace NaniWeb.Controllers
         [HttpGet]
         public IActionResult ChangeEmail()
         {
-            return bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value) ? (IActionResult) View("NewEmail") : RedirectToAction("Index");
+            return bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value) ? (IActionResult) View("NewEmail") : RedirectToAction("Index");
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeEmail(NewEmailForm newEmailForm)
         {
-            if (!bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
+            if (!bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value))
                 return RedirectToAction("Index");
 
             if (ModelState.IsValid)
@@ -53,7 +53,7 @@ namespace NaniWeb.Controllers
                 var user = await _userManager.GetUserAsync(User);
                 var code = await _userManager.GenerateChangeEmailTokenAsync(user, newEmailForm.NewEmail);
 
-                var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Confirm", "SignIn", new {userId = user.Id, code})}";
+                var callbackUrl = $"{_settingsManager.GetSetting("SiteUrl").Value}{Url.Action("Confirm", "SignIn", new {userId = user.Id, code})}";
                 await _emailSender.SendEmailAsync(user.Email, "Email change requested", $"Click on the following link to change your email. Link: {callbackUrl}");
             }
             else

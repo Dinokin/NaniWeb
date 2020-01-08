@@ -11,14 +11,14 @@ namespace NaniWeb.Controllers
     public class SignInController : Controller
     {
         private readonly EmailSender _emailSender;
-        private readonly SettingsKeeper _settingsKeeper;
+        private readonly SettingsManager _settingsManager;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public SignInController(EmailSender emailSender, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public SignInController(EmailSender emailSender, SettingsManager settingsManager, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
             _emailSender = emailSender;
-            _settingsKeeper = settingsKeeper;
+            _settingsManager = settingsManager;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -66,7 +66,7 @@ namespace NaniWeb.Controllers
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Profile");
 
-            if (!bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value))
+            if (!bool.Parse(_settingsManager.GetSetting("EnableRegistration").Value))
                 return RedirectToAction("SignIn");
 
             return View();
@@ -78,7 +78,7 @@ namespace NaniWeb.Controllers
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Profile");
 
-            if (!bool.Parse(_settingsKeeper.GetSetting("EnableRegistration").Value))
+            if (!bool.Parse(_settingsManager.GetSetting("EnableRegistration").Value))
                 return RedirectToAction("SignIn");
 
             if (!ModelState.IsValid)
@@ -88,7 +88,7 @@ namespace NaniWeb.Controllers
                 return RedirectToAction("SignUp");
             }
 
-            var enableEmail = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value);
+            var enableEmail = bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value);
 
             var user = new IdentityUser<int>
             {
@@ -103,7 +103,7 @@ namespace NaniWeb.Controllers
                 if (enableEmail)
                 {
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Confirm", new {userId = user.Id, code})}";
+                    var callbackUrl = $"{_settingsManager.GetSetting("SiteUrl").Value}{Url.Action("Confirm", new {userId = user.Id, code})}";
                     await _emailSender.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by clicking on the following link. Link: {callbackUrl}");
                 }
 
@@ -136,7 +136,7 @@ namespace NaniWeb.Controllers
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Profile");
 
-            var enableEmail = bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value);
+            var enableEmail = bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value);
 
             return enableEmail ? (IActionResult) View() : RedirectToAction("SignIn");
         }
@@ -147,7 +147,7 @@ namespace NaniWeb.Controllers
             if (User.Identity.IsAuthenticated)
                 return RedirectToAction("Index", "Profile");
 
-            if (!bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
+            if (!bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value))
                 return RedirectToAction("SignIn");
 
             var user = await _userManager.FindByEmailAsync(resetPassword.Email);
@@ -160,7 +160,7 @@ namespace NaniWeb.Controllers
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var callbackUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("NewPassword", new {userId = user.Id, code})}";
+            var callbackUrl = $"{_settingsManager.GetSetting("SiteUrl").Value}{Url.Action("NewPassword", new {userId = user.Id, code})}";
             await _emailSender.SendEmailAsync(user.Email, "Password reset requested", $"If you requested a password reset, click on the following link. Link: {callbackUrl}");
             TempData["Result"] = "EmailResSent";
 

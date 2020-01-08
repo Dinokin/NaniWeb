@@ -1,4 +1,4 @@
-@inject SettingsKeeper SettingsKeeper;
+@inject SettingsManager SettingsManager;
 
 @{
     ViewData["Title"] = "Contact";
@@ -18,9 +18,9 @@
             <div class="card bg-primary border-secondary mb-3">
                 <h5 class="card-header bg-primary">About Us</h5>
                 <div class="card-body">
-                    @if (!string.IsNullOrWhiteSpace(SettingsKeeper.GetSetting("SiteAboutPage").Value))
+                    @if (!string.IsNullOrWhiteSpace(SettingsManager.GetSetting("SiteAboutPage").Value))
                     {
-                        @Html.Raw(SettingsKeeper.GetSetting("SiteAboutPage").Value)
+                        @Html.Raw(SettingsManager.GetSetting("SiteAboutPage").Value)
                     }
                     else
                     {

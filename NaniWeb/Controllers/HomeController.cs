@@ -22,20 +22,20 @@ namespace NaniWeb.Controllers
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly ReCaptcha _reCaptcha;
-        private readonly SettingsKeeper _settingsKeeper;
+        private readonly SettingsManager _settingsManager;
 
-        public HomeController(IWebHostEnvironment hostingEnvironment, EmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
+        public HomeController(IWebHostEnvironment hostingEnvironment, EmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsManager settingsManager)
         {
             _hostingEnvironment = hostingEnvironment;
             _emailSender = emailSender;
             _naniWebContext = naniWebContext;
             _reCaptcha = reCaptcha;
-            _settingsKeeper = settingsKeeper;
+            _settingsManager = settingsManager;
         }
 
         public async Task<IActionResult> Index()
         {
-            var updateCount = int.Parse(_settingsKeeper.GetSetting("NumberOfUpdatesToShow").Value);
+            var updateCount = int.Parse(_settingsManager.GetSetting("NumberOfUpdatesToShow").Value);
             ViewData["LatestReleases"] = await _naniWebContext.Chapters.OrderByDescending(chp => chp.ReleaseDate).Take(updateCount).Include(chp => chp.Series).ToArrayAsync();
 
             return View("Home");
@@ -126,7 +126,7 @@ namespace NaniWeb.Controllers
             chapter.Pages = chapter.Pages.OrderBy(pg => pg.PageNumber).ToList();
             var downloadsDir = Utils.CurrentDirectory.CreateSubdirectory("Downloads");
             var file = $"{downloadsDir.FullName}{Path.DirectorySeparatorChar}{chapter.Id}.zip";
-            var prepSiteName = $"[{_settingsKeeper.GetSetting("SiteName").Value.Replace(" ", "_")}]";
+            var prepSiteName = $"[{_settingsManager.GetSetting("SiteName").Value.Replace(" ", "_")}]";
             var prepSeriesName = chapter.Series.Name.Replace(" ", "_");
 
             if (System.IO.File.Exists(file))
@@ -200,7 +200,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid && await _reCaptcha.ValidateResponse(Request.Form["g-recaptcha-response"]))
             {
-                await _emailSender.SendEmailAsync($"{_settingsKeeper.GetSetting("GroupsEmailAddress").Value}", $"Message from {contact.Name}", $"{contact.Content}{Environment.NewLine}Sent by: {contact.Destination}");
+                await _emailSender.SendEmailAsync($"{_settingsManager.GetSetting("GroupsEmailAddress").Value}", $"Message from {contact.Name}", $"{contact.Content}{Environment.NewLine}Sent by: {contact.Destination}");
 
                 TempData["Error"] = false;
             }

@@ -1,10 +1,10 @@
-@inject SettingsKeeper SettingsKeeper;
+@inject SettingsManager SettingsManager;
 @model Contact
 
 @{
     ViewData["Title"] = "Contact";
     ViewData["EnableAdsHere"] = true;
-    var recaptchaKey = SettingsKeeper.GetSetting("RecaptchaSiteKey").Value;
+    var recaptchaKey = SettingsManager.GetSetting("RecaptchaSiteKey").Value;
 }
 
 @section Header

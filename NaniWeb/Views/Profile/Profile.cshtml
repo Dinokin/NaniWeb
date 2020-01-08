@@ -1,8 +1,8 @@
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 @model Profile
 
 @{
-    var enableEmail = bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value);
+    var enableEmail = bool.Parse(SettingsManager.GetSetting("EnableEmailRecovery").Value);
     ViewData["Title"] = "Profile";
 }
 

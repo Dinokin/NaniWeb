@@ -1,9 +1,9 @@
-﻿@inject SettingsKeeper SettingsKeeper
+﻿@inject SettingsManager SettingsManager
 @model SignInForm
 
 @{
-    var enableRegistration = bool.Parse(SettingsKeeper.GetSetting("EnableRegistration").Value);
-    var enableEmail = bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value);
+    var enableRegistration = bool.Parse(SettingsManager.GetSetting("EnableRegistration").Value);
+    var enableEmail = bool.Parse(SettingsManager.GetSetting("EnableEmailRecovery").Value);
     ViewData["Title"] = "Sign In";
 }
 

@@ -1,9 +1,9 @@
 @using NaniWeb.Data
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 @{
     var announcement = (Announcement) ViewData["Announcement"];
     ViewData["Title"] = $"{announcement.Title} - Announcements";
-    ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Announcement", new {urlSlug = announcement.UrlSlug})}";
+    ViewData["DisqusUrl"] = $"{SettingsManager.GetSetting("SiteUrl").Value}{Url.Action("Announcement", new {urlSlug = announcement.UrlSlug})}";
     ViewData["DisqusIdentifier"] = $"announcement_{announcement.UrlSlug}";
     ViewData["DisqusTitle"] = $"{announcement.Title}";
     ViewData["EnableAdsHere"] = true;
@@ -24,7 +24,7 @@
                 <div class="card-body">
                     @Html.Raw(announcement.Content)
                 </div>
-                @if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+                @if (bool.Parse(SettingsManager.GetSetting("EnableDisqus").Value))
                 {
                     <div class="card-footer bg-primary disqus-container">
                         <partial name="_DisqusDiv"/>

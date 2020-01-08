@@ -1,11 +1,11 @@
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
-@if (!string.IsNullOrWhiteSpace(SettingsKeeper.GetSetting("SiteFooterCode").Value))
+@if (!string.IsNullOrWhiteSpace(SettingsManager.GetSetting("SiteFooterCode").Value))
 {
     <footer class="footer bg-secondary">
         <div class="container">
             <div class="text-center">
-                @Html.Raw(SettingsKeeper.GetSetting("SiteFooterCode").Value)
+                @Html.Raw(SettingsManager.GetSetting("SiteFooterCode").Value)
             </div>
         </div>
     </footer>

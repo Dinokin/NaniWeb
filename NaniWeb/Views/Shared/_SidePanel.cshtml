@@ -1,9 +1,9 @@
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
 <div>
-    @if (!string.IsNullOrWhiteSpace(SettingsKeeper.GetSetting("SiteSideBar").Value))
+    @if (!string.IsNullOrWhiteSpace(SettingsManager.GetSetting("SiteSideBar").Value))
     {
-        @Html.Raw(SettingsKeeper.GetSetting("SiteSideBar").Value)
+        @Html.Raw(SettingsManager.GetSetting("SiteSideBar").Value)
     }
     else
     {

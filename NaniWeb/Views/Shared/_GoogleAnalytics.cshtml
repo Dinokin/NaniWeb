@@ -1,8 +1,8 @@
-﻿@inject SettingsKeeper SettingsKeeper
+﻿@inject SettingsManager SettingsManager
 
-@if (bool.Parse(SettingsKeeper.GetSetting("EnableGoogleAnalytics").Value))
+@if (bool.Parse(SettingsManager.GetSetting("EnableGoogleAnalytics").Value))
 {
-    <script async src="https://www.googletagmanager.com/gtag/js?id=@SettingsKeeper.GetSetting("GoogleAnalyticsTrackingCode").Value"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=@SettingsManager.GetSetting("GoogleAnalyticsTrackingCode").Value"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
@@ -10,6 +10,6 @@
 
         gtag("js", new Date());
 
-        gtag("config", "@SettingsKeeper.GetSetting("GoogleAnalyticsTrackingCode").Value");
+        gtag("config", "@SettingsManager.GetSetting("GoogleAnalyticsTrackingCode").Value");
     </script>
 }

@@ -1,6 +1,6 @@
-﻿@inject SettingsKeeper SettingsKeeper
+﻿@inject SettingsManager SettingsManager
 
-@if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+@if (bool.Parse(SettingsManager.GetSetting("EnableDisqus").Value))
 {
     <div id="disqus_thread"></div>
 }

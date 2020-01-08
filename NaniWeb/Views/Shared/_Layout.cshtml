@@ -1,8 +1,8 @@
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
 @{
-    ViewData["SiteName"] = SettingsKeeper.GetSetting("SiteName").Value;
-    ViewData["SiteDescription"] = SettingsKeeper.GetSetting("SiteDescription").Value;
+    ViewData["SiteName"] = SettingsManager.GetSetting("SiteName").Value;
+    ViewData["SiteDescription"] = SettingsManager.GetSetting("SiteDescription").Value;
 }
 
 <!DOCTYPE html>

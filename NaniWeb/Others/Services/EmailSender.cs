@@ -6,29 +6,29 @@ namespace NaniWeb.Others.Services
 {
     public class EmailSender
     {
-        private readonly SettingsKeeper _settingsKeeper;
+        private readonly SettingsManager _settingsManager;
         private readonly SmtpClient _smtpClient;
 
-        public EmailSender(SettingsKeeper settingsKeeper)
+        public EmailSender(SettingsManager settingsManager)
         {
-            _settingsKeeper = settingsKeeper;
+            _settingsManager = settingsManager;
 
-            if (bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
-                _smtpClient = new SmtpClient(_settingsKeeper.GetSetting("SmtpServer").Value)
+            if (bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value))
+                _smtpClient = new SmtpClient(_settingsManager.GetSetting("SmtpServer").Value)
                 {
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(_settingsKeeper.GetSetting("SmtpUser").Value, _settingsKeeper.GetSetting("SmtpPassword").Value),
+                    Credentials = new NetworkCredential(_settingsManager.GetSetting("SmtpUser").Value, _settingsManager.GetSetting("SmtpPassword").Value),
                     EnableSsl = true
                 };
         }
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            if (bool.Parse(_settingsKeeper.GetSetting("EnableEmailRecovery").Value))
+            if (bool.Parse(_settingsManager.GetSetting("EnableEmailRecovery").Value))
             {
                 var message = new MailMessage
                 {
-                    From = new MailAddress($"noreply@{_settingsKeeper.GetSetting("SiteUrl").Value.Replace("https://", string.Empty)}"),
+                    From = new MailAddress($"noreply@{_settingsManager.GetSetting("SiteUrl").Value.Replace("https://", string.Empty)}"),
                     Body = htmlMessage,
                     Subject = subject
                 };

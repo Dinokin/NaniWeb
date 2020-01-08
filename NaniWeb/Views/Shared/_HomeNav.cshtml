@@ -1,9 +1,9 @@
 @using Microsoft.AspNetCore.Identity
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 @inject SignInManager<IdentityUser<int>> SignInManager
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
-    <a class="navbar-brand" href="@Url.Action("Index", "Home")">@SettingsKeeper.GetSetting("SiteName").Value</a>
+    <a class="navbar-brand" href="@Url.Action("Index", "Home")">@SettingsManager.GetSetting("SiteName").Value</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -22,7 +22,7 @@
             <li class="nav-item" id="about">
                 <a class="nav-link" href="@Url.Action("About", "Home")">About Us</a>
             </li>
-            @if (bool.Parse(SettingsKeeper.GetSetting("EnableEmailRecovery").Value))
+            @if (bool.Parse(SettingsManager.GetSetting("EnableEmailRecovery").Value))
             {
                 <li class="nav-item" id="contact">
                     <a class="nav-link" href="@Url.Action("Contact", "Home")">Contact</a>

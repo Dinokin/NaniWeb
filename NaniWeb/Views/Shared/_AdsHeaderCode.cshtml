@@ -1,11 +1,11 @@
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
 @if (ViewData["EnableAdsHere"] != null && (bool) ViewData["EnableAdsHere"])
 {
-    if (bool.Parse(SettingsKeeper.GetSetting("EnableAds").Value))
+    if (bool.Parse(SettingsManager.GetSetting("EnableAds").Value))
     {
         <div class="container">
-            @Html.Raw(SettingsKeeper.GetSetting("AdsHeaderCode").Value)
+            @Html.Raw(SettingsManager.GetSetting("AdsHeaderCode").Value)
         </div>
     }
 }

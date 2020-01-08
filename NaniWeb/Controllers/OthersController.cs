@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using NaniWeb.Data;
 using NaniWeb.Models.SignIn;
 using NaniWeb.Others;
-using NaniWeb.Others.Services;
 using Npgsql;
 
 namespace NaniWeb.Controllers
@@ -17,14 +16,12 @@ namespace NaniWeb.Controllers
     public class OthersController : Controller
     {
         private readonly NaniWebContext _naniWebContext;
-        private readonly SettingsKeeper _settingsKeeper;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public OthersController(NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public OthersController(NaniWebContext naniWebContext, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
             _naniWebContext = naniWebContext;
-            _settingsKeeper = settingsKeeper;
             _signInManager = signInManager;
             _userManager = userManager;
         }
@@ -54,7 +51,6 @@ namespace NaniWeb.Controllers
                 var npgsqlConnection = (NpgsqlConnection) _naniWebContext.Database.GetDbConnection();
                 npgsqlConnection.Open();
                 npgsqlConnection.ReloadTypes();
-                _settingsKeeper.SynchronizeSettings();
 
                 var user = new IdentityUser<int>
                 {

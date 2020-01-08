@@ -57,8 +57,8 @@ namespace NaniWeb
                 .ProtectKeysWithCertificate(Utils.GetCertificate("keycert.pfx"));
 
             services.AddHttpClient();
-            services.AddSingleton(typeof(SettingsKeeper));
             services.AddTransient(typeof(ReCaptcha));
+            services.AddTransient<SettingsManager>();
             services.AddTransient<EmailSender>();
         }
 

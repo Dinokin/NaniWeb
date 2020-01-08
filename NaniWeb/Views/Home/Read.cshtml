@@ -1,8 +1,8 @@
 @using NaniWeb.Data
-@inject SettingsKeeper SettingsKeeper
+@inject SettingsManager SettingsManager
 
 @{
-    var siteUrl = SettingsKeeper.GetSetting("SiteUrl").Value;
+    var siteUrl = SettingsManager.GetSetting("SiteUrl").Value;
     var series = (Series) ViewData["Series"];
     var seriesList = (Series[]) ViewData["SeriesList"];
     var chapters = (LinkedList<Chapter>) ViewData["Chapters"];
@@ -14,9 +14,9 @@
     var readerMode = (Series.SeriesType) ViewData["ReaderMode"];
 
     ViewData["Title"] = $"Chapter {chapter.ChapterNumber} - {series.Name}";
-    ViewData["DisqusUrl"] = $"{SettingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
+    ViewData["DisqusUrl"] = $"{SettingsManager.GetSetting("SiteUrl").Value}{Url.Action("Project", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
     ViewData["DisqusIdentifier"] = $"series_{series.UrlSlug}_chapter_{chapter.ChapterNumber}";
-    ViewData["DisqusTitle"] = $"Chapter {chapter.ChapterNumber} - {series.Name} - {SettingsKeeper.GetSetting("SiteName").Value}";
+    ViewData["DisqusTitle"] = $"Chapter {chapter.ChapterNumber} - {series.Name} - {SettingsManager.GetSetting("SiteName").Value}";
     ViewData["EnableAdsHere"] = true;
 }
 
@@ -149,7 +149,7 @@
     </div>
 </div>
 <partial name="_AdsMiddleSlot"/>
-@if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+@if (bool.Parse(SettingsManager.GetSetting("EnableDisqus").Value))
 {
     <div id="bottom" class="container my-2 rounded border border-secondary disqus-container">
         <partial name="_DisqusDiv"/>

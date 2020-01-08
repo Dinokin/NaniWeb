@@ -19,13 +19,13 @@ namespace NaniWeb.Controllers
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
-        private readonly SettingsKeeper _settingsKeeper;
+        private readonly SettingsManager _settingsManager;
 
-        public ChapterManagerController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
+        public ChapterManagerController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsManager settingsManager)
         {
             _hostingEnvironment = hostingEnvironment;
             _naniWebContext = naniWebContext;
-            _settingsKeeper = settingsKeeper;
+            _settingsManager = settingsManager;
         }
 
         [Authorize(Roles = "Administrator, Moderator, Uploader")]

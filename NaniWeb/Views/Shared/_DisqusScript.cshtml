@@ -1,6 +1,6 @@
-﻿@inject SettingsKeeper SettingsKeeper
+﻿@inject SettingsManager SettingsManager
 
-@if (bool.Parse(SettingsKeeper.GetSetting("EnableDisqus").Value))
+@if (bool.Parse(SettingsManager.GetSetting("EnableDisqus").Value))
 {
     <script>
         var disqus_config = function() {
@@ -13,7 +13,7 @@
             const d = document;
             const s = d.createElement("script");
 
-            s.src = "https://@(SettingsKeeper.GetSetting("DisqusShortname").Value).disqus.com/embed.js";
+            s.src = "https://@(SettingsManager.GetSetting("DisqusShortname").Value).disqus.com/embed.js";
 
             s.setAttribute("data-timestamp", +new Date());
             (d.head || d.body).appendChild(s);
