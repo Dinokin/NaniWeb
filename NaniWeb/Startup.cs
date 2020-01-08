@@ -56,6 +56,7 @@ namespace NaniWeb
                 .SetDefaultKeyLifetime(TimeSpan.FromDays(30))
                 .ProtectKeysWithCertificate(Utils.GetCertificate("keycert.pfx"));
 
+            services.AddHttpClient();
             services.AddSingleton(typeof(SettingsKeeper));
             services.AddTransient(typeof(ReCaptcha));
             services.AddTransient<EmailSender>();
