@@ -1,11 +1,10 @@
 ﻿using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace NaniWeb.Others.Services
 {
-    public class EmailSender : IEmailSender
+    public class EmailSender
     {
         private readonly SettingsKeeper _settingsKeeper;
         private readonly SmtpClient _smtpClient;

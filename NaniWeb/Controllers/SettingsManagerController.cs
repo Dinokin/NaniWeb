@@ -12,10 +12,10 @@ namespace NaniWeb.Controllers
     [Authorize(Roles = "Administrator")]
     public class SettingsManagerController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public SettingsManagerController(IHostingEnvironment hostingEnvironment, SettingsKeeper settingsKeeper)
+        public SettingsManagerController(IWebHostEnvironment hostingEnvironment, SettingsKeeper settingsKeeper)
         {
             _hostingEnvironment = hostingEnvironment;
             _settingsKeeper = settingsKeeper;

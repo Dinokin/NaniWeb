@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NaniWeb.Data;
 using NaniWeb.Others;
 using NaniWeb.Others.Services;
@@ -45,7 +45,7 @@ namespace NaniWeb
 
             services.AddRouting(options => options.LowercaseUrls = true);
 
-            services.AddMvc(options => options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())))
+            services.AddControllersWithViews(options => options.Filters.Add(new AuthorizeFilter(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())))
                 .AddViewOptions(options => options.HtmlHelperOptions.ClientValidationEnabled = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
 
             services.ConfigureApplicationCookie(options =>
@@ -76,14 +76,14 @@ namespace NaniWeb
 
             services.AddSingleton(typeof(SettingsKeeper));
             services.AddTransient(typeof(ReCaptcha));
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<EmailSender>();
             services.AddTransient(typeof(DiscordBot));
             services.AddTransient(typeof(MangadexUploader));
             services.AddTransient(typeof(FirebaseCloudMessaging));
             services.AddTransient(typeof(RedditPoster));
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -104,45 +104,45 @@ namespace NaniWeb
 
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseMvc(routes =>
+            app.UseEndpoints(routes =>
             {
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "Others",
                     "{action}",
                     new {controller = "Others"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "Home",
                     "{action}/{urlSlug?}/{chapterNumber:decimal?}",
                     new {controller = "Home", action = "Index"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "Subscription",
                     "subscription/{action}/{topic}/{token}",
                     new {controller = "Subscription"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "AdminLogin",
                     "admin/{action}",
                     new {controller = "SignIn", action = "SignIn"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "Profile",
                     "admin/profile/{action}",
                     new {controller = "Profile", action = "Index"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "AnnouncementManager",
                     "/admin/manager/announcement/{action}/{id:int?}",
                     new {controller = "AnnouncementManager"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "SeriesManager",
                     "/admin/manager/series/{action}/{id:int?}",
                     new {controller = "SeriesManager"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "ChapterManager",
                     "/admin/manager/chapter/{action}/{id:int?}",
                     new {controller = "ChapterManager"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "UserManager",
                     "/admin/manager/user/{action}/{id:int?}",
                     new {controller = "UserManager"});
-                routes.MapRoute(
+                routes.MapControllerRoute(
                     "SettingsManager",
                     "/admin/manager/settings/{action}",
                     new {controller = "SettingsManager"});

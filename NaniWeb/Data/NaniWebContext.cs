@@ -38,9 +38,8 @@ namespace NaniWeb.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ForNpgsqlUseIdentityColumns();
-            builder.ForNpgsqlHasEnum<Series.SeriesType>(null, null, new NpgsqlNullNameTranslator());
-            builder.ForNpgsqlHasEnum<Series.SeriesStatus>(null, null, new NpgsqlNullNameTranslator());
+            builder.HasPostgresEnum<Series.SeriesType>(null, null, new NpgsqlNullNameTranslator());
+            builder.HasPostgresEnum<Series.SeriesStatus>(null, null, new NpgsqlNullNameTranslator());
             base.OnModelCreating(builder);
 
             builder.Entity<IdentityUser<int>>().ToTable("Users");

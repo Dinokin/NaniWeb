@@ -13,10 +13,10 @@ namespace NaniWeb.Controllers
 {
     public class SeriesManagerController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
 
-        public SeriesManagerController(IHostingEnvironment hostingEnvironment, NaniWebContext naniWebContext)
+        public SeriesManagerController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext)
         {
             _hostingEnvironment = hostingEnvironment;
             _naniWebContext = naniWebContext;

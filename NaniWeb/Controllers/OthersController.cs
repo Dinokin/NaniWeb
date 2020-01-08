@@ -17,13 +17,13 @@ namespace NaniWeb.Controllers
     [AllowAnonymous]
     public class OthersController : Controller
     {
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly SettingsKeeper _settingsKeeper;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public OthersController(IHostingEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public OthersController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
             _hostingEnvironment = hostingEnvironment;
             _naniWebContext = naniWebContext;

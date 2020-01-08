@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NaniWeb.Data;
@@ -19,13 +18,13 @@ namespace NaniWeb.Controllers
     [AllowAnonymous]
     public class HomeController : Controller
     {
-        private readonly IEmailSender _emailSender;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly EmailSender _emailSender;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly ReCaptcha _reCaptcha;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public HomeController(IHostingEnvironment hostingEnvironment, IEmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
+        public HomeController(IWebHostEnvironment hostingEnvironment, EmailSender emailSender, NaniWebContext naniWebContext, ReCaptcha reCaptcha, SettingsKeeper settingsKeeper)
         {
             _hostingEnvironment = hostingEnvironment;
             _emailSender = emailSender;

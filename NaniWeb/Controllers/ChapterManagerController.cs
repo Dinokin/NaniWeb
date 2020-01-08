@@ -19,13 +19,13 @@ namespace NaniWeb.Controllers
     {
         private readonly DiscordBot _discordBot;
         private readonly FirebaseCloudMessaging _firebaseCloudMessaging;
-        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly MangadexUploader _mangadexUploader;
         private readonly NaniWebContext _naniWebContext;
         private readonly RedditPoster _redditPoster;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IHostingEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
+        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IWebHostEnvironment hostingEnvironment, MangadexUploader mangadexUploader, NaniWebContext naniWebContext,
             RedditPoster redditPoster, SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
