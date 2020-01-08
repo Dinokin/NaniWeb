@@ -19,14 +19,12 @@ namespace NaniWeb.Controllers
     {
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
-        private readonly RedditPoster _redditPoster;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, RedditPoster redditPoster, SettingsKeeper settingsKeeper)
+        public ChapterManagerController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper)
         {
             _hostingEnvironment = hostingEnvironment;
             _naniWebContext = naniWebContext;
-            _redditPoster = redditPoster;
             _settingsKeeper = settingsKeeper;
         }
 
@@ -115,11 +113,6 @@ namespace NaniWeb.Controllers
                 await _naniWebContext.Chapters.AddAsync(chapter);
                 await _naniWebContext.SaveChangesAsync();
 
-                var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
-                
-                if (chapterAdd.AnnounceOnReddit)
-                    await _redditPoster.PostLink("/r/manga", $"[DISC] {series.Name} - Chapter {chapter.ChapterNumber}", chapterUrl, chapterAdd.RedditNsfw);
-                
                 temp.Delete(true);
 
                 return RedirectToAction("List", "SeriesManager", new {id = series.Id});

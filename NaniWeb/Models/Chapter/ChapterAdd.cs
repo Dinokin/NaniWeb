@@ -13,9 +13,5 @@ namespace NaniWeb.Models.Chapter
         public string Name { get; set; }
 
         [Required] public IFormFile Pages { get; set; }
-        
-        [Required] public bool AnnounceOnReddit { get; set; }
-
-        [Required] public bool RedditNsfw { get; set; }
     }
 }

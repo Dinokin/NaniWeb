@@ -206,31 +206,6 @@ namespace NaniWeb.Data
                     Value = string.Empty
                 }, new Setting
                 {
-                    Id = 30,
-                    Name = "EnableReddit",
-                    Value = false.ToString()
-                }, new Setting
-                {
-                    Id = 31,
-                    Name = "RedditUser",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 32,
-                    Name = "RedditPassword",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 33,
-                    Name = "RedditClientId",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 34,
-                    Name = "RedditClientSecret",
-                    Value = string.Empty
-                }, new Setting
-                {
                     Id = 35,
                     Name = "NumberOfUpdatesToShow",
                     Value = 10.ToString()

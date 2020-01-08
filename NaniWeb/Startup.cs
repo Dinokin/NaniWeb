@@ -62,7 +62,6 @@ namespace NaniWeb
             services.AddSingleton(typeof(SettingsKeeper));
             services.AddTransient(typeof(ReCaptcha));
             services.AddTransient<EmailSender>();
-            services.AddTransient(typeof(RedditPoster));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
