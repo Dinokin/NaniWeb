@@ -18,17 +18,14 @@ namespace NaniWeb.Controllers
     public class ChapterManagerController : Controller
     {
         private readonly DiscordBot _discordBot;
-        private readonly FirebaseCloudMessaging _firebaseCloudMessaging;
         private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly RedditPoster _redditPoster;
         private readonly SettingsKeeper _settingsKeeper;
 
-        public ChapterManagerController(DiscordBot discordBot, FirebaseCloudMessaging firebaseCloudMessaging, IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext,
-            RedditPoster redditPoster, SettingsKeeper settingsKeeper)
+        public ChapterManagerController(DiscordBot discordBot, IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, RedditPoster redditPoster, SettingsKeeper settingsKeeper)
         {
             _discordBot = discordBot;
-            _firebaseCloudMessaging = firebaseCloudMessaging;
             _hostingEnvironment = hostingEnvironment;
             _naniWebContext = naniWebContext;
             _redditPoster = redditPoster;
@@ -120,22 +117,16 @@ namespace NaniWeb.Controllers
                 await _naniWebContext.Chapters.AddAsync(chapter);
                 await _naniWebContext.SaveChangesAsync();
 
-                var siteName = _settingsKeeper.GetSetting("SiteName").Value;
                 var chapterUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Project", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
                 var chapterDownloadUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}{Url.Action("Download", "Home", new {urlSlug = series.UrlSlug, chapterNumber = chapter.ChapterNumber})}";
-                var iconUrl = $"{_settingsKeeper.GetSetting("SiteUrl").Value}/assets/icon.png";
-                var tasks = new Task[3];
+                var tasks = new Task[2];
                 
                 tasks[0] = Task.Run(async () =>
-                {
-                    await _firebaseCloudMessaging.SendNotification($"A new release is available at {siteName}!", $"New chapter of {series.Name} is available at {siteName}!", chapterUrl, iconUrl, $"series_{series.Id}");
-                });
-                tasks[1] = Task.Run(async () =>
                 {
                     if (chapterAdd.AnnounceOnDiscord)
                         await _discordBot.SendMessage($"@everyone **{series.Name}** - Chapter {chapter.ChapterNumber} is out!{Environment.NewLine}Read it here: {chapterUrl}{Environment.NewLine}Download it here: {chapterDownloadUrl}");
                 });
-                tasks[2] = Task.Run(async () =>
+                tasks[1] = Task.Run(async () =>
                 {
                     if (chapterAdd.AnnounceOnReddit)
                         await _redditPoster.PostLink("/r/manga", $"[DISC] {series.Name} - Chapter {chapter.ChapterNumber}", chapterUrl, chapterAdd.RedditNsfw);

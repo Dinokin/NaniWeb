@@ -1,9 +1,0 @@
-﻿@inject SettingsKeeper SettingsKeeper
-
-@if (bool.Parse(SettingsKeeper.GetSetting("EnableFcm").Value))
-{
-    <div class="custom-control custom-switch">
-        <input type="checkbox" class="custom-control-input" id="fcm_toggle">
-        <label class="custom-control-label" for="fcm_toggle">@ViewData["FcmSubscriptionTitle"]</label>
-    </div>
-}

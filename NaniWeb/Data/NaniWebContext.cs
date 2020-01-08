@@ -181,26 +181,6 @@ namespace NaniWeb.Data
                     Value = string.Empty
                 }, new Setting
                 {
-                    Id = 18,
-                    Name = "EnableFcm",
-                    Value = false.ToString()
-                }, new Setting
-                {
-                    Id = 19,
-                    Name = "FcmApiKey",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 20,
-                    Name = "FcmProjectId",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 21,
-                    Name = "FcmSenderId",
-                    Value = 0.ToString()
-                }, new Setting
-                {
                     Id = 22,
                     Name = "EnableDisqus",
                     Value = false.ToString()

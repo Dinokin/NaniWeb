@@ -1,10 +1,8 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using NaniWeb.Models.Settings;
-using NaniWeb.Others;
 using NaniWeb.Others.Services;
 
 namespace NaniWeb.Controllers
@@ -44,24 +42,7 @@ namespace NaniWeb.Controllers
         {
             if (ModelState.IsValid)
             {
-                var tasks = new Task[9];
-                var manifest = new ManifestBuilder
-                {
-                    ShortName = generalForm.SiteName,
-                    Name = generalForm.SiteName,
-                    Icons = new[]
-                    {
-                        new ManifestBuilder.Icon
-                        {
-                            Src = "assets/icon.png",
-                            Type = "image/png",
-                            Sizes = "512x512"
-                        }
-                    },
-                    ThemeColor = "#FFF",
-                    BackgroundColor = "#FFF",
-                    GcmSenderId = "103953800507"
-                };
+                var tasks = new Task[8];
 
                 tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteName", generalForm.SiteName));
                 tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteDescription", generalForm.SiteDescription));
@@ -71,7 +52,6 @@ namespace NaniWeb.Controllers
                 tasks[5] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteFooterCode", generalForm.SiteFooter ?? string.Empty));
                 tasks[6] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteSideBar", generalForm.SiteSideBar ?? string.Empty));
                 tasks[7] = Task.Run(async () => await _settingsKeeper.AddSettings("SiteAboutPage", generalForm.SiteAboutPage ?? string.Empty));
-                tasks[8] = Task.Run(async () => await manifest.BuildManifest(_hostingEnvironment));
 
                 TempData["Error"] = false;
 
@@ -239,68 +219,6 @@ namespace NaniWeb.Controllers
             }
 
             return RedirectToAction("GoogleAnalytics");
-        }
-
-        [HttpGet]
-        public IActionResult Fcm()
-        {
-            var model = new FcmForm
-            {
-                EnableFcm = bool.Parse(_settingsKeeper.GetSetting("EnableFcm").Value),
-                FcmApiKey = _settingsKeeper.GetSetting("FcmApiKey").Value,
-                FcmProjectId = _settingsKeeper.GetSetting("FcmProjectId").Value,
-                FcmSenderId = ulong.Parse(_settingsKeeper.GetSetting("FcmSenderId").Value)
-            };
-
-            return View("FcmSettings", model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Fcm(FcmForm fcmForm)
-        {
-            if (fcmForm.EnableFcm)
-            {
-                if (ModelState.IsValid)
-                {
-                    var tasks = new Task[6];
-
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFcm", fcmForm.EnableFcm.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmApiKey", fcmForm.FcmApiKey));
-                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmProjectId", fcmForm.FcmProjectId));
-                    tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmSenderId", fcmForm.FcmSenderId.ToString()));
-                    tasks[4] = Task.Run(async () =>
-                    {
-                        using (var stream = System.IO.File.Create($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}fcmkey.json"))
-                        {
-                            await fcmForm.FcmKeyFile.CopyToAsync(stream);
-                        }
-                    });
-                    tasks[5] = Task.Run(async () => await Utils.BuildServiceWorker(fcmForm.FcmApiKey, fcmForm.FcmProjectId, fcmForm.FcmSenderId.ToString(), _hostingEnvironment));
-
-                    TempData["Error"] = false;
-
-                    await Task.WhenAll(tasks);
-                }
-                else
-                {
-                    TempData["Error"] = true;
-                }
-            }
-            else
-            {
-                var tasks = new Task[4];
-
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableFcm", fcmForm.EnableFcm.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmApiKey", fcmForm.FcmApiKey ?? string.Empty));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmProjectId", fcmForm.FcmProjectId ?? string.Empty));
-                tasks[3] = Task.Run(async () => await _settingsKeeper.AddSettings("FcmSenderId", fcmForm.FcmSenderId.ToString()));
-
-                TempData["Error"] = false;
-
-                await Task.WhenAll(tasks);
-            }
-
-            return RedirectToAction("Fcm");
         }
 
         [HttpGet]

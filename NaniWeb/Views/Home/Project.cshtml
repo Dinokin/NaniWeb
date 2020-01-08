@@ -38,16 +38,6 @@
             <strong>Artist:</strong><span> @series.Artist</span><br/>
             <strong>Synopsis:</strong><span> @series.Synopsis</span><br/>
             <strong>Scanlation Status:</strong><span> @series.Status</span>
-            @if (bool.Parse(SettingsKeeper.GetSetting("EnableFcm").Value))
-            {
-                <br/>
-                <div class="d-inline-flex flex-nowrap">
-                    <strong>Subscribe:</strong>
-                    <span class="ml-1">
-                        <partial name="_FcmDiv"/>
-                    </span>
-                </div>
-            }
         </div>
     </div>
     <partial name="_AdsMiddleSlot"/>
@@ -101,7 +91,6 @@
 @section Body
 {
     <partial name="_DisqusScript"/>
-    <partial name="_FcmScript"/>
 
     <script>
         $("#projects").addClass("active");

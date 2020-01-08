@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,15 +16,13 @@ namespace NaniWeb.Controllers
     [AllowAnonymous]
     public class OthersController : Controller
     {
-        private readonly IWebHostEnvironment _hostingEnvironment;
         private readonly NaniWebContext _naniWebContext;
         private readonly SettingsKeeper _settingsKeeper;
         private readonly SignInManager<IdentityUser<int>> _signInManager;
         private readonly UserManager<IdentityUser<int>> _userManager;
 
-        public OthersController(IWebHostEnvironment hostingEnvironment, NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
+        public OthersController(NaniWebContext naniWebContext, SettingsKeeper settingsKeeper, SignInManager<IdentityUser<int>> signInManager, UserManager<IdentityUser<int>> userManager)
         {
-            _hostingEnvironment = hostingEnvironment;
             _naniWebContext = naniWebContext;
             _settingsKeeper = settingsKeeper;
             _signInManager = signInManager;
@@ -72,28 +69,6 @@ namespace NaniWeb.Controllers
                     await _userManager.AddToRoleAsync(user, "Administrator");
                 }));
                 tasks.Add(Task.Run(async () => await System.IO.File.WriteAllTextAsync($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}installed.txt", Utils.InstallationId)));
-                tasks.Add(Task.Run(async () =>
-                {
-                    var manifest = new ManifestBuilder
-                    {
-                        ShortName = _settingsKeeper.GetSetting("SiteName").Value,
-                        Name = _settingsKeeper.GetSetting("SiteName").Value,
-                        Icons = new[]
-                        {
-                            new ManifestBuilder.Icon
-                            {
-                                Src = "assets/icon.png",
-                                Type = "image/png",
-                                Sizes = "512x512"
-                            }
-                        },
-                        ThemeColor = "#FFF",
-                        BackgroundColor = "#FFF",
-                        GcmSenderId = "103953800507"
-                    };
-
-                    await manifest.BuildManifest(_hostingEnvironment);
-                }));
                 await Task.WhenAll(tasks);
                 await _signInManager.PasswordSignInAsync(user, signUpForm.Password, false, false);
 
