@@ -156,21 +156,6 @@ namespace NaniWeb.Data
                     Value = string.Empty
                 }, new Setting
                 {
-                    Id = 9,
-                    Name = "EnableDiscordBot",
-                    Value = false.ToString()
-                }, new Setting
-                {
-                    Id = 10,
-                    Name = "DiscordToken",
-                    Value = string.Empty
-                }, new Setting
-                {
-                    Id = 11,
-                    Name = "DiscordChannelId",
-                    Value = 0.ToString()
-                }, new Setting
-                {
                     Id = 16,
                     Name = "EnableGoogleAnalytics",
                     Value = false.ToString()

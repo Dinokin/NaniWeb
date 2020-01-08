@@ -2,7 +2,6 @@
 @model ChapterAdd
 
 @{
-    var enableDiscord = bool.Parse(SettingsKeeper.GetSetting("EnableDiscordBot").Value);
     var enableReddit = bool.Parse(SettingsKeeper.GetSetting("EnableReddit").Value);
     ViewData["Title"] = "Add - Chapter";
 }
@@ -20,7 +19,7 @@
                     Something went wrong. Please check your data and try again.
                 </div>
             }
-            <form id="discord_settings_form" enctype="multipart/form-data" asp-controller="ChapterManager" asp-action="Add" novalidate>
+            <form id="add_chapter_form" enctype="multipart/form-data" asp-controller="ChapterManager" asp-action="Add" novalidate>
                 <fieldset>
                     <legend>Add Chapter</legend>
                     <input type="hidden" asp-for="SeriesId"/>
@@ -46,18 +45,10 @@
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label">
-                                <input class="form-check-input" id="announce_on_discord" aria-describedby="announce_on_discord_help" asp-for="AnnounceOnDiscord" disabled="@(enableDiscord ? null : string.Empty)"/>Announce on Discord
-                            </label>
-                        </div>
-                        <small id="announce_on_discord_help" class="form-text text-muted">Announce this chapter on Discord. Remember to check if you have configured the Discord functionality properly.</small>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-check">
-                            <label class="form-check-label">
                                 <input class="form-check-input" id="announce_on_reddit" aria-describedby="announce_on_reddit_help" asp-for="AnnounceOnReddit" disabled="@(enableReddit ? null : string.Empty)"/>Announce on Reddit
                             </label>
                         </div>
-                        <small id="announce_on_reddit_help" class="form-text text-muted">Announce this chapter on Reddit. Remember to check if you have configured the Discord functionality properly. Be aware that if you are going to release multiple chapters of the same series, reddit rules only allows one post for all the chapters you released.</small>
+                        <small id="announce_on_reddit_help" class="form-text text-muted">Announce this chapter on Reddit. Remember to check if you have configured the Reddit functionality properly. Be aware that if you are going to release multiple chapters of the same series, reddit rules only allows one post for all the chapters you released.</small>
                     </div>
                     <div class="form-group">
                         <div class="form-check">

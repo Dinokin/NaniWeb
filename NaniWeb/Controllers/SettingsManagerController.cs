@@ -127,55 +127,6 @@ namespace NaniWeb.Controllers
         }
 
         [HttpGet]
-        public IActionResult Discord()
-        {
-            var model = new DiscordForm
-            {
-                EnableDiscordBot = bool.Parse(_settingsKeeper.GetSetting("EnableDiscordBot").Value),
-                DiscordToken = _settingsKeeper.GetSetting("DiscordToken").Value,
-                DiscordChannelId = ulong.Parse(_settingsKeeper.GetSetting("DiscordChannelId").Value)
-            };
-
-            return View("DiscordSettings", model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Discord(DiscordForm discordForm)
-        {
-            var tasks = new Task[3];
-
-            if (discordForm.EnableDiscordBot)
-            {
-                if (ModelState.IsValid)
-                {
-                    tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDiscordBot", discordForm.EnableDiscordBot.ToString()));
-                    tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordToken", discordForm.DiscordToken));
-                    tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordChannelId", discordForm.DiscordChannelId.ToString()));
-
-                    TempData["Error"] = false;
-
-                    await Task.WhenAll(tasks);
-                }
-                else
-                {
-                    TempData["Error"] = true;
-                }
-            }
-            else
-            {
-                tasks[0] = Task.Run(async () => await _settingsKeeper.AddSettings("EnableDiscordBot", discordForm.EnableDiscordBot.ToString()));
-                tasks[1] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordToken", discordForm.DiscordToken ?? string.Empty));
-                tasks[2] = Task.Run(async () => await _settingsKeeper.AddSettings("DiscordChannelId", discordForm.DiscordChannelId.ToString()));
-
-                TempData["Error"] = false;
-
-                await Task.WhenAll(tasks);
-            }
-
-            return RedirectToAction("Discord");
-        }
-
-        [HttpGet]
         public IActionResult GoogleAnalytics()
         {
             var model = new GoogleAnalyticsForm
