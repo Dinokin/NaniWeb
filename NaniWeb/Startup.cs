@@ -98,10 +98,6 @@ namespace NaniWeb
                     "{action}/{urlSlug?}/{chapterNumber:decimal?}",
                     new {controller = "Home", action = "Index"});
                 routes.MapControllerRoute(
-                    "Subscription",
-                    "subscription/{action}/{topic}/{token}",
-                    new {controller = "Subscription"});
-                routes.MapControllerRoute(
                     "AdminLogin",
                     "admin/{action}",
                     new {controller = "SignIn", action = "SignIn"});
