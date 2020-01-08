@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NaniWeb.Data;
 using NaniWeb.Models.SignIn;
-using NaniWeb.Others;
 using Npgsql;
 
 namespace NaniWeb.Controllers
@@ -34,19 +32,17 @@ namespace NaniWeb.Controllers
         [HttpGet]
         public IActionResult Install()
         {
-            return Utils.IsInstalled() ? (IActionResult) RedirectToAction("Index", "Home") : View();
+            return _naniWebContext.Database.GetAppliedMigrations().Any() ? (IActionResult) RedirectToAction("Index", "Home") : View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Install(SignUpForm signUpForm)
         {
-            if (Utils.IsInstalled())
+            if (_naniWebContext.Database.GetAppliedMigrations().Any())
                 return RedirectToAction("Index", "Home");
 
             if (ModelState.IsValid)
             {
-                var tasks = new List<Task>();
-
                 await _naniWebContext.Database.MigrateAsync();
                 var npgsqlConnection = (NpgsqlConnection) _naniWebContext.Database.GetDbConnection();
                 npgsqlConnection.Open();
@@ -58,14 +54,10 @@ namespace NaniWeb.Controllers
                     Email = signUpForm.Email,
                     EmailConfirmed = true
                 };
+                
+                await _userManager.CreateAsync(user, signUpForm.Password);
+                await _userManager.AddToRoleAsync(user, "Administrator");
 
-                tasks.Add(Task.Run(async () =>
-                {
-                    await _userManager.CreateAsync(user, signUpForm.Password);
-                    await _userManager.AddToRoleAsync(user, "Administrator");
-                }));
-                tasks.Add(Task.Run(async () => await System.IO.File.WriteAllTextAsync($"{Utils.CurrentDirectory.FullName}{Path.DirectorySeparatorChar}installed.txt", Utils.InstallationId)));
-                await Task.WhenAll(tasks);
                 await _signInManager.PasswordSignInAsync(user, signUpForm.Password, false, false);
 
                 return RedirectToAction("General", "SettingsManager");

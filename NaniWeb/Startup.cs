@@ -125,10 +125,10 @@ namespace NaniWeb
                     new {controller = "SettingsManager"});
             });
 
-            if (Utils.IsInstalled())
-                using (var scope = app.ApplicationServices.CreateScope())
-                using (var context = scope.ServiceProvider.GetRequiredService<NaniWebContext>())
-                {
+            using (var scope = app.ApplicationServices.CreateScope())
+            using (var context = scope.ServiceProvider.GetRequiredService<NaniWebContext>())
+            {
+                if (context.Database.GetAppliedMigrations().Any())
                     if (context.Database.GetPendingMigrations().Any())
                     {
                         context.Database.Migrate();
@@ -136,7 +136,7 @@ namespace NaniWeb
                         npgsqlConnection.Open();
                         npgsqlConnection.ReloadTypes();
                     }
-                }
+            }
         }
     }
 }
